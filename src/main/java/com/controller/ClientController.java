@@ -14,11 +14,11 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping("/product/list")
+    @GetMapping("/list")
     public List<Product> getProductClient(){
         return clientService.getAllProduct();
     }
-    @GetMapping("/product/list/{id}")
+    @GetMapping("/list/{id}")
     public Product getSelectedProductClient(@PathVariable int id){
         return clientService.getSelectedProduct(id);
     }

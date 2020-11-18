@@ -8,7 +8,7 @@ function App() {
     const [content,setContent] = useState();
 
     useEffect(() => {
-        fetch('http://localhost:8080/client/list')
+        fetch('http://localhost:8080/client/product/list')
             .then(response => response.json())
             .then(data => {
                 //setTotalResults(data.totalResults);
