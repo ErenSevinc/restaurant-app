@@ -3,3 +3,7 @@
     margin-top: 150px;
     margin-left: 150px;
 }
+.btnOut{
+    position: absolute;
+    right: 1%;
+}

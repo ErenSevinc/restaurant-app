@@ -100,7 +100,6 @@ class Category extends Component {
         })
     }
 
-
     render() {
         const {cards} = this.state;
         return (

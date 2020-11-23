@@ -23,7 +23,7 @@ class Header extends Component {
                                 <a href="/order" className="btn btn-link">Orders List</a>
                                 <a href="/user-add" className="btn btn-link">Users</a>
                                 <a href="/auth" className="btn btn-link">Auth List</a>
-                                <a href="/" className="btn btn-danger" onClick={this.signOut}>Sign Out</a>
+                                <a href="/" className="btn btn-danger btnOut" onClick={this.signOut}>Sign Out</a>
                             </div>
                         </div>
                     </nav>
