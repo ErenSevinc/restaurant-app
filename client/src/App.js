@@ -1,46 +1,28 @@
 import './App.css';
-import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
-import Product from "./component/Product";
-import Header from "./component/Header";
+import React from "react";
 import Detail from "./component/Detail";
-import {useEffect, useState} from "react";
-function App() {
-    const [content,setContent] = useState();
+import Header from "./component/Header";
+import Category from "./component/Category";
+import Login from "./component/Login";
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import Menu from "./component/Menu";
 
-    useEffect(() => {
-        fetch('http://localhost:8080/client/product/list')
-            .then(response => response.json())
-            .then(data => {
-                //setTotalResults(data.totalResults);
-                setContent(data);
-            }).catch(e => {
-            console.warn("e : ", e);
-        });
-    }, []);
-    if (!content) {
-        return null;
-    }
-    //console.warn("content : ", content);
+
+
+function App() {
+
     return (
-        <div className="container">
+        <div>
             <Header/>
             <br/>
-            {
-                content.map(v => {
-                    return(
-                        <div>
-                            <Detail
-                                id={v.id}
-                                name={v.name}
-                                brand={v.brand}
-                                price={v.price}
-                                category={v.category}
-                            />
-                            <br/>
-                        </div>
-                    )
-                })
-            }
+            <Router>
+                <Switch>
+                    <Route path="/" exact component={Login}></Route>
+                    <Route path="/product" component={Category}></Route>
+                    <Route path="/menu"  component={Menu}></Route>
+                </Switch>
+            </Router>
+
         </div>
     );
 }

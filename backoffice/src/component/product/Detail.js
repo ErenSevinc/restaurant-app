@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import ProductService from "../service/ProductService";
+import ProductService from "../../service/ProductService";
+import Header from "../Header";
 
 class Detail extends Component {
     constructor(props) {
@@ -18,7 +19,6 @@ class Detail extends Component {
     render() {
         return (
             <div>
-                <br></br>
                 <div className = "card col-md-6 offset-md-3">
                     <h3 className = "text-center"> Product Details</h3>
                     <div className = "card-body">
@@ -37,6 +37,10 @@ class Detail extends Component {
                         <div className = "row">
                             <label> Product Category: </label>
                             <div> { this.state.product.category }</div>
+                        </div>
+                        <div className = "row">
+                            <label> Product Image: </label>
+                            <div> { this.state.product.urlToImage }</div>
                         </div>
                     </div>
 

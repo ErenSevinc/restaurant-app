@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import ProductService from "../service/ProductService";
+import ProductService from "../../service/ProductService";
+import Header from "../Header";
 
 class Update extends Component {
     constructor(props) {
@@ -10,7 +11,8 @@ class Update extends Component {
             name : '',
             brand : '',
             price : '',
-            category : ''
+            category : '',
+            urlToImage : ''
         }
         this.changeNameHandler=this.changeNameHandler.bind(this);
         this.changeBrandHandler=this.changeBrandHandler.bind(this);
@@ -25,7 +27,8 @@ class Update extends Component {
             this.setState({name: product.name,
                 brand: product.brand,
                 price : product.price,
-                category : product.category
+                category : product.category,
+                urlToImage : product.urlToImage
             });
         });
     }
@@ -35,7 +38,8 @@ class Update extends Component {
             name: this.state.name,
             brand: this.state.brand,
             price: this.state.price,
-            category: this.state.category
+            category: this.state.category,
+            urlToImage: this.state.urlToImage
         };
         ProductService.updateProduct(product,this.state.id).then(res =>{
             this.props.history.push('/product')
@@ -58,10 +62,12 @@ class Update extends Component {
     changeCategoryHandler= (e)=>{
         this.setState({category : e.target.value});
     }
+    changeImageHandler =(e)=>{
+        this.setState({urlToImage : e.target.value});
+    }
     render() {
         return (
             <div>
-                <br></br>
                 <div className = "container">
                     <div className = "row">
                         <div className = "card col-md-6 offset-md-3 offset-md-3">
@@ -88,8 +94,13 @@ class Update extends Component {
                                         <input placeholder="Product Category" name="category" className="form-control"
                                                value={this.state.category} onChange={this.changeCategoryHandler}/>
                                     </div>
+                                    <div className = "form-group">
+                                        <label> Product Image: </label>
+                                        <input placeholder="Product Image" name="urlToImage" className="form-control"
+                                               value={this.state.urlToImage} onChange={this.changeImageHandler}/>
+                                    </div>
                                     <button className="btn btn-success" onClick={this.updatedProduct}>Update</button>
-                                    <button className="btn btn-danger" style={{marginLeft: "10px"}}>Cancel</button>
+                                    <button className="btn btn-danger" style={{marginLeft: "10px"}} onClick={this.cancel.bind(this)}>Cancel</button>
                                 </form>
                             </div>
                         </div>

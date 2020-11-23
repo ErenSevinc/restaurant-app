@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import ProductService from "../service/ProductService";
+import ProductService from "../../service/ProductService";
+import List from "./List";
+import Header from "../Header";
 
 class Add extends Component {
     constructor(props) {
@@ -22,7 +24,8 @@ class Add extends Component {
             name: this.state.name,
             brand: this.state.brand,
             price: this.state.price,
-            category: this.state.category
+            category: this.state.category,
+            urlToImage: this.state.urlToImage
         };
         ProductService.addProduct(product).then(res =>{
             this.props.history.push('/product')
@@ -43,10 +46,12 @@ class Add extends Component {
     changeCategoryHandler= (e)=>{
         this.setState({category : e.target.value});
     }
+    changeImageHandler =(e)=>{
+        this.setState({urlToImage : e.target.value});
+    }
     render() {
         return (
             <div>
-                <br></br>
                 <div className = "container">
                     <div className = "row">
                         <div className = "card col-md-6 offset-md-3 offset-md-3">
@@ -73,8 +78,13 @@ class Add extends Component {
                                         <input placeholder="Product Category" name="category" className="form-control"
                                                value={this.state.category} onChange={this.changeCategoryHandler}/>
                                     </div>
+                                    <div className = "form-group">
+                                        <label> Product Image: </label>
+                                        <input placeholder="Product Image" name="category" className="form-control"
+                                               value={this.state.urlToImage} onChange={this.changeImageHandler}/>
+                                    </div>
                                     <button className="btn btn-success" onClick={this.saveProduct}>Save</button>
-                                    <button className="btn btn-danger" style={{marginLeft: "10px"}}>Cancel</button>
+                                    <button className="btn btn-danger" style={{marginLeft: "10px"}} onClick={this.cancel.bind(this)}>Cancel</button>
                                 </form>
                             </div>
                         </div>

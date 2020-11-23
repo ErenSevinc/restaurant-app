@@ -8,12 +8,17 @@ class Header extends Component {
 
         }
     }
+    signOut=()=>{
+        sessionStorage.removeItem("token")
+    }
     render() {
         return (
             <div>
                 <header>
                     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                        <div className="navbar-brand">Product List</div>
+                        <div className="navbar-brand">Product List
+                            <a href="/" className="btn btn-danger  btnOut" onClick={this.signOut}>Sign Out</a>
+                        </div>
                     </nav>
                 </header>
             </div>

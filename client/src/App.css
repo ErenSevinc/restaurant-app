@@ -1,5 +1,33 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.menuBtn{
+
+  width: 400px;
+  height: 150px;
+  margin: 10px;
+}
+@media only screen and (max-width: 636px) {
+  .menuBtn {
+    width: 200px;
+    height: 75px;
+    margin: 5px;
+  }
+  .btnOpenOrClose{
+    margin-left: 99%;
+  }
+}
+.btnOpenOrClose{
+  margin-left: 79%;
+  margin-top:5px;
+}
+.btnOut{
+  position: absolute;
+  right: 1%;
+
 }
 
 .App-logo {

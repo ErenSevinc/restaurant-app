@@ -12,15 +12,17 @@ public class Product {
     private String brand;
     private double price;
     private String category;
+    private String urlToImage;
 
     public Product() {
     }
 
-    public Product(String name, String brand, double price, String category) {
+    public Product(String name, String brand, double price, String category, String urlToImage) {
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.category = category;
+        this.urlToImage = urlToImage;
     }
 
     public int getId() {
@@ -61,5 +63,13 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getUrlToImage() {
+        return urlToImage;
+    }
+
+    public void setUrlToImage(String urlToImage) {
+        this.urlToImage = urlToImage;
     }
 }
