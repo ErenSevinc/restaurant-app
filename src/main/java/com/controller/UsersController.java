@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.DTO.UsersDTO;
 import com.entity.Users;
 import com.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,37 +18,30 @@ public class UsersController {
     @Autowired
     UsersService usersService;
 
-    @GetMapping("/loadadminusers")
-    public void loadAdmin(){
-        List<Users> list=new ArrayList<>();
-        Users users1 = new Users("admin","{noop}pass3",true);
-        Users users2 = new Users("user1","{noop}pass1",true);
-        list.add(users1);
-        list.add(users2);
-        usersService.loadAdmin(list);
-    }
 
     @GetMapping("/listall")
-    public List<Users> listUsers(){
+    public List<UsersDTO> listUsers(){
         return usersService.listUsers();
     }
     @GetMapping("/listall/{username}")
-    public Optional<Users> listUsersByUserName(@PathVariable String username){
+    public UsersDTO listUsersByUserName(@PathVariable String username){
         return usersService.listUsersByUserName(username);
     }
 
     @PostMapping("/add")
-    public void addUsers(@RequestBody Users users){
-        usersService.addUsers(users);
+    public String addUsers(@RequestBody UsersDTO usersDTO){
+        usersService.addUsers(usersDTO);
+        return "Users Added";
     }
 
     @DeleteMapping("/delete/{username}")
-    public List<Users> deleteUsers(@PathVariable String username){
-        return usersService.deleteUsers(username);
+    public String deleteUsers(@PathVariable String username){
+        usersService.deleteUsers(username);
+        return "Users Deleted";
     }
 
     @PutMapping("/update")
-    public List<Users> updateUsers(@RequestBody Users users){
-        return usersService.updateUsers(users);
+    public List<UsersDTO> updateUsers(@RequestBody UsersDTO usersDTO){
+        return usersService.updateUsers(usersDTO);
     }
 }

@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import ProductService from "../../service/ProductService";
 import Header from "../Header";
+import UserContext from "../../UserContext";
 
 class Order extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
 
@@ -11,7 +13,8 @@ class Order extends Component {
         }
     }
     componentDidMount(){
-        ProductService.listSales().then((res)=>{
+        const{token}=this.context;
+        ProductService.listSales(token).then((res)=>{
             this.setState({ orders: res.data});
         });
     }
@@ -29,6 +32,8 @@ class Order extends Component {
                             <th>Total Price</th>
                             <th>Piece</th>
                             <th>Date</th>
+                            <th>Table</th>
+                            <th>Waiter Name</th>
                             <th>Payment Type</th>
                         </tr>
                         </thead>
@@ -41,6 +46,8 @@ class Order extends Component {
                                         <td>{order.totalPrice}</td>
                                         <td>{order.piece}</td>
                                         <td>{order.date}</td>
+                                        <td>{order.tableName}</td>
+                                        <td>{order.waiterName}</td>
                                         <td>{order.paymentType}</td>
                                     </tr>
                             )

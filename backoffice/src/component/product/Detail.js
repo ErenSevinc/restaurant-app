@@ -36,7 +36,7 @@ class Detail extends Component {
                         </div>
                         <div className = "row">
                             <label> Product Category: </label>
-                            <div> { this.state.product.category }</div>
+                            <div> { this.state.product.productCategory }</div>
                         </div>
                         <div className = "row">
                             <label> Product Image: </label>

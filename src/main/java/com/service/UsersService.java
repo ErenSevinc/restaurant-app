@@ -1,10 +1,15 @@
 package com.service;
 
+import com.DTO.UsersDTO;
+import com.converter.AuthoritiesConverter;
+import com.converter.UsersConverter;
+import com.entity.Authorities;
 import com.entity.Users;
 import com.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,29 +18,30 @@ public class UsersService {
 
     @Autowired
     UsersRepository usersRepository;
-
-    public void loadAdmin(List<Users> users){
-        usersRepository.saveAll(users);
+    
+    public List<UsersDTO> listUsers(){
+        List<?> usersList=usersRepository.findAll();
+        return (List<UsersDTO>)usersList;
     }
 
-    public List<Users> listUsers(){
-        return usersRepository.findAll();
-    }
-    public Optional<Users> listUsersByUserName(String username){
-        return usersRepository.findById(username);
+    public UsersDTO listUsersByUserName(String username){
+        Optional<Users> list =usersRepository.findById(username);
+        return UsersConverter.listUsersByUserName(list);
     }
 
-    public void addUsers(Users users){
-        usersRepository.save(users);
+    public String addUsers(UsersDTO usersDTO){
+        usersRepository.save(UsersConverter.addUsers(usersDTO));
+        return "Users Added";
     }
 
-    public List<Users> deleteUsers(String username){
+    public String deleteUsers(String username){
         usersRepository.deleteById(username);
-        return listUsers();
+        //return listUsers();
+        return "Users Deleted";
     }
 
-    public List<Users> updateUsers (Users users){
-        usersRepository.saveAndFlush(users);
+    public List<UsersDTO> updateUsers (UsersDTO usersDto){
+        usersRepository.saveAndFlush(UsersConverter.updateUsers(usersDto));
         return listUsers();
     }
 }

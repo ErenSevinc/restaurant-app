@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ProductService from "./ProductService";
+
 
 const user_list_base_url = "http://localhost:8080/users/listall";
 const user_add_base_url = "http://localhost:8080/users/add";
@@ -15,67 +15,67 @@ const auth_list="http://localhost:8080/auth/listall";
 
 class UserService {
 
-    getUser(){
+    getUser(tkn){
         return axios.get(user_list_base_url,{
             headers:{
-                Authorization:ProductService.getToken()
+                 Authorization:tkn //sessionStorage.getItem("token")
             }
         });
     }
-    getUserById(username){
+    getUserById(username,tkn){
         return axios.get( user_list_base_url+ '/' + username,{
             headers:{
-                Authorization:ProductService.getToken()
+                Authorization:tkn//sessionStorage.getItem("token")
             }
         });
     }
-    addUser(user){
+    addUser(user,tkn){
         return axios.post(user_add_base_url,user,{
             headers:{
-                Authorization:ProductService.getToken()
+                Authorization:tkn//sessionStorage.getItem("token")
             }
         });
     }
-    addUserAuth(auth){
+    addUserAuth(auth,tkn){
         return axios.post(user_auth,auth,{
             headers:{
-                Authorization:ProductService.getToken()
+                Authorization:tkn//sessionStorage.getItem("token")
             }
         });
     }
-    getUserAuth(){
+    getUserAuth(tkn){
         return axios.get(auth_list,{
             headers:{
-                Authorization:ProductService.getToken()
+                Authorization:tkn//sessionStorage.getItem("token")
             }
         });
     }
-    updateUser(user){
+    updateUser(user,tkn){
         return axios.put(user_update_base_url, user,{
             headers:{
-                Authorization:ProductService.getToken()
+                Authorization:tkn//sessionStorage.getItem("token")
             }
         });
     }
-    deleteUser(username){
+    deleteUser(username,tkn){
         return axios.delete(user_delete_base_url + '/' + username,{
             headers:{
-                Authorization:ProductService.getToken()
+                Authorization:tkn//sessionStorage.getItem("token")
             }
         });
     }
 
-    updateAuth(user){
+    updateAuth(user,tkn){
         return axios.put(auth_update_base_url, user,{
             headers:{
-                Authorization:ProductService.getToken()
+                Authorization:tkn//sessionStorage.getItem("token")
             }
         });
     }
-    deleteAuth(username){
+    deleteAuth(username,tkn){
         return axios.delete(auth_delete_base_url + '/' + username,{
             headers:{
-                Authorization:ProductService.getToken()
+                Authorization:tkn//sessionStorage.getItem("token")
             }
         });
     }

@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import UserService from "../../service/UserService";
 import Header from "../Header";
+import UserContext from "../../UserContext";
 
 class UserAdd extends Component {
+    static contextType=UserContext;
+
     constructor(props) {
         super(props);
 
@@ -25,18 +28,20 @@ class UserAdd extends Component {
             enabled: this.state.enabled,
 
         };
-         UserService.addUser(user).then(res =>{
+        const{token}=this.context;
+         UserService.addUser(user,token).then(res =>{
              this.props.history.push('/user')
         })
         let userAuth={
              username:this.state.username,
              authority:this.state.role
         };
-         UserService.addUserAuth(userAuth).then(res=>{
+         UserService.addUserAuth(userAuth,token).then(res=>{
              this.props.history.push('/user')
          })
     }
-    cancel(){
+    cancel=(e)=>{
+        e.preventDefault();
         this.props.history.push('/user');
     }
     changeUserNameHandler = (e)=>{

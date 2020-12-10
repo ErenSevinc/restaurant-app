@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import UserService from "../../service/UserService";
 import Header from "../Header";
+import UserContext from "../../UserContext";
 
 
 class UserList extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props)
 
@@ -25,19 +27,22 @@ class UserList extends Component {
     }
 
     deletedUser(username) {
-        UserService.deleteUser(username).then(res => {
-            window.location.reload();
+        const {token}=this.context;
+        UserService.deleteUser(username,token).then(res => {
+            this.props.history.push('/product');
         });
     }
 
     detailUser(username) {
+
         this.props.history.push(`/user-detail/${username}`);
         sessionStorage.setItem("view",username);
 
     }
 
     componentDidMount() {
-        UserService.getUser().then((res) => {
+        const {token}=this.context;
+        UserService.getUser(token).then((res) => {
             this.setState({users: res.data});
         });
     }

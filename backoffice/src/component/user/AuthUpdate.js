@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import UserService from "../../service/UserService";
+import UserContext from "../../UserContext";
 
 class AuthUpdate extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props)
 
@@ -15,7 +17,8 @@ class AuthUpdate extends Component {
         this.changeAuthorityHandler=this.changeAuthorityHandler.bind(this);
     }
     componentDidMount(){
-        UserService.getUserById(this.state.id).then( (res) =>{
+        const {token}=this.context;
+        UserService.getUserById(this.state.username,token).then( (res) =>{
             let user = res.data;
             this.setState({
                 username: user.username,
@@ -29,11 +32,12 @@ class AuthUpdate extends Component {
             username: this.state.username,
             authority: this.state.authority,
         };
-        UserService.updateAuth(user,this.state.id).then(res =>{
+        const {token}=this.context;
+        UserService.updateAuth(user,token).then(res =>{
             this.props.history.push('/auth')
         })
     }
-    cancel(){
+    cancel=(e)=>{
         this.props.history.push('/auth');
     }
 

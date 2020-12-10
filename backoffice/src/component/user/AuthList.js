@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import UserService from "../../service/UserService";
+import UserContext from "../../UserContext";
 
 class AuthList extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -16,13 +18,15 @@ class AuthList extends Component {
         this.props.history.push(`/auth-update/`);
     }
     deletedAuth(username){
-        UserService.deleteAuth(username).then(res => {
-            window.location.reload();
+        const {token}=this.context;
+        UserService.deleteAuth(username,token).then(res => {
+            this.props.history.push(`/user`);
         });
     }
 
     componentDidMount() {
-        UserService.getUserAuth().then((res) => {
+        const {token}=this.context;
+        UserService.getUserAuth(token).then((res) => {
             this.setState({authList: res.data});
         });
     }

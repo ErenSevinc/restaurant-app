@@ -15,6 +15,8 @@ public class Order {
     private int piece;
     private String paymentType;
     private int productId;
+    private String tableName;
+    private String waiterName;
     @Column
     private Date date= new Timestamp(System.currentTimeMillis());
 
@@ -74,6 +76,22 @@ public class Order {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getWaiterName() {
+        return waiterName;
+    }
+
+    public void setWaiterName(String waiterName) {
+        this.waiterName = waiterName;
     }
 
     @Override

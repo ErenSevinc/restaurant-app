@@ -1,65 +1,67 @@
 import axios from 'axios';
 //"Basic YWRtaW46cGFzczM="
 
+import {UserContext} from "../component/Login";
+
 const authTokenAdmin="Basic YWRtaW46cGFzczM="
-const product_list_base_url = "http://localhost:8080/product/backoffice/list";
-const product_add_base_url = "http://localhost:8080/product/backoffice/add";
-const product_update_base_url = "http://localhost:8080/product/backoffice/update";
-const product_delete_base_url = "http://localhost:8080/product/backoffice/delete";
+const product_list_base_url = "http://localhost:8080/product/list";
+const product_add_base_url = "http://localhost:8080/category/addProductByCategory";
+const product_update_base_url = "http://localhost:8080/product/update";
+const product_delete_base_url = "http://localhost:8080/product/delete";
 const basket_list_url = "http://localhost:8080/product/basket/list";
 
-const urlAdminUsers="http://localhost:8080/users/loadadminusers";
-const urlAdminAuth="http://localhost:8080/auth/loadadminauth";
 const urlListUsers="http://localhost:8080/users/listall";
 
-const token=sessionStorage.getItem("token")
+//const token=sessionStorage.getItem("token")
 
-class ProductService {
+class ProductService{
 
-    getProducts(){
+    getProducts(tkn){
         return axios.get(product_list_base_url,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
 
-    getProductById(id){
+    getProductById(id,tkn){
         return axios.get( product_list_base_url+ '/' + id,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
 
-    addProduct(product){
-        return axios.post(product_add_base_url,product,{
+    addProduct(id,product,tkn){
+        return axios.post(product_add_base_url+'/'+id,product,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
 
-    updateProduct(product, id){
+    updateProduct(product, id,tkn){
+
         return axios.put(product_update_base_url  + '/' + id, product,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
 
-    deleteProduct(id){
+    deleteProduct(id,tkn){
+
         return axios.delete(product_delete_base_url + '/' + id,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
 
-    listSales(){
+    listSales(tkn){
         return axios.get(basket_list_url,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
@@ -71,18 +73,6 @@ class ProductService {
             }
         });
     }
-
-    getAdminUser(){
-        return axios.get(urlAdminUsers);
-    }
-    getAdminAuth(){
-        return axios.get(urlAdminAuth);
-    }
-
-    getToken(){
-        return token;
-    }
-
 
 
     //  localStorage.setItem("token",("Basic"+btoa('eren:1234')))

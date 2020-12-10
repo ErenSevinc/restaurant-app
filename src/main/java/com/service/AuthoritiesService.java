@@ -1,5 +1,7 @@
 package com.service;
 
+import com.DTO.AuthoritiesDTO;
+import com.converter.AuthoritiesConverter;
 import com.entity.Authorities;
 import com.repository.AuthoritiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,25 +15,27 @@ public class AuthoritiesService {
     @Autowired
     AuthoritiesRepository authoritiesRepository;
 
-    public void loadAdmin(List<Authorities> list){
-        authoritiesRepository.saveAll(list);
+
+    public List<AuthoritiesDTO> authoritiesList(){
+        List<Authorities> authList=authoritiesRepository.findAll();
+        return AuthoritiesConverter.authoritiesList(authList);
+
     }
 
-    public List<Authorities> authoritiesList(){
-        return authoritiesRepository.findAll();
+    public String addAuth(AuthoritiesDTO authoritiesDto){
+
+        authoritiesRepository.save(AuthoritiesConverter.addAuth(authoritiesDto));
+        return "Auth Eklendi";
     }
 
-    public void addAuth(Authorities auth){
-        authoritiesRepository.save(auth);
-    }
+    public String deleteAuth(String username){
 
-    public List<Authorities> deleteAuth(String username){
         authoritiesRepository.deleteById(username);
-        return authoritiesList();
+        return "Auth Silindi";
     }
 
-    public List<Authorities> updateAuth (Authorities auth){
-        authoritiesRepository.saveAndFlush(auth);
+    public List<AuthoritiesDTO> updateAuth (AuthoritiesDTO authoritiesDTO){
+        authoritiesRepository.saveAndFlush(AuthoritiesConverter.updateAuth(authoritiesDTO));
         return authoritiesList();
     }
 }

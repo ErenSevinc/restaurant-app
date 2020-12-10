@@ -6,6 +6,9 @@
   height: 40vmin;
   pointer-events: none;
 }
+.btnLink{
+  margin-left: 5px;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

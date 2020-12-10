@@ -1,8 +1,9 @@
 .App {
-  text-align: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+}
+.clm{
+  height: calc(100%);
+  overflow-y: auto;
+
 }
 .menuBtn{
 
@@ -10,7 +11,7 @@
   height: 150px;
   margin: 10px;
 }
-@media only screen and (max-width: 636px) {
+@media only screen and (max-width: 636px){
   .menuBtn {
     width: 200px;
     height: 75px;
@@ -28,6 +29,10 @@
   position: absolute;
   right: 1%;
 
+}
+.btnShowTable{
+  position: absolute;
+  right: 10%;
 }
 
 .App-logo {

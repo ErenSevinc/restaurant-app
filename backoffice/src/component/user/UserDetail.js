@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import UserService from "../../service/UserService";
 import Header from "../Header";
+import UserContext from "../../UserContext";
 
 class UserDetail extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
 
@@ -15,7 +17,8 @@ class UserDetail extends Component {
     }
     componentDidMount() {
         const {enabled}=this.state.enabled;
-        UserService.getUserById(sessionStorage.getItem("view")).then( res => {
+        const{token}=this.context
+        UserService.getUserById(this.state.username,token).then( res => {
             this.setState({user: res.data,
             enabled:res.data.enabled.toString()
 

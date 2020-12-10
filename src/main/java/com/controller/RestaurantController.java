@@ -1,10 +1,10 @@
 package com.controller;
 
+import com.DTO.OrderDTO;
+import com.DTO.ProductDTO;
 import com.entity.Order;
 import com.entity.Product;
 import com.service.BackOfficeService;
-import com.service.ClientService;
-import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,55 +19,56 @@ public class RestaurantController {
     private BackOfficeService service;
 
     //product list
-    @GetMapping("/backoffice/list")
-    public List<Product> getProduct(){
+    @GetMapping("/list")
+    public List<ProductDTO> getProduct(){
         return service.getAllProduct();
     }
 
     //product list id
-    @GetMapping("/backoffice/list/{id}")
-    public Product getSelectedProduct(@PathVariable int id){
+    @GetMapping("/list/{id}")
+    public ProductDTO getSelectedProduct(@PathVariable int id){
         return service.getSelectedProduct(id);
     }
 
     //product add
-    @PostMapping("/backoffice/add")
-    public Product addProduct(@RequestBody Product product){
+    @PostMapping("/add")
+    private Product addProduct(@RequestBody Product product){
         return service.addProduct(product);
     }
 
     //product update
-    @PutMapping("/backoffice/update/{id}")
-    public Product updateProduct(@PathVariable int id,@RequestBody Product product){
+    @PutMapping("/update/{id}")
+    public List<ProductDTO> updateProduct(@PathVariable int id,@RequestBody ProductDTO product){
         return service.updateProduct(id, product);
     }
 
     //product delete
-    @DeleteMapping("/backoffice/delete/{id}")
-    public List<Product> deleteProduct(@PathVariable int id){
-        return service.deleteProduct(id);
+    @DeleteMapping("/delete/{id}")
+    public void deleteProduct(@PathVariable int id){
+        service.deleteProduct(id);
     }
 
     //product category name
-    @GetMapping("/backoffice/category")
-    public List<String> getCategory(){
-        return service.getProductCategory();
-    }
-
-    //product list by category
-    @GetMapping("/backoffice/list/category")
-    public List<Product> getProductByCategory(@RequestParam String category){
-        return service.getProductByCategory(category);
-    }
+//    @GetMapping("/category")
+//    private List<String> getCategory(){
+//        return service.getProductCategory();
+//    }
+//
+//    //product list by category-string
+//    @GetMapping("/list/category")
+//    private List<Product> getProductByCategory(@RequestParam String category){
+//        return service.getProductByCategory(category);
+//    }
 
     //basket complete
     @PostMapping("/basket")
-    public void addSales(@RequestBody List<Order> list){
+    public String addSales(@RequestBody List<OrderDTO> list){
         service.addSales(list);
+        return "Siparişiniz Alınmıştır";
     }
 
     @GetMapping("/basket/list")
-    public List<Order> listSales(){
+    public List<OrderDTO> listSales(){
         return service.listSales();
     }
 

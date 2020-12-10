@@ -19,7 +19,8 @@ class Category extends Component {
                 cardName: '',
                 totalPrice: 0,
                 productPrice: 0,
-                paymentType: 'cash'
+                paymentType: 'cash',
+                tableName:''
 
             }
         }
@@ -37,11 +38,13 @@ class Category extends Component {
         ClientService.getCategory().then((res) => {
             this.setState({category: res.data})
         });
+        ClientService.getProducts().then((res)=>{
+            this.setState({products:res.data})
+        })
     }
 
-    getCatProduct(category) {
-
-        ClientService.getCategoryProduct(category).then((res) => {
+    getCatProduct(id) {
+        ClientService.getCategoryProduct(id).then((res) => {
             this.setState({products: res.data})
         });
         this.render();
@@ -64,7 +67,9 @@ class Category extends Component {
                         cardName: p.name,
                         totalPrice: p.price,
                         productPrice: p.price,
-                        paymentType: 'cash'
+                        paymentType: 'cash',
+                        tableName:sessionStorage.getItem("tbl")
+
                     }
                 }, () => this.setState({
                     cards: [...this.state.cards, this.state.card]
@@ -98,6 +103,7 @@ class Category extends Component {
             window.alert("siparişiniz alınmıştır")
             window.location.reload()
         })
+        sessionStorage.setItem("tbl","Paket Servis");
     }
 
     render() {
@@ -116,12 +122,12 @@ class Category extends Component {
                                     {this.state.category.map(
                                         category =>
                                             <button className="btn btn-info btn-block mb-1"
-                                                    onClick={() => this.getCatProduct(category)}>{category}</button>
+                                                    onClick={() => this.getCatProduct(category.id)}>{category.name}</button>
                                     )}
                                 </div>
                             </div>
                         </th>
-                        <th className="productColumn">
+                        <th className="productColumn clm">
                             <div className="card">
                                 <div className="card-header">
                                     <h4 className="d-inline">Product List</h4>
@@ -149,7 +155,7 @@ class Category extends Component {
                                 </div>
                             </div>
                         </th>
-                        <th className="basketColumn">
+                        <th className="basketColumn clm">
                             <div className="card">
                                 <div className="card-header">
                                     <h5 className="d-inline">Basket</h5>

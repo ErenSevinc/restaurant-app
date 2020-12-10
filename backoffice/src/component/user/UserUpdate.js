@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import UserService from "../../service/UserService";
 import Header from "../Header";
+import UserContext from "../../UserContext";
 
 class UserUpdate extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props)
 
@@ -18,7 +20,8 @@ class UserUpdate extends Component {
         this.changeEnabledHandler=this.changeEnabledHandler.bind(this);
     }
     componentDidMount(){
-        UserService.getUserById(this.state.id).then( (res) =>{
+        const{token}=this.context;
+        UserService.getUserById(this.state.id,token).then( (res) =>{
             let user = res.data;
             this.setState({
                 username: user.username,
@@ -34,11 +37,13 @@ class UserUpdate extends Component {
             password: this.state.password,
             enabled: this.state.enabled
         };
-         UserService.updateUser(user,this.state.id).then(res =>{
+        const{token}=this.context;
+         UserService.updateUser(user,token).then(res =>{
              this.props.history.push('/user')
          })
     }
-    cancel(){
+    cancel=(e)=>{
+        e.preventDefault();
         this.props.history.push('/user');
     }
 

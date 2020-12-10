@@ -1,24 +1,43 @@
 .categoryColumn{
-    width: 230px;
+
 }
 
 .basketColumn{
-    width:25%;
 }
-.card-body{
-    width: 400px;
-    height: 600px;
+.card-body {
+    width: 300px;
+    height: 450px;
 }
+
 .product-card{
-    width: 250px;
+    width: 300px;
     height: 200px;
-    margin-left: 25px;
-    margin-top:10px;
-    margin-right:25px;
-    margin-bottom:15px;
+    margin: 5px;
+
 }
 .product-list-body{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+
+}
+.clm{
+    overflow-y: auto;
+}
+.mdl{
+    height: 300px;
+    overflow-y: auto;
+}
+.totalPrice{
+   text-align: center;
+}
+.but{
+    width: 300px;
+    height: 200px;
+    margin: 5px;
+}
+.crd{
+    width: 100%;
+    height: 550px;
+
 }

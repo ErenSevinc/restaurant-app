@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/user/**").access("hasRole('ADMIN')");
 
-        //+
+       //+
         http.authorizeRequests().antMatchers("/product/backoffice/list/").access("hasAnyRole('USER','ADMIN')");
         http.authorizeRequests().antMatchers("/product/backoffice/list/{id}").access("hasAnyRole('USER','ADMIN')");
         //+
@@ -49,10 +49,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/auth/add").access("hasRole('ADMIN')");
         http.authorizeRequests().antMatchers("/auth/delete/**").access("hasRole('ADMIN')");
         http.authorizeRequests().antMatchers("/auth/update").access("hasRole('ADMIN')");
-        http.authorizeRequests().antMatchers("/users/listall/**").access("hasRole('ADMIN')");
+        http.authorizeRequests().antMatchers("/users/listall/**").access("hasAnyRole('USER','ADMIN')");
+        http.authorizeRequests().antMatchers("/users/listall").access("hasAnyRole('USER','ADMIN')");
         http.authorizeRequests().antMatchers("/users/add").access("hasRole('ADMIN')");
         http.authorizeRequests().antMatchers("/users/delete/**").access("hasRole('ADMIN')");
         http.authorizeRequests().antMatchers("/users/update").access("hasRole('ADMIN')");
+
+        http.authorizeRequests().antMatchers("/category/listAll/**").access("hasAnyRole('USER','ADMIN')");
+        http.authorizeRequests().antMatchers("/category/listAll").access("hasAnyRole('USER','ADMIN')");
+        http.authorizeRequests().antMatchers("/category/addCategory").access("hasRole('ADMIN')");
+        http.authorizeRequests().antMatchers("/category/updateCategory/**").access("hasRole('ADMIN')");
+        http.authorizeRequests().antMatchers("/category/deleteCategory/**").access("hasRole('ADMIN')");
+
+        http.authorizeRequests().antMatchers("/category/listProduct").access("hasAnyRole('USER','ADMIN')");
+        http.authorizeRequests().antMatchers("/category/listProductByCategory/**").access("hasAnyRole('USER','ADMIN')");
+        http.authorizeRequests().antMatchers("/category/addProductByCategory/**").access("hasRole('ADMIN')");
+        http.authorizeRequests().antMatchers("/category/deleteProduct/**").access("hasRole('ADMIN')");
+       http.authorizeRequests().antMatchers("/category/updateCategory/**").access("hasRole('ADMIN')");
+
+        http.authorizeRequests().antMatchers("/categoryTable/list/**").access("hasAnyRole('USER','ADMIN')");
+        http.authorizeRequests().antMatchers("/categoryTable/add").access("hasRole('ADMIN')");
+        http.authorizeRequests().antMatchers("/categoryTable/update/**").access("hasRole('ADMIN')");
+        http.authorizeRequests().antMatchers("/categoryTable/delete/**").access("hasRole('ADMIN')");
 
         http.httpBasic();
         http.cors();
