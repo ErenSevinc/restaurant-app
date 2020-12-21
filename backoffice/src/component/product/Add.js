@@ -3,8 +3,12 @@ import ProductService from "../../service/ProductService";
 import List from "./List";
 import Header from "../Header";
 import CategoryService from "../../service/CategoryService";
+import MediaService from "../../service/MediaService";
+import Loader from "../../Loader";
+import UserContext from "../../UserContext";
 
 class Add extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
 
@@ -13,38 +17,48 @@ class Add extends Component {
             category_list:[],
             category_Id_List:[],
             categoryNameList:[],
+            categoriesDTOList:[],
+            media:{},
+            image_List:[],
 
             name : '',
             brand : '',
             price : '',
             category : '',
-            category_id:''
+            category_id:'',
+
+            loaded:false
         }
         this.changeNameHandler=this.changeNameHandler.bind(this);
         this.changeBrandHandler=this.changeBrandHandler.bind(this);
         this.changePriceHandler=this.changePriceHandler.bind(this);
         // this.changeCategoryHandler=this.changeCategoryHandler.bind(this);
-        this.changeCategoryIDHandler=this.changeCategoryIDHandler.bind(this);
         this.selectMulti=this.selectMulti.bind(this);
+
     }
 
     saveProduct =(e)=>{
-
+        const{token}=this.context;
+        this.setState({loaded:!this.state.loaded});
         e.preventDefault();
-        let product = {
+        let products = {
             name: this.state.name,
             brand: this.state.brand,
             price: this.state.price,
-            productCategory: this.state.category_name,
-            urlToImage: this.state.urlToImage,
+            mediaDTO:this.state.media,
+            categoriesDTO: this.state.categoriesDTOList
+
         };
-        console.log(product)
-        ProductService.addProduct(this.state.category_Id_List,product).then(res =>{
-            this.props.history.push('/product')
-        })
+        console.log(products,token)
+        ProductService.addProduct(products,token).then(res =>{
+            this.props.history.push('/products');
+            if(res.status == '200'){
+                this.setState({loaded:!this.state.loaded});
+            }
+        });
     }
     cancel(){
-        this.props.history.push('/product');
+        this.props.history.push('/products');
     }
     changeNameHandler = (e)=>{
         this.setState({name : e.target.value});
@@ -56,15 +70,24 @@ class Add extends Component {
         this.setState({price : e.target.value});
     }
 
-    changeImageHandler =(e)=>{
-        this.setState({urlToImage : e.target.value});
-    }
     changeCategoryIDHandler=(e)=>{
         this.setState({category_id : e.target.value});
     }
     componentDidMount() {
-        CategoryService.getAllCategory().then((res)=>{
+        const {token}=this.context;
+        this.setState({loaded:!this.state.loaded});
+        CategoryService.getAllCategory(token).then((res)=>{
            this.setState({category_list:res.data})
+            if(res.status == '200'){
+                this.setState({loaded:!this.state.loaded})
+            }
+        });
+        MediaService.getImage(token).then(res=>{
+            this.setState({loaded:!this.state.loaded});
+            this.setState({image_List:res.data})
+            if(res.status == '200'){
+                this.setState({loaded:!this.state.loaded})
+            }
         });
     }
     onClickCategory=(e)=>{
@@ -74,10 +97,16 @@ class Add extends Component {
         });
     }
     selectMulti=(e)=>{
-        if(this.state.category_Id_List.includes(e) !== true){
-            this.state.category_Id_List.push(e);
-            this.state.categoryNameList.push(e);
+        if(this.state.category_list.includes(e.id) !== true){
+            this.state.categoriesDTOList.push(e);
         }
+        console.log(this.state.categoriesDTOList);
+    }
+    onClickCategory=(e)=>{
+        this.setState({
+            media:e
+        });
+        console.log(e);
     }
 
     render() {
@@ -104,11 +133,6 @@ class Add extends Component {
                                         <input placeholder="Product Price" name="price" className="form-control"
                                                value={this.state.price} onChange={this.changePriceHandler}/>
                                     </div>
-                                    <div className = "form-group">
-                                        <label> Product Image: </label>
-                                        <input placeholder="Product Image" name="category" className="form-control"
-                                               value={this.state.urlToImage} onChange={this.changeImageHandler}/>
-                                    </div>
                                     {/*<div className="dropdown show">*/}
                                     {/*    <a className="btn btn-secondary btn-block dropdown-toggle" href="#" role="button"*/}
                                     {/*       id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"*/}
@@ -124,12 +148,31 @@ class Add extends Component {
 
                                     {/*    </div>*/}
                                     {/*</div>*/}
+                                    <div className="dropdown show">
+                                        <a className="btn btn-secondary btn-block dropdown-toggle" href="#" role="button"
+                                           id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">
+                                        </a>
+                                        <div className="dropdown-menu btn-block clm" aria-labelledby="dropdownMenuLink">
+                                            {
+                                                this.state.image_List.map(
+                                                    image=>
+                                                        <a className="dropdown-item" onClick={this.onClickCategory.bind(this,image)}>{image.name}
+                                                            <br/>
+                                                            <img src={'data:image/png;base64,' + image.fileContent} width="45" height="45"></img>
+                                                        </a>
+
+                                                )
+                                            }
+
+                                        </div>
+                                    </div>
                                     <div className="checkbox" style={{height:"4rem",overflow:"auto"}}>
                                         {
                                             this.state.category_list.map(
                                                 category=>
                                                     <div className="row col-md -12">
-                                                        <label><input type="checkbox" value="" onClick={()=>this.selectMulti(category.id)}/>{category.name}</label>
+                                                        <label><input type="checkbox" value="" onClick={()=>this.selectMulti(category)}/>{category.name}</label>
                                                     </div>
                                             )
                                         }
@@ -143,6 +186,11 @@ class Add extends Component {
                         </div>
                     </div>
                 </div>
+                {
+                    this.state.loaded ?(
+                        <Loader/>
+                    ):null
+                }
             </div>
         );
     }

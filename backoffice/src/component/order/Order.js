@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ProductService from "../../service/ProductService";
 import Header from "../Header";
 import UserContext from "../../UserContext";
+import Loader from "../../Loader";
 
 class Order extends Component {
     static contextType=UserContext;
@@ -9,13 +10,18 @@ class Order extends Component {
         super(props);
 
         this.state = {
-            orders: []
+            orders: [],
+            loaded:false,
         }
     }
     componentDidMount(){
+        this.setState({loaded:!this.state.loaded});
         const{token}=this.context;
         ProductService.listSales(token).then((res)=>{
             this.setState({ orders: res.data});
+            if (res.status == '200'){
+                this.setState({loaded:!this.state.loaded});
+            }
         });
     }
     render() {
@@ -55,6 +61,11 @@ class Order extends Component {
                         </tbody>
                     </table>
                 </div>
+                {
+                    this.state.loaded ?(
+                        <Loader/>
+                    ):null
+                }
             </div>
         );
     }

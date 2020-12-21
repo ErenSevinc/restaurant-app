@@ -9,10 +9,10 @@ import Login from "../component/Login";
 // return auth;
 
 class  AuthService {
-    static tkn;
-     getTkn(param){
-        return AuthService.tkn=param;
-    }
+    // static tkn;
+    //  getTkn(param){
+    //     return AuthService.tkn=param;
+    // }
 
 }
 

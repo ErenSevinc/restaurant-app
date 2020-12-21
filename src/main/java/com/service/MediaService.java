@@ -3,6 +3,7 @@ package com.service;
 import com.DTO.MediaDTO;
 import com.converter.MediaConverter;
 import com.entity.Media;
+import com.mapper.MediaMapper;
 import com.repository.MediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,14 +21,16 @@ public class MediaService {
     private MediaRepository mediaRepository;
 
     public List<MediaDTO> getFiles(){
-        List<Media> mediaList =mediaRepository.findAll();
-        return MediaConverter.mediaList(mediaList);
+//        List<Media> mediaList =mediaRepository.findAll();
+//        return MediaConverter.mediaList(mediaList);
+        return MediaMapper.INSTANCE.toDTOList(mediaRepository.findAll());
     }
 
     public String addFile(MultipartFile file,String imageName) throws IOException {
         MediaConverter mediaConverter=new MediaConverter();
         Media media= mediaConverter.addFile(file,imageName);
         mediaRepository.save(media);
+
         return "File Added";
     }
 

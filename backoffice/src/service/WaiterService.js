@@ -12,39 +12,39 @@ class WaiterService {
     getWaiter(tkn){
        return axios.get(waiter_list_base_url,{
            headers:{
-               Authorization:tkn
+               Authorization: tkn
            }
-        });
+       });
     }
     getWaiterById(id,tkn){
         return axios.get(waiter_list_base_url+'/'+id,{
             headers:{
-                Authorization:tkn
+                Authorization: tkn
             }
         });
     }
     addWaiter(waiter,tkn){
         return axios.post(waiter_add_base_url,waiter,{
             headers:{
-                Authorization:tkn
+                Authorization: tkn
             }
         });
     }
     updateWaiter(waiter,tkn){
         return axios.put(waiter_update_base_url,waiter,{
             headers:{
-                Authorization:tkn
+                Authorization: tkn
             }
         });
     }
     deleteWaiter(id,tkn){
         return axios.delete(waiter_delete_base_url+'/'+id,{
             headers:{
-                Authorization:tkn
+                Authorization: tkn
             }
         });
     }
 
 }
 
-export default new WaiterService;
+export default new WaiterService();

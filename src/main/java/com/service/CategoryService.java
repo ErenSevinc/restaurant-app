@@ -1,19 +1,15 @@
 package com.service;
 
-import com.DTO.CategoryDTO;
-import com.DTO.ProductDTO;
-import com.converter.CategoryConverter;
-import com.entity.Category;
-import com.entity.Product;
-import com.repository.CategoryRepository;
-import com.repository.ProductRepository;
+import com.unused.CategoryDTO;
+import com.unused.ProductDTO;
+import com.unused.CategoryConverter;
+import com.unused.Category;
+import com.unused.CategoryRepository;
+import com.unused.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.pattern.PathPatternRouteMatcher;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class CategoryService {
@@ -46,8 +42,8 @@ public class CategoryService {
         categoryRepository.deleteById(id);
         return getCategory();
     }
-    public String addProductByCategory(ProductDTO productDTO,int id){
-
+    public String addProductByCategory(ProductDTO productDTO){
+        int id=1;   //parametre
         Category category=categoryRepository.findById(id).get();
         productRepository.save(CategoryConverter.addProductByCategory(productDTO,category));
 
@@ -55,7 +51,7 @@ public class CategoryService {
     }
 
 
-    public Set<ProductDTO> getProductByCategory(int id){
+    public List<ProductDTO> getProductByCategory(int id){
         Optional<Category> category=categoryRepository.findById(id);
         return CategoryConverter.getProductByCategory(category);
 

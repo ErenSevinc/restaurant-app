@@ -26,17 +26,16 @@ class UserList extends Component {
         this.props.history.push(`/user-update/${id}`);
     }
 
-    deletedUser(username) {
+    deletedUser(id) {
         const {token}=this.context;
-        UserService.deleteUser(username,token).then(res => {
-            this.props.history.push('/product');
+        UserService.deleteUser(id,token).then(res => {
+            this.props.history.push('/user-add');
         });
     }
 
-    detailUser(username) {
-
-        this.props.history.push(`/user-detail/${username}`);
-        sessionStorage.setItem("view",username);
+    detailUser(id) {
+        this.props.history.push(`/user-detail/${id}`);
+        sessionStorage.setItem("view",id);
 
     }
 
@@ -60,6 +59,7 @@ class UserList extends Component {
                         <tr>
                             <th>User Name</th>
                             <th>Password</th>
+                            <th>Email</th>
                             <th>Enabled</th>
                             <th></th>
                         </tr>
@@ -71,6 +71,7 @@ class UserList extends Component {
                                     <tr key={user.id}>
                                         <td>{user.username}</td>
                                         <td>{user.password}</td>
+                                        <td>{user.email}</td>
                                         <td>{user.enabled}</td>
 
                                         <td>
@@ -78,7 +79,7 @@ class UserList extends Component {
                                             <button onClick={() => this.updatedUser(user)}
                                                     className="btn btn-info" style={{margin: "5px"}}>Update
                                             </button>
-                                            <button onClick={() => this.deletedUser(user.username)}
+                                            <button onClick={() => this.deletedUser(user.id)}
                                                     className="btn btn-danger">Delete
                                             </button>
                                             <button onClick={() => this.detailUser(user.username)}

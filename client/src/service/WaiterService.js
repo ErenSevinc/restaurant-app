@@ -6,6 +6,5 @@ class WaiterService{
         return axios.get(list_waiter);
     }
 
-
 }
 export default new WaiterService;

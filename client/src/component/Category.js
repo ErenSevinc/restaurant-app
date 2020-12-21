@@ -128,31 +128,63 @@ class Category extends Component {
                             </div>
                         </th>
                         <th className="productColumn clm">
-                            <div className="card">
-                                <div className="card-header">
-                                    <h4 className="d-inline">Product List</h4>
-                                </div>
-                                <div className="card-body product-list-body">
-                                    {
-                                        this.state.products.map(
-                                            product =>
-                                                <div className="card product-card">
-                                                    <div className="card-header">
-                                                        <h4 className="d-inline">
-                                                            {product.name}
-                                                        </h4>
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <p className="card-text">{product.brand}</p>
-                                                        <p className="card-text">{product.price}</p>
-                                                        <button className="btn btn-success"
-                                                                onClick={() => this.getProductList(product)}>Sepete Ekle
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                        )
-                                    }
-                                </div>
+                            {/*<div className="card">*/}
+                            {/*    <div className="card-header">*/}
+                            {/*        <h4 className="d-inline">Product List</h4>*/}
+                            {/*    </div>*/}
+                            {/*    <div className="card-body products-list-body">*/}
+                            {/*        {*/}
+                            {/*            this.state.products.map(*/}
+                            {/*                products =>*/}
+                            {/*                    <div className="card products-card">*/}
+                            {/*                        <div className="card-header">*/}
+                            {/*                            <h4 className="d-inline">*/}
+                            {/*                                {products.name}*/}
+                            {/*                            </h4>*/}
+                            {/*                        </div>*/}
+                            {/*                        <div className="card-body">*/}
+                            {/*                            <p className="card-text">{products.brand}</p>*/}
+                            {/*                            <p className="card-text">{products.price}</p>*/}
+                            {/*                            <button className="btn btn-success"*/}
+                            {/*                                    onClick={() => this.getProductList(products)}>Sepete Ekle*/}
+                            {/*                            </button>*/}
+                            {/*                        </div>*/}
+                            {/*                    </div>*/}
+                            {/*            )*/}
+                            {/*        }*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            {/*<div className="card-body products-list-body">*/}
+                            {/*    {*/}
+                            {/*        this.state.products.map(*/}
+                            {/*            products =>*/}
+                            {/*                <div className="card products-card">*/}
+                            {/*                    <div className="card-header">*/}
+                            {/*                        <h4 className="d-inline">*/}
+                            {/*                            {products.name}*/}
+                            {/*                        </h4>*/}
+                            {/*                    </div>*/}
+                            {/*                    <div className="card-body">*/}
+
+                            {/*                        <p className="card-text">{products.brand}</p>*/}
+                            {/*                        <p className="card-text">{products.price}</p>*/}
+                            {/*                        <button className="btn btn-success"*/}
+                            {/*                                onClick={() => this.getProductList(products)}>Sepete*/}
+                            {/*                            Ekle*/}
+                            {/*                        </button>*/}
+                            {/*                    </div>*/}
+                            {/*                </div>*/}
+                            {/*        )*/}
+                            {/*    }*/}
+                            {/*</div>*/}
+                            <div className="card" style="width: 18rem;">
+                                <img className="card-img-top" src="..." alt="Card image cap"></img>
+                                    <div className="card-body">
+                                        <h5 className="card-title">Card title</h5>
+                                        <p className="card-text">Some quick example text to build on the card title and
+                                            make up the bulk of the card's content.</p>
+                                        <a href="#" className="btn btn-primary">Go somewhere</a>
+                                    </div>
                             </div>
                         </th>
                         <th className="basketColumn clm">

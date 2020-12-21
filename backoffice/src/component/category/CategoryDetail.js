@@ -1,19 +1,29 @@
 import React, {Component} from 'react';
 import ProductService from "../../service/ProductService";
 import CategoryService from "../../service/CategoryService";
+import Loader from "../../Loader";
+import UserContext from "../../UserContext";
 
 class CategoryDetail extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
 
         this.state={
             id:this.props.match.params.id,
-            category:{}
+            category:{},
+
+            loader:false,
         }
     }
     componentDidMount() {
-        CategoryService.getSelectedCategoryById(this.state.id).then( res => {
+        const{token}=this.context;
+        this.setState({loader:!this.state.loader});
+        CategoryService.getSelectedCategoryById(this.state.id,token).then( res => {
             this.setState({category: res.data});
+            if (res.status == '200'){
+                this.setState({loader:!this.state.loader});
+            }
         })
     }
     render() {
@@ -32,11 +42,14 @@ class CategoryDetail extends Component {
                         </div>
                         <div className = "row">
                             <label> Category Image: </label>
-                            <div> { this.state.category.urlToImage }</div>
                         </div>
                     </div>
-
                 </div>
+                {
+                    this.state.loader ?(
+                        <Loader/>
+                    ):null
+                }
             </div>
         );
     }

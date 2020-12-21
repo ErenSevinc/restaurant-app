@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import Table from "react-bootstrap/Table";
 import CategoryService from "../../service/CategoryService";
+import UserContext from "../../UserContext";
 
 class PrdouctListByCategory extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props)
         this.state = {
@@ -13,10 +15,11 @@ class PrdouctListByCategory extends Component {
 
     }
     componentDidMount() {
-        CategoryService.getSelectedCategoryById(this.state.id).then((res)=>{
+        const{token}=this.context;
+        CategoryService.getSelectedCategoryById(this.state.id,token).then((res)=>{
             this.setState({ category : res.data});
         })
-        CategoryService.getProductByCategoryID(this.state.id).then((res)=>{
+        CategoryService.getProductByCategoryID(this.state.id,token).then((res)=>{
             this.setState({ product : res.data});
             console.log(this.state.product)
         });

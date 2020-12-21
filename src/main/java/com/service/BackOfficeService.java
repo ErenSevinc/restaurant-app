@@ -1,18 +1,18 @@
 package com.service;
 
 import com.DTO.OrderDTO;
-import com.DTO.ProductDTO;
+import com.mapper.OrderMapper;
+import com.unused.ProductDTO;
 import com.converter.OrderConverter;
-import com.converter.ProducrtConverter;
-import com.entity.Product;
-import com.repository.CategoryRepository;
+import com.unused.ProducrtConverter;
+import com.unused.Product;
+import com.unused.CategoryRepository;
 import com.repository.OrderRepository;
-import com.repository.ProductRepository;
+import com.unused.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import com.entity.Order;
@@ -80,16 +80,17 @@ public class BackOfficeService {
 
     public String addSales(List<OrderDTO> orderDTO){
 
-        orderRepository.saveAll(OrderConverter.addSales(orderDTO));
+//        orderRepository.saveAll(OrderConverter.addSales(orderDTO));
+        orderRepository.saveAll(OrderMapper.INSTANCE.toEntity(orderDTO));
         return "Siparişiniz Alınmıştır";
     }
 
     public List<OrderDTO> listSales(){
 //        List<?> list = orderRepository.findAll();
 //        return (List<OrderDTO>) list;
-
-        List<Order> orderList=orderRepository.findAll();
-        return OrderConverter.listSales(orderList);
+//        List<Order> orderList=orderRepository.findAll();
+//        return OrderConverter.listSales(orderList);
+    return OrderMapper.INSTANCE.toDTO(orderRepository.findAll());
     }
 
 

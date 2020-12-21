@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import ProductService from "../../service/ProductService";
 import WaiterService from "../../service/WaiterService";
 import UserContext from "../../UserContext";
+import MediaService from "../../service/MediaService";
+import '../../App.css';
 
 class WaiterAdd extends Component {
     static contextType=UserContext;
@@ -13,7 +15,9 @@ class WaiterAdd extends Component {
             mail:'',
             address:'',
             urlToImage:'',
-            salary:''
+            salary:'',
+            image_List:[],
+            media:{},
         }
         this.changeNameHandler=this.changeNameHandler.bind(this);
         this.changePhoneHandler=this.changePhoneHandler.bind(this);
@@ -21,6 +25,13 @@ class WaiterAdd extends Component {
         this.changeAddressHandler=this.changeAddressHandler.bind(this);
         this.changeImageHandler=this.changeImageHandler.bind(this);
         this.changeSalaryHandler=this.changeSalaryHandler.bind(this);
+        this.selectImage=this.selectImage.bind(this);
+
+    }
+    componentDidMount() {
+        MediaService.getImage().then(res=>{
+            this.setState({image_List:res.data})
+        });
 
     }
     saveWaiter =(e)=>{
@@ -31,10 +42,11 @@ class WaiterAdd extends Component {
             mail: this.state.mail,
             address: this.state.address,
             urlToImage: this.state.urlToImage,
-            salary: this.state.salary
+            salary: this.state.salary,
+            mediaDTO:this.state.media,
         };
         console.log(waiter)
-        const{token}=this.context
+        const{token}=this.context;
         WaiterService.addWaiter(waiter,token).then(res =>{
             this.props.history.push('/waiter')
         })
@@ -60,6 +72,16 @@ class WaiterAdd extends Component {
     }
     changeSalaryHandler = (e)=>{
         this.setState({salary : e.target.value});
+    }
+    selectImage=(e)=>{
+        this.setState({media:e})
+        console.log(e);
+    }
+    onClickCategory=(e)=>{
+        this.setState({
+            media:e
+        });
+        console.log(e);
     }
     render() {
         return (
@@ -99,6 +121,40 @@ class WaiterAdd extends Component {
                                         <label> Waiter Salary: </label>
                                         <input placeholder="Waiter Salary" name="salary" className="form-control"
                                                value={this.state.salary} onChange={this.changeSalaryHandler}/>
+                                    </div>
+                                    {/*<div>*/}
+                                    {/*    {*/}
+                                    {/*        this.state.image_List.map(*/}
+                                    {/*            value=>*/}
+                                    {/*                <div className="form-check">*/}
+                                    {/*                    <input className="form-check-input" type="radio"*/}
+                                    {/*                           name="image" id="image"*/}
+                                    {/*                           onClick={()=>this.selectImage(value)}/>*/}
+                                    {/*                    <label>{value.name}</label>*/}
+                                    {/*                </div>*/}
+
+
+                                    {/*        )*/}
+                                    {/*    }*/}
+                                    {/*</div>*/}
+                                    <div className="dropdown show">
+                                        <a className="btn btn-secondary btn-block dropdown-toggle" href="#" role="button"
+                                           id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">
+                                        </a>
+                                        <div className="dropdown-menu btn-block clm" aria-labelledby="dropdownMenuLink">
+                                            {
+                                                this.state.image_List.map(
+                                                    image=>
+                                                        <a className="dropdown-item" onClick={this.onClickCategory.bind(this,image)}>{image.name}
+                                                        <br/>
+                                                            <img src={'data:image/png;base64,' + image.fileContent} width="45" height="45"></img>
+                                                        </a>
+
+                                                )
+                                            }
+
+                                        </div>
                                     </div>
                                     <br/>
                                     <button className="btn btn-success" onClick={this.saveWaiter}>Save</button>

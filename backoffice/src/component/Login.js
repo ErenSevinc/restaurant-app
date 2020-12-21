@@ -4,6 +4,8 @@ import './Login.css'
 import CategoryService from "../service/CategoryService";
 import UserContext from "../UserContext";
 import AuthService from "../service/AuthService";
+import UserService from "../service/UserService";
+import Loader from "../Loader";
 
 
 class Login extends Component {
@@ -29,6 +31,7 @@ class Login extends Component {
             username: '',
             password: '',
             rememberMe: false,
+            loader:false,
         }
         this.changeUsernameHandler = this.changeUsernameHandler.bind(this);
         this.changePasswordHandler = this.changePasswordHandler.bind(this);
@@ -43,37 +46,55 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        ProductService.getProductLogin().then((res) => {
-            this.setState({
-                userList: (res.data)
-            })
-        });
+        const{setToken}=this.context;
+        if(localStorage.getItem("token") !==null){
+            setToken(localStorage.getItem("token"));
+            this.props.history.push("/user");
+        }
     }
 
     signIn = (e) => {
         e.preventDefault();
-        // //'Basic '+btoa('admin:pass3')
+        this.setState({loader:true})
+        const{setUsername,setPassword,setToken}=this.context;
+        const token='Basic ' + btoa(this.state.username + ':' + this.state.password);
+        setUsername(this.state.username);
+        setPassword(this.state.password);
+        setToken(token);
+        if(this.state.rememberMe){
+            localStorage.setItem("token",token);
+        }
+        UserService.getLogin(token).then((res)=>{
+           if(res.status == '200'){
+               this.setState({loader:!this.state.loader})
+               console.log("hoşgeldin");
+               console.log(token);
+               this.props.history.push("/products");
+           }
+        });
+
+        // //'Basic '+btoa('admin:123')
         //sessionStorage.setItem("auth", 'Basic ' + btoa(this.state.username + ':' + this.state.password))
         // this.props.history.push("/product")
         // console.log(this.state.username)
         // console.log(this.state.password)
         // console.log(this.state.userList)
         // console.log("state", this.state.userList);
-        const{setUsername,setPassword,setToken}=this.context;
-        if (this.state.userList.filter(user => (user.username === this.state.username) && (user.password.substring(6, user.password.size) === this.state.password)).length > 0) {
-            //sessionStorage.setItem("token", 'Basic ' + btoa(this.state.username + ':' + this.state.password))
-            setUsername(this.state.username);
-            // setPassword(this.state.password);
-            const tokn='Basic '+btoa(this.state.username+':'+this.state.password);
-            setToken(tokn);
-
-            //sessionStorage.setItem("token", 'Basic ' + btoa(this.state.username + ':' + this.state.password));
-            this.props.history.push('/user');
-            window.alert("Giriş Başarılı Hoşgeldiniz: " + this.state.username)
-        } else {
-            this.props.history.push('/');
-            window.alert("Kullanıcı adı veya şifre yanlış!!")
-        }
+        // const{setUsername,setPassword,setToken}=this.context;
+        // if (this.state.userList.filter(user => (user.username === this.state.username) && (user.password === this.state.password)).length > 0) {
+        //     sessionStorage.setItem("token", 'Basic ' + btoa(this.state.username + ':' + this.state.password))
+        //     setUsername(this.state.username);
+        //     // setPassword(this.state.password);
+        //     const tokn='Basic '+btoa(this.state.username+':'+this.state.password);
+        //     setToken(tokn);
+        //
+        //     //sessionStorage.setItem("token", 'Basic ' + btoa(this.state.username + ':' + this.state.password));
+        //     this.props.history.push('/user');
+        //     window.alert("Giriş Başarılı Hoşgeldiniz: " + this.state.username)
+        // } else {
+        //     this.props.history.push('/');
+        //     window.alert("Kullanıcı adı veya şifre yanlış!!")
+        // }
 
 
         // const{username,setUsername}=this.context;
@@ -141,6 +162,12 @@ class Login extends Component {
                         </form>
                     </div>
                 </div>
+                {
+                    this.state.loader ?(
+                        <Loader/>
+                        ) :null
+
+                }
             </div>
 
         );

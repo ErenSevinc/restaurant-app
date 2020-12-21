@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
 import WaiterService from "../../service/WaiterService";
+import MediaService from "../../service/MediaService";
+import '../../App.css';
+import UserContext from "../../UserContext";
 
 class WaiterUpdate extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
         this.state={
@@ -11,7 +15,9 @@ class WaiterUpdate extends Component {
             mail:'',
             address:'',
             urlToImage:'',
-            salary:''
+            salary:'',
+            image_List:[],
+            media:{},
         }
         this.changeNameHandler=this.changeNameHandler.bind(this);
         this.changePhoneHandler=this.changePhoneHandler.bind(this);
@@ -19,9 +25,11 @@ class WaiterUpdate extends Component {
         this.changeAddressHandler=this.changeAddressHandler.bind(this);
         this.changeImageHandler=this.changeImageHandler.bind(this);
         this.changeSalaryHandler=this.changeSalaryHandler.bind(this);
+        this.selectImage=this.selectImage.bind(this);
     }
     componentDidMount() {
-        WaiterService.getWaiterById(this.state.id).then((res)=>{
+        const{token}=this.context;
+        WaiterService.getWaiterById(this.state.id,token).then((res)=>{
             let waiter=res.data
             this.setState({
                 name:waiter.name,
@@ -29,9 +37,13 @@ class WaiterUpdate extends Component {
                 mail:waiter.mail,
                 address:waiter.address,
                 urlToImage:waiter.urlToImage,
-                salary:waiter.salary
+                salary:waiter.salary,
+                media:waiter.mediaDTO
             });
-        })
+        });
+        MediaService.getImage(token).then(res=>{
+            this.setState({image_List:res.data})
+        });
     }
     updateWaiter=(e)=>{
         e.preventDefault();
@@ -42,9 +54,11 @@ class WaiterUpdate extends Component {
             mail:this.state.mail,
             address:this.state.address,
             urlToImage:this.state.urlToImage,
-            salary:this.state.salary
+            salary:this.state.salary,
+            mediaDTO:this.state.media
         }
-        WaiterService.updateWaiter(waiter).then(res=>{
+        const{token}=this.context;
+        WaiterService.updateWaiter(waiter,token).then(res=>{
             this.props.history.push('/waiter')
         });
     }
@@ -69,6 +83,17 @@ class WaiterUpdate extends Component {
     }
     changeSalaryHandler = (e)=>{
         this.setState({salary : e.target.value});
+    }
+    selectImage=(e)=>{
+        this.setState({media:e})
+        console.log(e);
+
+    }
+    onClickCategory=(e)=>{
+        this.setState({
+            media:e
+        });
+        console.log(e);
     }
     render() {
         return (
@@ -107,6 +132,40 @@ class WaiterUpdate extends Component {
                                     <label> Waiter Salary: </label>
                                     <input placeholder="Waiter Salary" name="salary" className="form-control"
                                            value={this.state.salary} onChange={this.changeSalaryHandler}/>
+                                </div>
+                                {/*<div>*/}
+                                {/*    {*/}
+                                {/*        this.state.image_List.map(*/}
+                                {/*            value=>*/}
+                                {/*                <div className="form-check">*/}
+                                {/*                    <input className="form-check-input" type="radio"*/}
+                                {/*                           name="image" id="image"*/}
+                                {/*                           onClick={()=>this.selectImage(value)}/>*/}
+                                {/*                    <label>{value.name}</label>*/}
+                                {/*                </div>*/}
+
+
+                                {/*        )*/}
+                                {/*    }*/}
+                                {/*</div>*/}
+                                <div className="dropdown show">
+                                    <a className="btn btn-secondary btn-block dropdown-toggle" href="#" role="button"
+                                       id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                       aria-expanded="false">
+                                    </a>
+                                    <div className="dropdown-menu btn-block clm" aria-labelledby="dropdownMenuLink">
+                                        {
+                                            this.state.image_List.map(
+                                                image=>
+                                                    <a className="dropdown-item" onClick={this.onClickCategory.bind(this,image)}>{image.name}
+                                                        <br/>
+                                                        <img src={'data:image/png;base64,' + image.fileContent} width="45" height="45"></img>
+                                                    </a>
+
+                                            )
+                                        }
+
+                                    </div>
                                 </div>
                                 <br/>
                                 <button className="btn btn-success" onClick={this.updateWaiter}>Save</button>

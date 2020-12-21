@@ -14,5 +14,9 @@
         <rollback>
             <dropTable tableName="media"/>
         </rollback>
+        <insert tableName="media">
+            <column name="name" value="indir"/>
+            <column name="file_content" valueBlobFile="indir.png"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

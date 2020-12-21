@@ -9,19 +9,25 @@ class UserDetail extends Component {
         super(props);
 
         this.state={
-            username:this.props.match.params.username,
+            id:this.props.match.params.id,
             user:{},
-            enabled:''
+            username : '',
+            password : '',
+            enabled : '',
+            email:'',
+
 
         }
     }
     componentDidMount() {
-        const {enabled}=this.state.enabled;
         const{token}=this.context
-        UserService.getUserById(this.state.username,token).then( res => {
+        UserService.getUserById(this.state.id,token).then( res => {
             this.setState({user: res.data,
-            enabled:res.data.enabled.toString()
-
+            id:res.data.id,
+            enabled:res.data.enabled.toString(),
+            username:res.data.username,
+            email:res.data.email,
+            password:res.data.password
             });
         })
         console.log(this.state.user)
@@ -34,11 +40,15 @@ class UserDetail extends Component {
                     <div className = "card-body">
                         <div className = "row">
                             <label> User Username: </label>
-                            <div> { this.state.user.username }</div>
+                            <div> { this.state.username }</div>
+                        </div>
+                        <div className = "row">
+                            <label> User Email: </label>
+                            <div> { this.state.email}</div>
                         </div>
                         <div className = "row">
                             <label> User Password: </label>
-                            <div> { this.state.user.password }</div>
+                            <div> { this.state.password }</div>
                         </div>
                         <div className = "row">
                             <label> User Enabled: </label>

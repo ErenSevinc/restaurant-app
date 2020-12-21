@@ -72,7 +72,7 @@ class WaiterList extends Component {
                                         <td>{waiter.phoneNumber}</td>
                                         <td>{waiter.mail}</td>
                                         <td>{waiter.address}</td>
-                                        <td><img src={waiter.urlToImage} width="150" height="150"/></td>
+                                        <td><img src={'data:image/png;base64,' + waiter.mediaDTO.fileContent} width="150" height="150"/></td>
                                         <td>{waiter.salary}</td>
                                         <td>
                                             <button onClick={() => this.updatedWaiter(waiter)}

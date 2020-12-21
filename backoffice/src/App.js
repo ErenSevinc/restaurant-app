@@ -1,10 +1,7 @@
 import './App.css';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
-import List from "./component/product/List";
+
 import Header from "./component/Header";
-import Add from "./component/product/Add";
-import Update from "./component/product/Update";
-import Detail from "./component/product/Detail";
 import UserList from "./component/user/UserList";
 import UserAdd from "./component/user/UserAdd";
 import UserUpdate from "./component/user/UserUpdate";
@@ -31,29 +28,33 @@ import WaiterDetail from "./component/waiter/WaiterDetail";
 import WaiterUpdate from "./component/waiter/WaiterUpdate";
 import MediaComponent from "./component/media/MediaComponent";
 import UserContext, {UserContextProvider} from "./UserContext";
+import Add from "./component/product/Add";
+import Detail from "./component/product/Detail";
+import List from "./component/product/List";
+import Update from "./component/product/Update";
 //localStorage.setItem("token",("Basic"+btoa('eren:1234')))
 
 function App() {
   return (
       <div>
-          <Header/>
+
           <Router>
+              <Header/>
               <div className="container">
                   <Switch>
                       <Route path="/" exact component={Login}></Route>
-                      <Route path="/product" component={List}></Route>
+                      <Route path="/products" component={List}></Route>
                       <Route path="/add" component={Add}></Route>
-                      <Route path="/update/:id" component={Update}></Route>
-                      <Route path="/product-detail/:id" component={Detail}></Route>
+                      <Route path="/update-product/:id" component={Update}></Route>
+                      <Route path="/products-detail/:id" component={Detail}></Route>
                       <Route path="/order" component={Order}></Route>
                       <Route path="/user" component={UserList}></Route>
                       <Route path="/user-add" component={UserAdd}></Route>
                       <Route path="/user-update/:id" component={UserUpdate}></Route>
                       <Route path="/user-detail/:id" component={UserDetail}></Route>
                       <Route path="/auth" component={AuthList}></Route>
-                      <Route path="/auth-update/" component={AuthUpdate}></Route>
                       <Route path="/category" component={Category}></Route>
-                      <Route path="/product-by-category/:id"component={PrdouctListByCategory}></Route>
+                      <Route path="/products-by-category/:id"component={PrdouctListByCategory}></Route>
                       <Route path="/category-add" component={CategoryAdd}></Route>
                       <Route path="/category-update/:id" component={CategoryUpdate}></Route>
                       <Route path="/category-detail/:id" component={CategoryDetail}></Route>
@@ -67,7 +68,6 @@ function App() {
                       <Route path="/waiter-detail/:id" component={WaiterDetail}></Route>
                       <Route path="/waiter-update/:id" component={WaiterUpdate}></Route>
                       <Route path="/image" component={MediaComponent}></Route>
-                      <List />
                   </Switch>
               </div>
           </Router>

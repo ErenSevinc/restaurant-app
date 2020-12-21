@@ -1,8 +1,9 @@
 package com.service;
 
-import com.DTO.AuthoritiesDTO;
-import com.entity.Authorities;
-import com.repository.AuthoritiesRepository;
+import com.unused.AuthoritiesDTO;
+import com.unused.Authorities;
+import com.unused.AuthoritiesRepository;
+import com.unused.AuthoritiesService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

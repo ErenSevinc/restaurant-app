@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import ClientService from "../service/ClientService";
+import UserContext from "../UserContext";
 
 class Login extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
         this.state={
@@ -11,6 +13,7 @@ class Login extends Component {
         }
         this.changeUsernameHandler=this.changeUsernameHandler.bind(this);
         this.changePasswordHandler=this.changePasswordHandler.bind(this);
+
     }
     changeUsernameHandler=(e)=>{
         this.setState({username : e.target.value});
@@ -18,33 +21,39 @@ class Login extends Component {
     changePasswordHandler=(e)=>{
         this.setState({password : e.target.value});
     }
-    componentDidMount() {
-         ClientService.listAll().then((res) => {
-             this.setState({userList: res.data})
-             console.log(res.data);
-         });
-        sessionStorage.setItem("tbl","Paket Servis")
-    }
+
 
     signIn=(e)=> {
-        //'Basic '+btoa('admin:pass3')
-        sessionStorage.setItem("token", 'Basic ' + btoa(this.state.username + ':' + this.state.password));
-        this.props.history.push('/menu');
-          e.preventDefault()
+        e.preventDefault();
+        const{setUsername,setPassword,setToken}=this.context;
+        const token='Basic ' + btoa(this.state.username + ':' + this.state.password);
+        setToken(token);
+        ClientService.getLogin().then((res)=>{
+            if(res.status == '200'){
+                console.log("hoşgeldin");
+                console.log(token);
+                this.props.history.push("/menu");
+            }
+        });
 
-          console.log(this.state.username)
-          console.log(this.state.password)
-          console.log(this.state.userList)
-
-          if(this.state.userList.filter(user => (user.username === this.state.username) && (user.password.substring(6,user.password.size) === this.state.password)).length>0){
-              sessionStorage.setItem("token", 'Basic ' + btoa(this.state.username + ':' + this.state.password))
-              this.props.history.push('/menu');
-              window.alert("Giriş Başarılı Hoşgeldiniz: " + this.state.username)
-          }
-          else{
-             this.props.history.push('/');
-              window.alert("Kullanıcı adı veya şifre yanlış!!")
-          }
+        // //'Basic '+btoa('admin:pass3')
+        // sessionStorage.setItem("token", 'Basic ' + btoa(this.state.username + ':' + this.state.password));
+        // this.props.history.push('/menu');
+        //   e.preventDefault()
+        //
+        //   console.log(this.state.username)
+        //   console.log(this.state.password)
+        //   console.log(this.state.userList)
+        //
+        //   if(this.state.userList.filter(user => (user.username === this.state.username) && (user.password.substring(6,user.password.size) === this.state.password)).length>0){
+        //       sessionStorage.setItem("token", 'Basic ' + btoa(this.state.username + ':' + this.state.password))
+        //       this.props.history.push('/menu');
+        //       window.alert("Giriş Başarılı Hoşgeldiniz: " + this.state.username)
+        //   }
+        //   else{
+        //      this.props.history.push('/');
+        //       window.alert("Kullanıcı adı veya şifre yanlış!!")
+        //   }
 
     }
     render() {

@@ -1,41 +1,59 @@
 import React, {Component} from 'react';
 import CategoryService from "../../service/CategoryService";
+import Loader from "../../Loader";
+import UserContext from "../../UserContext";
 
 class Category extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
 
         this.state = {
-            categories:[]
+            categories: [],
+            loader: false
         }
-        this.addCategory=this.addCategory.bind(this)
-        this.addProduct=this.addProduct.bind(this);
-        this.updatedCategory=this.updatedCategory.bind(this)
-        this.deletedCategory=this.deletedCategory.bind(this)
-        this.detailCategory=this.detailCategory.bind(this)
+        this.addCategory = this.addCategory.bind(this)
+        this.addProduct = this.addProduct.bind(this);
+        this.updatedCategory = this.updatedCategory.bind(this)
+        this.deletedCategory = this.deletedCategory.bind(this)
+        this.detailCategory = this.detailCategory.bind(this)
     }
-    addProduct(){
+
+    addProduct() {
         this.props.history.push('/add');
     }
 
-    addCategory(){
+    addCategory() {
         this.props.history.push(`/category-add/`);
     }
 
-    updatedCategory(id){
-        this.props.history.push(`/category-update/${id}`);
+    updatedCategory(id) {
+        this.props.history.push(`/category-update/` + id);
     }
-    deletedCategory(id){
-        CategoryService.deleteCategory(id).then( res => {
-            window.location.reload();
+
+    deletedCategory(id) {
+        const{token}=this.context;
+        this.setState({loader: !this.state.loader})
+        CategoryService.deleteCategory(id,token).then(res => {
+            if (res.status == '200') {
+                this.setState({loader: !this.state.loader});
+            }
+            this.props.history.push(`/category-add/`);
         });
     }
-    detailCategory(id){
+
+    detailCategory(id) {
         this.props.history.push(`/category-detail/${id}`);
     }
+
     componentDidMount() {
-        CategoryService.getAllCategory().then((res)=>{
-            this.setState({ categories: res.data});
+        const {token}=this.context;
+        this.setState({loader: !this.state.loader})
+        CategoryService.getAllCategory(token).then((res) => {
+            this.setState({categories: res.data});
+            if (res.status == '200') {
+                this.setState({loader: !this.state.loader});
+            }
         });
     }
 
@@ -65,16 +83,20 @@ class Category extends Component {
                                         <td>{category.id}</td>
                                         <td>{category.name}</td>
                                         <td>{category.description}</td>
-                                        <td><img src={category.urlToImage} width="150" height="150"/></td>
+                                        <td><img src={'data:image/png;base64,' + category.mediaDTO.fileContent}
+                                                 width="100" style={{margin: 10}}/></td>
                                         <td>
                                             {/*<button onClick={()=>this.addProduct(category.id)}*/}
                                             {/*        className="btn btn-info" style={{margin:"5px"}}>Update</button>*/}
-                                            <button onClick={()=>this.updatedCategory(category.id)}
-                                                    className="btn btn-info" style={{margin:"5px"}}>Update</button>
-                                            <button onClick={()=>this.deletedCategory(category.id)}
-                                                    className="btn btn-danger">Delete</button>
-                                            <button onClick={()=>this.detailCategory(category.id)}
-                                                    className="btn btn-warning" style={{margin:"5px"}}>Detail</button>
+                                            <button onClick={() => this.updatedCategory(category.id)}
+                                                    className="btn btn-info" style={{margin: "5px"}}>Update
+                                            </button>
+                                            <button onClick={() => this.deletedCategory(category.id)}
+                                                    className="btn btn-danger">Delete
+                                            </button>
+                                            <button onClick={() => this.detailCategory(category.id)}
+                                                    className="btn btn-warning" style={{margin: "5px"}}>Detail
+                                            </button>
                                         </td>
                                     </tr>
                             )
@@ -82,6 +104,11 @@ class Category extends Component {
                         </tbody>
                     </table>
                 </div>
+                {
+                    this.state.loader ? (
+                        <Loader/>
+                    ) : null
+                }
             </div>
         );
     }

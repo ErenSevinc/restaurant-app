@@ -2,57 +2,57 @@ import axios from 'axios';
 import {UserContext} from "../component/Login";
 import AuthService from "./AuthService";
 
-const category_list_base_url = "http://localhost:8080/category/listAll";
+const category_list_base_url = "http://localhost:8080/base/list-categories";
 const product_list_base = "http://localhost:8080/category/listProductByCategory";
-const category_add_base_url = "http://localhost:8080/category/addCategory";
-const category_update_base_url = "http://localhost:8080/category/updateCategory";
-const category_delete_base_url = "http://localhost:8080/category/deleteCategory";
+const category_add_base_url = "http://localhost:8080/base/add-categories";
+const category_update_base_url = "http://localhost:8080/base/update-categories";
+const category_delete_base_url = "http://localhost:8080/base/delete-categories";
 const token=sessionStorage.getItem("token");
 class CategorySevice {
     asd(){
         //token al metod
     }
 
-    getAllCategory(){
+    getAllCategory(tkn){
         return axios.get(category_list_base_url,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
-    getSelectedCategoryById(id){
+    getSelectedCategoryById(id,tkn){
         return axios.get(category_list_base_url+'/'+id,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
-    getProductByCategoryID(id){
+    getProductByCategoryID(id,tkn){
         return axios.get(product_list_base+'/'+id,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
 
-    addCategoryItem(category){
+    addCategoryItem(category,tkn){
         return axios.post(category_add_base_url,category,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
-    updateCategory(id,category){
-        return axios.put(category_update_base_url+'/'+id,category,{
+    updateCategory(category,tkn){
+        return axios.put(category_update_base_url,category,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }
-    deleteCategory(id){
+    deleteCategory(id,tkn){
         return axios.delete(category_delete_base_url+'/'+id,{
             headers:{
-                Authorization:token
+                Authorization:tkn
             }
         });
     }

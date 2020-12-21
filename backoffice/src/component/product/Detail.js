@@ -1,19 +1,29 @@
 import React, {Component} from 'react';
 import ProductService from "../../service/ProductService";
 import Header from "../Header";
+import Loader from "../../Loader";
+import UserContext from "../../UserContext";
 
 class Detail extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
 
         this.state={
             id:this.props.match.params.id,
-            product:{}
+            product:{},
+
+            loaded:false,
         }
     }
     componentDidMount() {
-        ProductService.getProductById(this.state.id).then( res => {
+        const{token}=this.context;
+        this.setState({loaded:!this.state.loaded});
+        ProductService.getProductById(this.state.id,token).then( res => {
             this.setState({product: res.data});
+            if(res.status =='200'){
+                this.setState({loaded:!this.state.loaded});
+            }
         })
     }
     render() {
@@ -43,8 +53,12 @@ class Detail extends Component {
                             <div> { this.state.product.urlToImage }</div>
                         </div>
                     </div>
-
                 </div>
+                {
+                    this.state.loaded ?(
+                        <Loader/>
+                    ):null
+                }
             </div>
         );
     }

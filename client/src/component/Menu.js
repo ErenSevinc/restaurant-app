@@ -14,7 +14,7 @@ class Menu extends Component {
     }
 
     getProductMenu=(e)=>{
-        this.props.history.push('/product')
+        this.props.history.push('/products')
     }
     getWaiter=(e)=>{
         this.setState({show:true});
@@ -40,7 +40,7 @@ class Menu extends Component {
             <div>
                 <button className="btn btn-secondary btnOpenOrClose">+</button>
                 <div className="menuCard">
-                    <a href="/product" className="btn btn-info menuBtn" onClick={this.getProductMenu.bind(this)}>Sipariş</a>
+                    <a href="/products" className="btn btn-info menuBtn" onClick={this.getProductMenu.bind(this)}>Sipariş</a>
                     <a className="btn btn-info menuBtn" onClick={this.getWaiter.bind(this)}>Masalar</a>
                     <button className="btn btn-info menuBtn">1</button>
                     <button className="btn btn-info menuBtn">1</button>
@@ -58,7 +58,9 @@ class Menu extends Component {
                                 this.state.waiter_List.map(
                                     wait=>{
                                         return(
-                                            <button className="btn btn-warning btn-block" onClick={()=>this.selectWaiter(wait)}>{wait.name}</button>
+                                            <button className="btn btn-warning" onClick={()=>this.selectWaiter(wait)} style={{margin:"10px"}}>{wait.name}
+                                                <img src={'data:image/png;base64,' + wait.mediaDTO.fileContent} width="50" height="75"></img>
+                                            </button>
                                         )
                                     }
                                 )

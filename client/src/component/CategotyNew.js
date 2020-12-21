@@ -25,7 +25,7 @@ class CategotyNew extends Component {
                 waiterName: ''
 
             },
-            orders:[]
+            orders: []
 
         }
 
@@ -44,16 +44,16 @@ class CategotyNew extends Component {
         ClientService.getProducts().then((res) => {
             this.setState({products: res.data})
         });
-        this.setState({orders:CategotyNew.getOrderFromStorage()})
-        let orders=CategotyNew.getOrderFromStorage();
-        if(orders.length>0){
-            for(let i=0;i<orders.length;i++){
-                if(orders[i][0].tableName.indexOf(sessionStorage.getItem("tbl"))>-1){
-                    for(let j=0;j<orders[i].length;j++){
+        this.setState({orders: CategotyNew.getOrderFromStorage()})
+        let orders = CategotyNew.getOrderFromStorage();
+        if (orders.length > 0) {
+            for (let i = 0; i < orders.length; i++) {
+                if (orders[i][0].tableName.indexOf(sessionStorage.getItem("tbl")) > -1) {
+                    for (let j = 0; j < orders[i].length; j++) {
                         this.state.cards.push(orders[i][j]);
-                        this.state.totalPayments+= (orders[i][j].totalPrice);
+                        this.state.totalPayments += (orders[i][j].totalPrice);
                     }
-                    orders.splice(i,1);
+                    orders.splice(i, 1);
                 }
 
             }
@@ -118,7 +118,7 @@ class CategotyNew extends Component {
             this.setState([{...this.state.cards, [param.cardId]: param}])
         }
     }
-    addLocal=async (e)=>{
+    addLocal = async (e) => {
 
         // orders = CategotyNew.getOrderFromStorage();
         let ordersNew = this.state.orders;
@@ -127,12 +127,12 @@ class CategotyNew extends Component {
         ordersNew.push(e);
         await localStorage.setItem("orders", JSON.stringify(ordersNew));
 
-        this.setState({orders:ordersNew})
+        this.setState({orders: ordersNew})
 
         this.props.history.push("/menu");
     }
     paymentSuccess = (e) => {
-        let orders=[];
+        let orders = [];
         orders = CategotyNew.getOrderFromStorage();
         orders.pop();
         localStorage.setItem("orders", JSON.stringify(orders));
@@ -141,7 +141,7 @@ class CategotyNew extends Component {
         })
         sessionStorage.removeItem("tbl");
         localStorage.removeItem("waiter");
-        sessionStorage.setItem("tbl","paket");
+        sessionStorage.setItem("tbl", "paket");
     }
 
     static getOrderFromStorage() {
@@ -166,43 +166,53 @@ class CategotyNew extends Component {
                                 <div className="card-header">
                                     <h4 className="d-inline">Category List</h4>
                                 </div>
-                                <div className="card-body">
+                                <div className="card-body clm">
                                     {this.state.category.map(
                                         category =>
-                                            <button className="btn btn-info btn-block"
-                                                    onClick={() => this.getCatProduct(category.id)}>{category.name}</button>
+                                            <button className="btn btn-info btn-block btnVolume"
+                                                    onClick={() => this.getCatProduct(category.id)}>{category.name}
+                                                <br/>
+                                                <img src={'data:image/png;base64,' + category.mediaDTO.fileContent}
+                                                     width="100" style={{margin: 10}}/>
+                                            </button>
                                     )}
                                 </div>
                             </div>
                         </div>
-                        <div className="col-6 ">
+                        <div className="col-6">
                             <div className="card">
                                 <div className="card-header">
                                     <h4 className="d-inline">Product List</h4>
                                 </div>
                                 <div className="row clm">
-                                    <div className="card-body product-list-body">
-                                        {
-                                            this.state.products.map(
-                                                product =>
-                                                    <div className="card product-card">
-                                                        <div className="card-header">
-                                                            <h4 className="d-inline">
-                                                                {product.name}
-                                                            </h4>
-                                                        </div>
-                                                        <div className="card-body">
+                                    <div className="card-body">
+                                        <div className="row">
+                                            {
+                                                this.state.products.map(
+                                                    products =>
+                                                        <div className="col-6">
 
-                                                            <p className="card-text">{product.brand}</p>
-                                                            <p className="card-text">{product.price}</p>
-                                                            <button className="btn btn-success"
-                                                                    onClick={() => this.getProductList(product)}>Sepete
-                                                                Ekle
-                                                            </button>
+                                                            <div className="card product-card">
+                                                                <div className="card-header">
+                                                                    <img
+                                                                        src={'data:image/png;base64,' + products.mediaDTO.fileContent}
+                                                                        width="250" height="100" style={{margin: 10}}
+                                                                        alt="Card image cap"></img>
+                                                                </div>
+                                                                <div className="card-body">
+                                                                    <h5 className="card-title">{products.name}</h5>
+                                                                    <p className="card-text">{products.brand}</p>
+                                                                    <p className="card-text">{products.price}</p>
+                                                                    <button className="btn btn-success"
+                                                                            onClick={() => this.getProductList(products)}>Sepete
+                                                                        Ekle
+                                                                    </button>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                            )
-                                        }
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -211,7 +221,8 @@ class CategotyNew extends Component {
                             <div className="card">
                                 <div className="card-header d-flex justify-content-between">
                                     <h4 className="d-inline">Basket</h4>
-                                    <a onClick={() => this.addLocal(this.state.cards)}><i className="fa fa-bars" style={{cursor: "pointer"}}></i></a>
+                                    <a onClick={() => this.addLocal(this.state.cards)}><i className="fa fa-bars"
+                                                                                          style={{cursor: "pointer"}}></i></a>
                                 </div>
                                 <div className="row clm">
                                     <div className="card-body clm">
@@ -225,7 +236,7 @@ class CategotyNew extends Component {
                                                         <button className="btn btn-default"
                                                                 onClick={() => this.btnAdd(v)}>+
                                                         </button>
-                                                        <label>{v.productPrice}  TL</label>
+                                                        <label>{v.productPrice} TL</label>
                                                         <button className="btn btn-default"
                                                                 onClick={() => this.btnCikar(v)}>-
                                                         </button>
@@ -243,10 +254,11 @@ class CategotyNew extends Component {
                         <div className="col-3"></div>
                         <div className="col-6"></div>
                         <div className="col-3">
-                            <h5 className="totalPrice">{this.state.totalPayments}  TL</h5>
+                            <h5 className="totalPrice">{this.state.totalPayments} TL</h5>
                             <button className="btn btn-success btn-block"
                                     onClick={() => this.paymentSuccess(this.state.cards)}>Öde
-                            </button></div>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,27 +7,23 @@ class AuthList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            authList: [],
+            roleList: [],
             username: '',
             authority: ''
         }
-        this.updatedAuth = this.updatedAuth.bind(this)
         this.deletedAuth = this.deletedAuth.bind(this)
     }
-    updatedAuth() {
-        this.props.history.push(`/auth-update/`);
-    }
-    deletedAuth(username){
+    deletedAuth(id){
         const {token}=this.context;
-        UserService.deleteAuth(username,token).then(res => {
+        UserService.deleteAuth(id,token).then(res => {
             this.props.history.push(`/user`);
         });
     }
 
     componentDidMount() {
         const {token}=this.context;
-        UserService.getUserAuth(token).then((res) => {
-            this.setState({authList: res.data});
+        UserService.getRoles(token).then((res) => {
+            this.setState({roleList: res.data});
         });
     }
 
@@ -38,24 +34,20 @@ class AuthList extends Component {
                     <table className="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>User Name</th>
+                            <th>ID</th>
                             <th>Role</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {
-                            this.state.authList.map(
+                            this.state.roleList.map(
                                 auth =>
                                     <tr>
-                                        <td>{auth.username}</td>
-                                        <td>{auth.authority}</td>
+                                        <td>{auth.id}</td>
+                                        <td>{auth.name}</td>
                                         <td>
-
-                                            <button onClick={() => this.updatedAuth(auth)}
-                                                className="btn btn-info" style={{margin: "5px"}}>Update
-                                            </button>
-                                            <button onClick={() => this.deletedAuth(auth.username)}
+                                            <button onClick={() => this.deletedAuth(auth.id)}
                                                 className="btn btn-danger">Delete
                                             </button>
                                         </td>

@@ -19,6 +19,8 @@ public class WaiterConverter {
             waiterDTO.setAddress(waiter.getAddress());
             waiterDTO.setUrlToImage(waiter.getUrlToImage());
             waiterDTO.setSalary(waiter.getSalary());
+            waiterDTO.setMediaDTO(MediaConverter.mediaToConvertMediaDTO(waiter.getMedia()));
+
 
             waiterDTOList.add(waiterDTO);
         }
@@ -33,6 +35,8 @@ public class WaiterConverter {
         waiterDTO.setAddress(waiter.getAddress());
         waiterDTO.setUrlToImage(waiter.getUrlToImage());
         waiterDTO.setSalary(waiter.getSalary());
+        waiterDTO.setMediaDTO(MediaConverter.mediaToConvertMediaDTO(waiter.getMedia()));
+
 
         return waiterDTO;
     }
@@ -45,6 +49,8 @@ public class WaiterConverter {
         waiter.setAddress(waiterDTO.getAddress());
         waiter.setUrlToImage(waiterDTO.getUrlToImage());
         waiter.setSalary(waiterDTO.getSalary());
+        waiter.setMedia(MediaConverter.mediaDTOToConvertMedia(waiterDTO.getMediaDTO()));
+
         return waiter;
     }
     public static Waiter updateWaiter(WaiterDTO waiterDTO){
@@ -56,6 +62,7 @@ public class WaiterConverter {
         waiter.setAddress(waiterDTO.getAddress());
         waiter.setUrlToImage(waiterDTO.getUrlToImage());
         waiter.setSalary(waiterDTO.getSalary());
+        waiter.setMedia(MediaConverter.mediaDTOToConvertMedia(waiterDTO.getMediaDTO()));
         return waiter;
     }
 }

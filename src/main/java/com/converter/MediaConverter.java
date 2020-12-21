@@ -1,8 +1,6 @@
 package com.converter;
 
-import com.DTO.AuthoritiesDTO;
 import com.DTO.MediaDTO;
-import com.entity.Authorities;
 import com.entity.Media;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +21,21 @@ public class MediaConverter {
     @Value("C:/Users/ErenSevinc/Desktop/NoteIt/rest-api/target/media/")
     private String uploadDir;
 
+    public static Media mediaDTOToConvertMedia(MediaDTO mediaDTO){
+        Media media =new Media();
+        media.setId(mediaDTO.getId());
+        media.setName(mediaDTO.getName());
+        media.setFileContent(mediaDTO.getFileContent());
+        return media;
+    }
+    public static MediaDTO mediaToConvertMediaDTO(Media media){
+        MediaDTO mediaDTO=new MediaDTO();
+        mediaDTO.setId(media.getId());
+        mediaDTO.setName(media.getName());
+        mediaDTO.setFileContent(media.getFileContent());
+        return mediaDTO;
+    }
+
     public static List<MediaDTO> mediaList(List<Media> list) {
         List<MediaDTO> mediaDTOList = new ArrayList<>();
 
@@ -33,6 +46,7 @@ public class MediaConverter {
             mediaDTO.setName(media.getName());
             mediaDTO.setFileContent(media.getFileContent());
             mediaDTOList.add(mediaDTO);
+
         }
         return mediaDTOList;
     }

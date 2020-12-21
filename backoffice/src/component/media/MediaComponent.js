@@ -1,9 +1,13 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import UserContext from "../../UserContext";
 
 
 function MediaComponent() {
     const [selectedFile,setSelectedFile] = useState();
     const [imageList, setImageList] = useState([]);
+    const [loaded,setLoaded]=useState(false);
+    const context=useContext(UserContext);
+
 
     const onImageOnChange=event=>{
         console.log("event :"+ event);
@@ -25,7 +29,7 @@ function MediaComponent() {
     fetch("http://localhost:8080/file/add",{
         method:'POST',
         mode:'no-cors',
-        body:data
+        body:data,
     }).then(res=>res.text())
         .then(result =>console.log("result :"+result))
         .catch(err=>console.warn('error',err));
@@ -49,15 +53,27 @@ function MediaComponent() {
 
         imageList.map(value => {
             list.push(
-                <li>
-                    <img src={'data:image/png;base64,' + value.fileContent} width="150" style={{margin:10}}/>
-                </li>
+              <tr>
+                  <td>{value.name}</td>
+                  <td>
+                      <img src={'data:image/png;base64,' + value.fileContent} width="150" style={{margin:10}}/>
+                  </td>
+              </tr>
+
             )
         })
         return (
-            <ul>
+            <table className="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>IMAGE NAME</th>
+                    <th>IMAGE</th>
+                </tr>
+                </thead>
+            <tbody>
                 {list}
-            </ul>
+            </tbody>
+            </table>
         )
     }
 
@@ -65,7 +81,7 @@ function MediaComponent() {
         <div className="App">
             <header>
                 <input type="file" name="file" style={{paddingTop:20}} onChange={(e)=>onImageOnChange(e)}/>
-                <button style={{marginTop:20}} onClick={()=>onFileUpload()}>UPLOAD IMAGE</button>
+                <button className="btn btn-success" style={{marginTop:20}} onClick={()=>onFileUpload()}>UPLOAD IMAGE</button>
                 {getFiles()}
             </header>
         </div>

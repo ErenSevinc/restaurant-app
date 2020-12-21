@@ -1,12 +1,8 @@
 package com.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.DTO.UsersDTO;
 import com.DTO.WaiterDTO;
 import com.builder.DTOBuilder.WaiterDTOBuilder;
 import com.builder.WaiterBuilder;
-import com.entity.Users;
 import com.entity.Waiter;
 import com.service.WaiterService;
 import org.junit.Before;
@@ -23,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WaiterControllerTest {

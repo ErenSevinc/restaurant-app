@@ -80,7 +80,7 @@ class TableList extends Component {
     goToSale(no){
         //localStorage.removeItem("orders")
         sessionStorage.setItem("tbl", this.state.tableCategory + ' Masa '+no + '!');
-        this.props.history.push('/product');
+        this.props.history.push('/products');
     }
 
     render() {

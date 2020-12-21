@@ -3,6 +3,7 @@ import ProductService from "../../service/ProductService";
 import Header from "../Header";
 import CategoryService from "../../service/CategoryService";
 import UserContext from "../../UserContext";
+import Loader from "../../Loader";
 
 class List extends Component {
     static contextType=UserContext;
@@ -11,7 +12,9 @@ class List extends Component {
 
         this.state = {
             products: [],
-            productCategory: []
+            productCategory: [],
+
+            loaded:false,
         }
         this.add = this.add.bind(this)
         this.updatedProduct = this.updatedProduct.bind(this)
@@ -26,33 +29,45 @@ class List extends Component {
     }
 
     updatedProduct(id) {
-        this.props.history.push(`/update/${id}`);
+        this.props.history.push(`/update-product/${id}`);
     }
 
     deletedProduct(id) {
         const{token}=this.context;
+        this.setState({loaded:!this.state.loaded});
         ProductService.deleteProduct(id,token).then(res => {
             this.props.history.push('/add');
+            if (res.status == '200'){
+                this.setState({loaded:!this.state.loaded});
+            }
         });
     }
 
     detailProduct(id) {
-        this.props.history.push(`/product-detail/${id}`);
+        this.props.history.push(`/products-detail/${id}`);
     }
 
     componentDidMount() {
         const{token}=this.context;
+        this.setState({loaded:!this.state.loaded});
         ProductService.getProducts(token).then((res) => {
             this.setState({products: res.data});
+            if(res.status == '200'){
+                this.setState({loaded:!this.state.loaded});
+            }
         });
         CategoryService.getAllCategory(token).then((res) => {
-            this.setState({productCategory: res.data})
+            this.setState({loaded:!this.state.loaded});
+            this.setState({productCategory: res.data});
+            if(res.status == '200'){
+                this.setState({loaded:!this.state.loaded});
+            }
         })
     }
     filterList(category){
         console.log(category);
         this.setState({products:this.state.products.filter(
-            productByFilter=>productByFilter.productCategory==category
+            productByFilter=>productByFilter.categoriesDTO.name==category.name
             )
 
         })
@@ -87,8 +102,16 @@ class List extends Component {
                                         <td>{product.name}</td>
                                         <td>{product.brand}</td>
                                         <td>{product.price}</td>
-                                        <td><button className="btn btn-link" onClick={()=>this.filterList(product.productCategory)}>{product.productCategory}</button></td>
-                                        <td><img src={product.urlToImage} width="150" height="150"/></td>
+                                        <td>{
+                                            product.categoriesDTO.map(
+                                                name=>
+                                                <button className="btn btn-link btn-block" onClick={()=>this.filterList(name)}>
+                                                    {name.name}
+                                                </button>
+                                            )
+
+                                        }</td>
+                                        <td><img src={'data:image/png;base64,' +product.mediaDTO.fileContent} width="150" height="150"/></td>
                                         <td>
                                             <button onClick={() => this.updatedProduct(product.id)}
                                                     className="btn btn-info" style={{margin: "5px"}}>Update
@@ -106,6 +129,11 @@ class List extends Component {
                         </tbody>
                     </table>
                 </div>
+                {
+                    this.state.loaded ?(
+                        <Loader/>
+                    ):null
+                }
             </div>
         );
     }

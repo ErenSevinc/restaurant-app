@@ -14,20 +14,21 @@
             <column name="address" type="VARCHAR(255)"/>
             <column name="url_To_Image" type="VARCHAR(255)"/>
             <column name="salary" type="double"/>
+            <column name="media_id" type="int(10)"/>
 
         </createTable>
         <rollback>
             <dropTable tableName="waiter"/>
         </rollback>
 
-        <insert tableName="waiter">
-            <column name="id" valueNumeric="1"/>
-            <column name="name" value="EREN"/>
-            <column name="phone_Number" value="5111111111"/>
-            <column name="mail" value="asd@asd.com"/>
-            <column name="address" value="ev"/>
-            <column name="url_To_Image" value=""/>
-            <column name="salary" valueNumeric="2500"/>
-        </insert>
+<!--        <insert tableName="waiter">-->
+<!--            <column name="id" valueNumeric="1"/>-->
+<!--            <column name="name" value="EREN"/>-->
+<!--            <column name="phone_Number" value="5111111111"/>-->
+<!--            <column name="mail" value="asd@asd.com"/>-->
+<!--            <column name="address" value="ev"/>-->
+<!--            <column name="url_To_Image" value=""/>-->
+<!--            <column name="salary" valueNumeric="2500"/>-->
+<!--        </insert>-->
     </changeSet>
 </databaseChangeLog>

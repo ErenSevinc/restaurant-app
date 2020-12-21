@@ -1,9 +1,8 @@
 package com.controller;
 
 import com.DTO.OrderDTO;
-import com.DTO.ProductDTO;
-import com.entity.Order;
-import com.entity.Product;
+import com.unused.ProductDTO;
+import com.unused.Product;
 import com.service.BackOfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

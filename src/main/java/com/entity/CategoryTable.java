@@ -1,9 +1,18 @@
 package com.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class CategoryTable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -16,42 +25,4 @@ public class CategoryTable {
 //    @JoinColumn(name = "category_id")
 //    private Set<RestaurantTable> tables;
 
-    public CategoryTable() {
-    }
-
-    public CategoryTable(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-//    public Set<RestaurantTable> getTables() {
-//        return tables;
-//    }
-//
-//    public void setTables(Set<RestaurantTable> tables) {
-//        this.tables = tables;
-//    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
 }

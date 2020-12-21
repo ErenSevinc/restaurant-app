@@ -1,5 +1,9 @@
 .App {
 }
+body{
+
+}
+
 .clm{
   height: calc(100%);
   overflow-y: auto;

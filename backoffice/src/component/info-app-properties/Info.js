@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import InfoService from "../../service/InfoService";
+import UserContext from "../../UserContext";
 
 class Info extends Component {
+    static contextType=UserContext;
     constructor(props) {
         super(props);
         this.state={
@@ -10,7 +12,8 @@ class Info extends Component {
         }
     }
     componentDidMount() {
-        InfoService.getAppProperties().then((res) => {
+        const{token}=this.context;
+        InfoService.getAppProperties(token).then((res) => {
             this.setState({info: res.data});
         });
     }
