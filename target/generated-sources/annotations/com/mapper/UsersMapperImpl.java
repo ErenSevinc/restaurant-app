@@ -7,13 +7,29 @@ import com.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-12-21T15:46:32+0300",
+    date = "2020-12-25T02:02:34+0300",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.8 (Oracle Corporation)"
 )
+@Component
 public class UsersMapperImpl implements UsersMapper {
+
+    @Override
+    public List<UsersDTO> toDTOList(List<User> userList) {
+        if ( userList == null ) {
+            return null;
+        }
+
+        List<UsersDTO> list = new ArrayList<UsersDTO>( userList.size() );
+        for ( User user : userList ) {
+            list.add( toDTO( user ) );
+        }
+
+        return list;
+    }
 
     @Override
     public UsersDTO toDTO(User user) {

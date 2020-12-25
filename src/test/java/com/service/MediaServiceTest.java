@@ -9,6 +9,7 @@ import com.builder.MediaBuilder;
 import com.converter.MediaConverter;
 import com.converter.WaiterConverter;
 import com.entity.Media;
+import com.mapper.MediaMapper;
 import com.repository.MediaRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,17 +67,16 @@ public class MediaServiceTest {
 
     @Test
     public void shouldListMedia(){
-
         List<Media> list =new ArrayList<>();
         list.add(media);
 
         Mockito.when(mediaRepository.findAll()).thenReturn(list);
 
-        List<MediaDTO> dtoList = MediaConverter.mediaList(list);
+        List<MediaDTO> dtoList = MediaMapper.INSTANCE.toDTOList(list);
         List<MediaDTO> res= mediaService.getFiles();
 
         assertEquals(dtoList.get(0).getId(),res.get(0).getId());
-        assertNotNull(res);;
+        assertNotNull(res);
 
     }
     @Test

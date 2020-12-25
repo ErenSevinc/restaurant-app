@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-12-21T15:46:33+0300",
+    date = "2020-12-25T02:02:34+0300",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.8 (Oracle Corporation)"
 )
+@Component
 public class ProductsMapperImpl implements ProductsMapper {
 
     @Override
@@ -52,6 +54,34 @@ public class ProductsMapperImpl implements ProductsMapper {
         products.setPrice( productsDTO.getPrice() );
 
         return products;
+    }
+
+    @Override
+    public List<ProductsDTO> toDTOList(List<Products> productsList) {
+        if ( productsList == null ) {
+            return null;
+        }
+
+        List<ProductsDTO> list = new ArrayList<ProductsDTO>( productsList.size() );
+        for ( Products products : productsList ) {
+            list.add( toDTO( products ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Products> toEntityList(List<ProductsDTO> productsDTOList) {
+        if ( productsDTOList == null ) {
+            return null;
+        }
+
+        List<Products> list = new ArrayList<Products>( productsDTOList.size() );
+        for ( ProductsDTO productsDTO : productsDTOList ) {
+            list.add( toEntity( productsDTO ) );
+        }
+
+        return list;
     }
 
     protected MediaDTO mediaToMediaDTO(Media media) {

@@ -14,9 +14,17 @@
         <rollback>
             <dropTable tableName="media"/>
         </rollback>
+        <addColumn tableName="media">
+            <column name="deleted" type="boolean" defaultValue="false"/>
+        </addColumn>
         <insert tableName="media">
             <column name="name" value="indir"/>
             <column name="file_content" valueBlobFile="indir.png"/>
         </insert>
+        <insert tableName="media">
+            <column name="name" value="dish"/>
+            <column name="file_content" valueBlobFile="dish.png"/>
+        </insert>
+
     </changeSet>
 </databaseChangeLog>

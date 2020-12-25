@@ -34,10 +34,12 @@ public class CategoryTableService {
         return "Added";
     }
     public List<CategoryTableDTO> updateCategory (CategoryTableDTO categoryTableDTO,int id){
-        CategoryTable cat=repository.findById(id).get();
-        repository.saveAndFlush(cat);
+//        CategoryTable cat=repository.findById(id).get();
+//        repository.save(cat);
+        //CategoryTableDTO dto=CategoryTableMapper.INSTANCE.toDTO(repository.findById(categoryTableDTO.getId()).get());
         CategoryTableMapper.INSTANCE.toDTO(repository.saveAndFlush(CategoryTableMapper.INSTANCE.toEntity(categoryTableDTO)));
         //repository.saveAndFlush(CategoryTableConverter.updateCategory(cat,categoryTableDTO));
+
         return getAllCategory();
     }
     public CategoryTableDTO getCategoryById(int id) {

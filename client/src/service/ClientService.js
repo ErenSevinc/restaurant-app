@@ -6,7 +6,7 @@ const category_base_url = "http://localhost:8080/base/list-categories";
 const cat_product_base_url="http://localhost:8080/base/list-by-categories-products";
 const post_order_base_url="http://localhost:8080/product/basket";
 // const token=sessionStorage.getItem("token");
-
+const prod_list_by_cat = "http://localhost:8080/base/list-search-v2";
 const user_login="http://localhost:8080/users/login";
 
 
@@ -28,6 +28,15 @@ class ClientService {
     }
     getCategoryProduct(id){
         return axios.get(cat_product_base_url+'/'+id)
+    }
+    getCatProd(id,pageNumber){
+         return axios.get(prod_list_by_cat+'/'+id,{
+             params:{
+                 page:pageNumber,
+                 size:10
+             }
+         })
+
     }
     postOrder(basket){
          return axios.post(post_order_base_url,basket);

@@ -4,15 +4,23 @@ import nextId from "react-id-generator";
 import './Component.css';
 import '../App.css';
 
-
 class CategotyNew extends Component {
     constructor(props) {
         super(props)
+        this.myRef=React.createRef()
         this.state = {
             category: [],
             products: [],
             cards: [],
             totalPayments: 0,
+
+            hasNext:true,
+            scrollTop:0,
+            catergoriesId:1,
+            pageNumber:0,
+            newProductsList:[],
+            counter:1,
+
             card: {
                 productId: 0,
                 cardId: 0,
@@ -26,7 +34,6 @@ class CategotyNew extends Component {
 
             },
             orders: []
-
         }
 
         this.getCatProduct = this.getCatProduct.bind(this);
@@ -34,15 +41,17 @@ class CategotyNew extends Component {
         this.btnAdd = this.btnAdd.bind(this);
         this.btnCikar = this.btnCikar.bind(this);
         this.paymentSuccess = this.paymentSuccess.bind(this);
-
     }
 
     componentDidMount() {
         ClientService.getCategory().then((res) => {
             this.setState({category: res.data})
         });
-        ClientService.getProducts().then((res) => {
-            this.setState({products: res.data})
+        // ClientService.getProducts().then((res) => {
+        //     this.setState({products: res.data})
+        // });
+        ClientService.getCatProd(this.state.categoriesId,0).then((res) => {
+            this.setState({products: res.data.productsDTOList,hasNext:res.data.hasNext})
         });
         this.setState({orders: CategotyNew.getOrderFromStorage()})
         let orders = CategotyNew.getOrderFromStorage();
@@ -57,14 +66,45 @@ class CategotyNew extends Component {
                 }
 
             }
-
         }
     }
-
-    getCatProduct(id) {
-        ClientService.getCategoryProduct(id).then((res) => {
-            this.setState({products: res.data})
+    onScroll=()=>{
+        let scrollTop=this.myRef.current.scrollTop
+        this.setState({
+            scrollTop:scrollTop
         });
+        console.log(scrollTop);
+            if (scrollTop > 1370 * this.state.counter) {
+                console.log(this.state.hasNext);
+                if (this.state.hasNext) {
+                    this.state.pageNumber += 1;
+                    this.myRef.current.scrollTop = this.state.scrollTop;
+                    this.state.counter += 1;
+                    this.state.hasNext = !this.state.hasNext;
+                    ClientService.getCatProd(this.state.categoriesId, this.state.pageNumber).then((res) => {
+                        this.setState({hasNext: res.data.hasNext})
+                        for (let i = 0; i < res.data.productsDTOList.length; i++) {
+                            this.state.products.push(res.data.productsDTOList[i]);
+                        }
+                        this.setState({products: this.state.products})
+                    })
+                }
+            }
+            console.log(this.state.categoriesId);
+
+    }
+
+    // getCatProduct(id) {
+    //     ClientService.getCategoryProduct(id).then((res) => {
+    //         this.setState({products: res.data})
+    //     });
+    //     this.render();
+    // }
+    getCatProduct(id) {
+        ClientService.getCatProd(id,0).then((res) => {
+                    this.setState({products: res.data.productsDTOList})
+                });
+        this.setState({categoriesId:id});
         this.render();
     }
 
@@ -184,7 +224,8 @@ class CategotyNew extends Component {
                                 <div className="card-header">
                                     <h4 className="d-inline">Product List</h4>
                                 </div>
-                                <div className="row clm">
+                                <div className="row clm"  ref={this.myRef}
+                                     onScroll={this.onScroll}>
                                     <div className="card-body">
                                         <div className="row">
                                             {

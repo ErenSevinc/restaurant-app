@@ -2,25 +2,26 @@ package com.entity;
 
 import com.builder.MediaBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Media {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@SQLDelete(sql = "UPDATE media "+"SET deleted = true "+"WHERE id = ?")
+@Where(clause = "deleted = false")
+public class Media extends BaseEntity {
+
     private String name;
     @Column(length = 1000000)
     private byte[] fileContent;
+
 
 }

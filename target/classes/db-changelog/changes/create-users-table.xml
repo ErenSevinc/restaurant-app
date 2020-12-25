@@ -16,7 +16,9 @@
         <rollback>
             <dropTable tableName="users"/>
         </rollback>
-
+        <addColumn tableName="users">
+            <column name="deleted" type="boolean" defaultValue="false"></column>
+        </addColumn>
         <insert tableName="users">
             <column name="id" value="1"/>
             <column name="email" value="admin@admin.com"/>

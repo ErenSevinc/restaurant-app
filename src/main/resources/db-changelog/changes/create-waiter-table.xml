@@ -15,11 +15,14 @@
             <column name="url_To_Image" type="VARCHAR(255)"/>
             <column name="salary" type="double"/>
             <column name="media_id" type="int(10)"/>
-
         </createTable>
         <rollback>
             <dropTable tableName="waiter"/>
         </rollback>
+        <addColumn tableName="waiter">
+            <column name="deleted" type="boolean" defaultValue="false"></column>
+        </addColumn>
+
 
 <!--        <insert tableName="waiter">-->
 <!--            <column name="id" valueNumeric="1"/>-->

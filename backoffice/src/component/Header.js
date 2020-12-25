@@ -36,6 +36,9 @@ class Header extends Component {
                                 <Link to='/order'>
                                     <button className="btn btn-outline-light btnLink">Orders List</button>
                                 </Link>
+                                <Link to='/customer'>
+                                    <button className="btn btn-outline-light btnLink">Customers</button>
+                                </Link>
                                 <Link to='/user-add'>
                                     <button className="btn btn-outline-light btnLink">Users</button>
                                 </Link>

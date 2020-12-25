@@ -12,7 +12,9 @@
     <rollback>
         <dropTable tableName="category_table"/>
     </rollback>
-
+    <addColumn tableName="category_table">
+        <column name="deleted" type="boolean" defaultValue="false"></column>
+    </addColumn>
     <insert tableName="category_table">
         <column name="id" valueNumeric="1"/>
         <column name="name" value="SALON"/>
@@ -23,5 +25,6 @@
         <column name="name" value="BALKON"/>
         <column name="amount" valueNumeric="5"/>
     </insert>
+
 </changeSet>
 </databaseChangeLog>

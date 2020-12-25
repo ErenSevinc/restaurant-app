@@ -1,6 +1,5 @@
 package com.controller;
 
-import static org.junit.Assert.*;
 import com.DTO.CategoriesDTO;
 import com.DTO.MediaDTO;
 import com.DTO.ProductsDTO;
@@ -10,15 +9,12 @@ import com.builder.DTOBuilder.MediaDTOBuilder;
 import com.builder.DTOBuilder.ProductsDTOBuilder;
 import com.builder.MediaBuilder;
 import com.builder.ProductsBuilder;
-import com.converter.CategoriesDTOConverter;
 import com.entity.Categories;
 import com.entity.Media;
 import com.entity.Products;
-import com.repository.CategoriesRepository;
 import com.repository.MediaRepository;
-import com.repository.ProductsRepository;
-import com.service.start.CategoriesService;
-import com.service.start.ProductsService;
+import com.service.CategoriesService;
+import com.service.ProductsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +27,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -156,14 +151,14 @@ public class CategoryProductControllerTest {
         assertNotNull(res);
         assertEquals(res,productsDTO);
     }
-    @Test
-    public void shouldUpdateProducts(){
-        Mockito.when(productsService.updateProducts(any())).thenReturn(productsDTO);
-        ProductsDTO res= categoryProductController.updateProducts(productsDTO);
-
-        assertNotNull(res);
-        assertEquals(res,productsDTO);
-    }
+//    @Test
+//    public void shouldUpdateProducts(){
+//        Mockito.when(productsService.updateProducts(any())).thenReturn(productsDTO);
+//        ProductsDTO res= categoryProductController.updateProducts(productsDTO);
+//
+//        assertNotNull(res);
+//        assertEquals(res,productsDTO);
+//    }
     @Test
     public void shouldDeleteProducts(){
         int id=1;

@@ -7,12 +7,17 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
-public interface UsersMapper {
-    UsersMapper INSTANCE= Mappers.getMapper(UsersMapper.class);
+import java.util.List;
 
+@Mapper(componentModel = "spring")
+public interface UsersMapper {
+    //UsersMapper INSTANCE= Mappers.getMapper(UsersMapper.class);
+    UsersMapper INSTANCE=null;
 //    @Mapping(source ="RoleDTO.rolesDTO",target = "Role.roles")
 //    UsersDTO toDTO(User user);
+
+    List<UsersDTO> toDTOList(List<User> userList);
+
     @Mapping(source ="roles",target = "rolesDTO")
     UsersDTO toDTO(User user);
 

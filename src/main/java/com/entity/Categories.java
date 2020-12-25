@@ -1,10 +1,9 @@
 package com.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,20 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Categories implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@SQLDelete(sql = "UPDATE categories "+"SET deleted = true "+"WHERE id = ?")
+@Where(clause = "deleted = false")
+public class Categories extends BaseEntity implements Serializable {
+
     private String name;
     private String description;
-    //(
-//            mappedBy = "category",
-//            cascade =CascadeType.ALL
-//    )
+
 
     @JsonBackReference
     @ManyToMany

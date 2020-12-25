@@ -4,6 +4,7 @@ import com.DTO.CategoryTableDTO;
 import com.builder.CategoryTableBuilder;
 import com.builder.DTOBuilder.CategoryTableDTOBuilder;
 import com.entity.CategoryTable;
+import com.mapper.CategoryTableMapper;
 import com.repository.CategoryTableRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -49,8 +51,13 @@ public class CategoryTableServiceTest {
 
     @Test
     public void shouldGetAllCategory(){
-        List<CategoryTableDTO> catDTOList = categoryTableService.getAllCategory();
-        assertNotNull(catDTOList);
+//        List<CategoryTableDTO> catDTOList = categoryTableService.getAllCategory();
+//        assertNotNull(catDTOList);
+        Mockito.when(categoryTableRepository.findAll()).thenReturn(categoryTableList);
+                List<CategoryTableDTO> dtoList= CategoryTableMapper.INSTANCE.toDTOList(categoryTableList);
+                List<CategoryTableDTO> res =categoryTableService.getAllCategory();
+                assertEquals(res,dtoList);
+
     }
 
     @Test
@@ -69,19 +76,18 @@ public class CategoryTableServiceTest {
         List<CategoryTableDTO> catDTOList =categoryTableService.deleteCategory(id);
         verify(categoryTableRepository,times(1)).deleteById(id);
     }
-//    @Test
-//    public void shouldGetCategoryById(){
-//        int id=1;
-//        Optional<CategoryTable> list= Optional.of(categoryTable);
-//
-//        Mockito.when(categoryTableRepository.findById(id)).thenReturn(list);
-//        CategoryTableDTO result= categoryTableService.getCategoryById(id);
-//
-//        assertNotNull(result);
-//        assertEquals(result.getId(),id);
-//
-//
-//    }
+    @Test
+    public void shouldGetCategoryById(){
+        int id=1;
+
+        Mockito.when(categoryTableRepository.findById(id)).thenReturn(Optional.of(CategoryTableMapper.INSTANCE.toEntity(categoryTableDTO)));
+        CategoryTableDTO result= categoryTableService.getCategoryById(id);
+
+        assertNotNull(result);
+        assertEquals(result.getId(),id);
+
+
+    }
 //    @Test
 //    public void shouldUpdateCategory(){
 //        int id=1;

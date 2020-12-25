@@ -29,12 +29,12 @@ public class CategoryTableConverter {
 
         return categoryTable;
     }
-    public static CategoryTable updateCategory (Optional<CategoryTable> cat,CategoryTableDTO categoryTableDTO){
+    public static CategoryTable updateCategory (CategoryTable cat,CategoryTableDTO categoryTableDTO){
 
-        cat.get().setName(categoryTableDTO.getName());
-        cat.get().setAmount(categoryTableDTO.getAmount());
+        cat.setName(categoryTableDTO.getName());
+        cat.setAmount(categoryTableDTO.getAmount());
 
-        return cat.get();
+        return cat;
     }
     public static CategoryTableDTO getCategoryById(CategoryTable catTbl) {
 

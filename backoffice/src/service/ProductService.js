@@ -3,7 +3,8 @@ import axios from 'axios';
 import {UserContext} from "../component/Login";
 
 const authTokenAdmin = "Basic YWRtaW46cGFzczM="
-const product_list_base_url = "http://localhost:8080/base/list-products";
+const product_list_base_url = "http://localhost:8080/base/list-search";
+const prod_list_no_pack="http://localhost:8080/base/list-products";
 const product_add_base_url = "http://localhost:8080/base/add-products";
 const product_update_base_url = "http://localhost:8080/base/update-products";
 const product_delete_base_url = "http://localhost:8080/base/delete-products";
@@ -15,16 +16,20 @@ const token = sessionStorage.getItem("token")
 
 class ProductService {
 
-    getProducts(tkn) {
+    getProducts(tkn,btnNo) {
         return axios.get(product_list_base_url, {
             headers: {
                 Authorization: tkn
+            },
+            params:{
+                page:btnNo,
+                size:20
             }
         });
     }
 
     getProductById(id, tkn) {
-        return axios.get(product_list_base_url + '/' + id,{
+        return axios.get(prod_list_no_pack + '/' + id,{
             headers:{
                 Authorization: tkn
             }

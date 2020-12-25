@@ -28,46 +28,46 @@ public class BackOfficeService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public List<ProductDTO> getAllProduct(){
-       List<Product> productList=repository.findAll();
-       return ProducrtConverter.getAllProduct(productList);
-    }
-
-    public ProductDTO getSelectedProduct(int id){
-        Product product=repository.findAll().stream().filter(t -> t.getId() == id).findFirst().get();
-        return ProducrtConverter.getSelectedProduct(product);
-    }
-
-    public Product addProduct(Product product){
-        return repository.save(product);
-    }
-
-    public List<ProductDTO> updateProduct(int id, ProductDTO productDTO){
-//        Optional<Product> productList = repository.findAll().stream().filter(p->p.getId() ==id).findAny();
-//        if (!productList.isPresent()){
-//            System.out.println("Sonuç bulunamadı");
-//            return null;
-//        }
-//        productList.get().setName(product.getName());
-//        productList.get().setBrand(product.getBrand());
-//        productList.get().setPrice(product.getPrice());
-//        productList.get().setCategory(product.getCategory());
-//        productList.get().setUrlToImage(product.getUrlToImage());
-//        productList.get().setProductCategory(product.getProductCategory());
+//    public List<ProductDTO> getAllProduct(){
+//       List<Product> productList=repository.findAll();
+//       return ProducrtConverter.getAllProduct(productList);
+//    }
 //
-//        return repository.save(productList.get());
-
-        productDTO.getCategories().add(categoryRepository.findById(id).get());
-        repository.saveAndFlush(ProducrtConverter.updateProduct(productDTO));
-        return getAllProduct();
-    }
-
-    public void deleteProduct(int id){
-        Optional<Product> product =repository.findById(id);
-        product.get().getCategories().stream().findAny().get().getProducts().remove(product.get());
-        repository.deleteById(id);
-
-    }
+//    public ProductDTO getSelectedProduct(int id){
+//        Product product=repository.findAll().stream().filter(t -> t.getId() == id).findFirst().get();
+//        return ProducrtConverter.getSelectedProduct(product);
+//    }
+//
+//    public Product addProduct(Product product){
+//        return repository.save(product);
+//    }
+//
+//    public List<ProductDTO> updateProduct(int id, ProductDTO productDTO){
+////        Optional<Product> productList = repository.findAll().stream().filter(p->p.getId() ==id).findAny();
+////        if (!productList.isPresent()){
+////            System.out.println("Sonuç bulunamadı");
+////            return null;
+////        }
+////        productList.get().setName(product.getName());
+////        productList.get().setBrand(product.getBrand());
+////        productList.get().setPrice(product.getPrice());
+////        productList.get().setCategory(product.getCategory());
+////        productList.get().setUrlToImage(product.getUrlToImage());
+////        productList.get().setProductCategory(product.getProductCategory());
+////
+////        return repository.save(productList.get());
+//
+//        productDTO.getCategories().add(categoryRepository.findById(id).get());
+//        repository.saveAndFlush(ProducrtConverter.updateProduct(productDTO));
+//        return getAllProduct();
+//    }
+//
+//    public void deleteProduct(int id){
+//        Optional<Product> product =repository.findById(id);
+//        product.get().getCategories().stream().findAny().get().getProducts().remove(product.get());
+//        repository.deleteById(id);
+//
+//    }
 
 //    public List<String> getProductCategory(){
 //       return repository.findAllCategory();

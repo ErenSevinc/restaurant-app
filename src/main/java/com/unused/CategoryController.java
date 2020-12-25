@@ -1,8 +1,5 @@
 package com.unused;
 
-import com.unused.CategoryDTO;
-import com.unused.ProductDTO;
-import com.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

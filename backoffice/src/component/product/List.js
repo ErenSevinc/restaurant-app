@@ -13,14 +13,18 @@ class List extends Component {
         this.state = {
             products: [],
             productCategory: [],
+            buttonAmount:0,
+            elementCount:0,
+            item:[],
 
             loaded:false,
         }
         this.add = this.add.bind(this)
-        this.updatedProduct = this.updatedProduct.bind(this)
-        this.deletedProduct = this.deletedProduct.bind(this)
-        this.detailProduct = this.detailProduct.bind(this)
-        this.filterList = this.filterList.bind(this)
+        this.updatedProduct = this.updatedProduct.bind(this);
+        this.deletedProduct = this.deletedProduct.bind(this);
+        this.detailProduct = this.detailProduct.bind(this);
+        this.filterList = this.filterList.bind(this);
+        this.buttonImpl = this.buttonImpl.bind(this);
 
     }
 
@@ -50,8 +54,12 @@ class List extends Component {
     componentDidMount() {
         const{token}=this.context;
         this.setState({loaded:!this.state.loaded});
-        ProductService.getProducts(token).then((res) => {
-            this.setState({products: res.data});
+
+        ProductService.getProducts(token,0).then((res) => {
+            this.setState({
+                products: res.data.productsDTOList,
+                elementsCount: res.data.totalElements,
+            });
             if(res.status == '200'){
                 this.setState({loaded:!this.state.loaded});
             }
@@ -62,24 +70,42 @@ class List extends Component {
             if(res.status == '200'){
                 this.setState({loaded:!this.state.loaded});
             }
-        })
+        });
     }
+    buttonImpl=(e)=>{
+        const{token}=this.context;
+        ProductService.getProducts(token, e).then((res)=>{
+            this.setState({
+                products: res.data.productsDTOList,
+                elementsCount: res.data.totalElements,
+            });
+        });
+    }
+
     filterList(category){
         console.log(category);
         this.setState({products:this.state.products.filter(
-            productByFilter=>productByFilter.categoriesDTO.name==category.name
+            productByFilter=>productByFilter.categoriesDTOList.name==category.name
             )
 
         })
     }
 
     render() {
+            const btn=[];
+            for (let i=0;i<Math.ceil(this.state.elementsCount/20);i++){
+                btn.push(
+                    <button className="btn btn-outline-success" onClick={()=>this.buttonImpl(i)}>{i+1}</button>
+                )
+            }
         return (
             <div>
                 <h2 className="text-center">Product List</h2>
 
                 <div>
-                    <button className="btn btn-success" onClick={this.add}>Add Product</button>
+                    <button className="btn btn-success" onClick={this.add} style={{marginRight:"50px"}}>Add Product</button>
+                    <label style={{marginRight:"25px"}}>Toplam ürün sayısı:<p style={{fontSize:"20px",fontStyle:"bold"}}>{this.state.elementsCount}</p></label>
+                    {btn}
                 </div>
                 <div>
 
@@ -103,9 +129,9 @@ class List extends Component {
                                         <td>{product.brand}</td>
                                         <td>{product.price}</td>
                                         <td>{
-                                            product.categoriesDTO.map(
+                                            product.categoriesDTOList.map(
                                                 name=>
-                                                <button className="btn btn-link btn-block" onClick={()=>this.filterList(name)}>
+                                                <button className="btn btn-link btn-block">
                                                     {name.name}
                                                 </button>
                                             )
@@ -128,6 +154,9 @@ class List extends Component {
                         }
                         </tbody>
                     </table>
+                    <div style={{marginLeft:"450px"}}>
+                        {btn}
+                    </div>
                 </div>
                 {
                     this.state.loaded ?(

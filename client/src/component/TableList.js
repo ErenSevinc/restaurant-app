@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import axios from "axios";
+import {Modal} from "react-bootstrap";
 import TableCategoryService from "../service/TableCategoryService";
 import Table from "react-bootstrap/Table";
 import './Component.css'
 import CategotyNew from "./CategotyNew";
+import CustomerService from "../service/CustomerService";
+import WaiterService from "../service/WaiterService";
 
 class TableList extends Component {
     constructor(props) {
@@ -14,19 +17,28 @@ class TableList extends Component {
             amount:'',
             tableCategory:'',
             items:[],
+
+            show:false,  // true ise modal gelsin
+            waiter_List:[],
+
+
         }
         this.getAllTables = this.getAllTables.bind(this)
         this.goToSale=this.goToSale.bind(this)
+
     }
 
     componentDidMount() {
         TableCategoryService.getTableCategory().then((res) => {
             this.setState({table_category_list: res.data})
-        })
+        });
+        const{token}=this.context;
+        WaiterService.getWaiter().then((res)=>{
+            this.setState({waiter_List:res.data})
+        });
     }
 
     getAllTables = (e) => {
-
          TableCategoryService.getByTableCategoryID(e.id).then((res)=>{
              this.setState({amount: res.data.amount})
          })
@@ -77,18 +89,56 @@ class TableList extends Component {
         return this.state.items;
     }
 
-    goToSale(no){
-        //localStorage.removeItem("orders")
-        sessionStorage.setItem("tbl", this.state.tableCategory + ' Masa '+no + '!');
+
+    selectWaiter(e){
+        localStorage.setItem("waiter",e.name);
+        this.setState({show:false});
         this.props.history.push('/products');
     }
+    showState(){
+        this.setState({show:false})
+    }
+    showTableState(){
+        this.setState({show:false})
+        this.props.history.push('/products')
+    }
+    goToSale(no){
+        this.setState({show:true})
+        //localStorage.removeItem("orders")
+        sessionStorage.setItem("tbl", this.state.tableCategory + ' Masa '+no + '!');
+    }
+
+
 
     render() {
+
         return (
             <div>
                <div className="container-fluid">
                    <div className="row">
                        <div className="col-xl-3">
+                           <Modal show={this.state.show}>
+                               <Modal.Header>
+                                   GARSON SEÇİNİZ
+                               </Modal.Header>
+                               <Modal.Body className="mdl">
+                                   {
+                                       this.state.waiter_List.map(
+                                           wait=>{
+                                               return(
+                                                   <button className="btn btn-warning" onClick={()=>this.selectWaiter(wait)} style={{margin:"10px"}}>{wait.name}
+                                                       <img src={'data:image/png;base64,' + wait.mediaDTO.fileContent} width="50" height="75"></img>
+                                                   </button>
+                                               )
+                                           }
+                                       )
+                                   }
+                               </Modal.Body>
+                               <Modal.Footer>
+                                   <button className="btn btn-info" onClick={() =>this.showState()}>Masaları Göster</button>
+                                   <button className="btn btn-info" onClick={() => this.showTableState()}>Ayakta Sipariş</button>
+                               </Modal.Footer>
+                           </Modal>
                            <div className="card">
                                <div className="card-header">MASA KATEGORİ</div>
                                <div className="card-body">
@@ -110,7 +160,6 @@ class TableList extends Component {
                                        {this.state.items}
                                    </div>
                                </div>
-
                            </div>
                        </div>
                    </div>

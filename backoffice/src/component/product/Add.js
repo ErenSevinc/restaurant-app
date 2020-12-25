@@ -46,7 +46,7 @@ class Add extends Component {
             brand: this.state.brand,
             price: this.state.price,
             mediaDTO:this.state.media,
-            categoriesDTO: this.state.categoriesDTOList
+            categoriesDTOList: this.state.categoriesDTOList
 
         };
         console.log(products,token)

@@ -15,6 +15,7 @@ class CategoryUpdate extends Component {
             name : '',
             description : '',
             media:{},
+            productsList:[],
             image_List:[],
 
             loader:false,
@@ -36,6 +37,7 @@ class CategoryUpdate extends Component {
                 name: category.name,
                 description: category.description,
                 media : category.mediaDTO,
+                productsList:category.productsDTOList
             });
             if(res.status == '200'){
                 this.setState({loader:!this.state.loader})
@@ -57,7 +59,8 @@ class CategoryUpdate extends Component {
             id:this.state.id,
             name: this.state.name,
             description: this.state.description,
-            mediaDTO: this.state.media
+            mediaDTO: this.state.media,
+            productsDTOList:this.state.productsList
         };
         CategoryService.updateCategory(category,token).then(res =>{
             if(res.status =='200'){

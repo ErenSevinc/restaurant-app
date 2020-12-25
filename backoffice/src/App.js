@@ -32,6 +32,10 @@ import Add from "./component/product/Add";
 import Detail from "./component/product/Detail";
 import List from "./component/product/List";
 import Update from "./component/product/Update";
+import CustomerList from "./component/customer/CustomerList";
+import CustomerAdd from "./component/customer/CustomerAdd";
+import CustomerUpdate from "./component/customer/CustomerUpdate";
+import CustomerDetail from "./component/customer/CustomerDetail";
 //localStorage.setItem("token",("Basic"+btoa('eren:1234')))
 
 function App() {
@@ -48,6 +52,10 @@ function App() {
                       <Route path="/update-product/:id" component={Update}></Route>
                       <Route path="/products-detail/:id" component={Detail}></Route>
                       <Route path="/order" component={Order}></Route>
+                      <Route path="/customer" component={CustomerList}></Route>
+                      <Route path="/customer-add" component={CustomerAdd}></Route>
+                      <Route path="/customer-update/:id" component={CustomerUpdate}></Route>
+                      <Route path="/customer-detail/:id" component={CustomerDetail}></Route>
                       <Route path="/user" component={UserList}></Route>
                       <Route path="/user-add" component={UserAdd}></Route>
                       <Route path="/user-update/:id" component={UserUpdate}></Route>

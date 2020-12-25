@@ -3,10 +3,9 @@ package com.entity;
 import com.entity.Categories;
 import com.entity.Media;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,21 +13,21 @@ import java.util.List;
 
 @Entity
 @Table(name="tb_products")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Products {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@SQLDelete(sql = "UPDATE tb_products "+"SET deleted = true "+"WHERE id = ?")
+@Where(clause = "deleted = false")
+public class Products extends BaseEntity{
+
     private String name;
     private String brand;
     private double price;
 
-
     @JsonManagedReference
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products",fetch = FetchType.EAGER)
     private List<Categories> categories=new ArrayList<>();
 
     @ManyToOne

@@ -9,6 +9,7 @@ import Menu from "./component/Menu";
 import TableList from "./component/TableList";
 import CategotyNew from "./component/CategotyNew";
 import CategoryNews2 from "./component/CategoryNews2";
+import CustomerAdd from "./component/CustomerAdd";
 
 
 
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/menu"  component={Menu}></Route>
                     <Route path="/table" component={TableList}></Route>
                     <Route path="/new" component={CategoryNews2}></Route>
+                    <Route path="/customer-add" component={CustomerAdd}></Route>
                 </Switch>
             </Router>
 

@@ -6,10 +6,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
 
-@Mapper
+import java.util.List;
+
+@Mapper(componentModel = "spring")
 public interface ProductsMapper {
-    ProductsMapper INSTANCE= Mappers.getMapper(ProductsMapper.class);
+    ProductsMapper INSTANCE= null;  // Mappers.getMapper(CategoriesMapper.class);
 
     @Mappings({
             @Mapping(source = "categories",target = "categoriesDTOList"),
@@ -22,5 +25,9 @@ public interface ProductsMapper {
             @Mapping(source = "mediaDTO",target = "media")
     })
     Products toEntity(ProductsDTO productsDTO);
+
+    List<ProductsDTO> toDTOList(List<Products> productsList);
+
+    List<Products> toEntityList(List<ProductsDTO> productsDTOList);
 
 }

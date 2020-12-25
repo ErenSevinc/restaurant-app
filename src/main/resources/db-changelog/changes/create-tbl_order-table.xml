@@ -17,5 +17,8 @@
         <rollback>
             <dropTable tableName="tbl_order"/>
         </rollback>
+        <addColumn tableName="tbl_order">
+            <column name="deleted" type="boolean" defaultValue="false"></column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

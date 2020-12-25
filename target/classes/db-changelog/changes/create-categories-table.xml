@@ -14,6 +14,20 @@
         <rollback>
             <dropTable tableName="categories"/>
         </rollback>
+        <addColumn tableName="categories">
+            <column name="deleted" type="boolean" defaultValue="false"></column>
+        </addColumn>
+        <insert tableName="categories">
+            <column name="name" value="Başlangıç"/>
+            <column name="description" value="sıcak"/>
+            <column name="media_id" value="1"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Ana yemek"/>
+            <column name="description" value="doyurucu"/>
+            <column name="media_id" value="1"/>
+        </insert>
+
 
     </changeSet>
 </databaseChangeLog>

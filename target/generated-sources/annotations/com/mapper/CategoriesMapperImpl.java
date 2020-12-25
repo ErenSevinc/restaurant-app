@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-12-21T15:46:33+0300",
+    date = "2020-12-25T02:02:34+0300",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.8 (Oracle Corporation)"
 )
+@Component
 public class CategoriesMapperImpl implements CategoriesMapper {
 
     @Override
@@ -50,6 +52,34 @@ public class CategoriesMapperImpl implements CategoriesMapper {
         categories.setDescription( categoriesDTO.getDescription() );
 
         return categories;
+    }
+
+    @Override
+    public List<CategoriesDTO> toDTOList(List<Categories> categoriesList) {
+        if ( categoriesList == null ) {
+            return null;
+        }
+
+        List<CategoriesDTO> list = new ArrayList<CategoriesDTO>( categoriesList.size() );
+        for ( Categories categories : categoriesList ) {
+            list.add( toDTO( categories ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Categories> toEntityList(List<CategoriesDTO> categoriesDTOList) {
+        if ( categoriesDTOList == null ) {
+            return null;
+        }
+
+        List<Categories> list = new ArrayList<Categories>( categoriesDTOList.size() );
+        for ( CategoriesDTO categoriesDTO : categoriesDTOList ) {
+            list.add( toEntity( categoriesDTO ) );
+        }
+
+        return list;
     }
 
     protected ProductsDTO productsToProductsDTO(Products products) {

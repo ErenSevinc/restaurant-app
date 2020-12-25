@@ -40,7 +40,7 @@ class Update extends Component {
                 brand: products.brand,
                 price : products.price,
                 mediaDTO:this.state.media,
-                categoriesDTOList: products.categoriesDTO,
+                categoriesDTOList: products.categoriesDTOList,
             });
             if(res.status == '200'){
                 this.setState({loaded:!this.state.loaded});
@@ -72,7 +72,7 @@ class Update extends Component {
             brand: this.state.brand,
             price: this.state.price,
             mediaDTO:this.state.media,
-            categoriesDTO: this.state.categoriesDTOList
+            categoriesDTOList: this.state.categoriesDTOList
         };
         ProductService.updateProduct(products,token).then(res =>{
             this.props.history.push('/products');

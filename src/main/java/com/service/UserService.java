@@ -6,6 +6,8 @@ import com.converter.RoleDTOConverter;
 import com.converter.UserDTOConverter;
 import com.entity.Role;
 import com.entity.User;
+import com.mapper.RoleMapper;
+import com.mapper.UsersMapper;
 import com.repository.RoleRepository;
 import com.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,30 +23,44 @@ public class UserService {
     private final BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
 
     @Autowired
+    private UsersMapper usersMapper;
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
 
+
     public List<UsersDTO> listUsers(List<UsersDTO> usersDTOList){
-        List<User> usrList=userRepository.findAll();
+//        List<User> usrList=userRepository.findAll();
 //        userRepository.findAll().iterator().forEachRemaining(usersDTOList::add);
-        return UserDTOConverter.listUsers(usrList);
+//        return UserDTOConverter.listUsers(usrList);
+        return usersMapper.toDTOList(userRepository.findAll());
     }
     public UsersDTO getSelectedUser(int id){
-        User user=userRepository.findById(id).get();
-        return UserDTOConverter.addUserDTORoleIDToRole(user);
+//        User user=userRepository.findById(id).get();
+//        return UserDTOConverter.addUserDTORoleIDToRole(user);
+        return usersMapper.toDTO(userRepository.findById(id).get());
     }
 
     public UsersDTO addUser(UsersDTO usersDTO){
 //        User user=userRepository.save(UserDTOConverter.addUserRoleIDToDTO(usersDTO));
 //        return UserDTOConverter.addUserDTORoleIDToRole(user);
-        User user = UserDTOConverter.addUserRoleIDToDTO(usersDTO);
-        for(int i=0;i<usersDTO.getRolesDTO().size();i++){
-            Role role=roleRepository.findById(usersDTO.getRolesDTO().get(i).getId()).get();
+
+//        User user = UserDTOConverter.addUserRoleIDToDTO(usersDTO);
+//        for(int i=0;i<usersDTO.getRolesDTO().size();i++){
+//            Role role=roleRepository.findById(usersDTO.getRolesDTO().get(i).getId()).get();
+//            user.getRoles().add(role);
+//        }
+//        userRepository.save(user);
+//        return UserDTOConverter.addUserDTORoleIDToRole(user);
+        User user = usersMapper.toEntity(usersDTO);
+        for (int i=0;i<usersDTO.getRolesDTO().size();i++){
+            Role role = roleRepository.findById(usersDTO.getRolesDTO().get(i).getId()).get();
             user.getRoles().add(role);
         }
-        userRepository.save(user);
-        return UserDTOConverter.addUserDTORoleIDToRole(user);
+        return usersMapper.toDTO(userRepository.save(user));
     }
     public UsersDTO updateUser(UsersDTO usersDTO){
         Role role=new Role();
@@ -57,8 +73,9 @@ public class UserService {
     }
 
     public List<RoleDTO> listRoles(List<RoleDTO> rolesDTO){
-        List<Role> roles=roleRepository.findAll();
-        return RoleDTOConverter.roleListConvertToRoleDTOList(roles);
+//        List<Role> roles=roleRepository.findAll();
+//        return RoleDTOConverter.roleListConvertToRoleDTOList(roles);
+        return roleMapper.toDTOList(roleRepository.findAll());
     }
 
     public String deleteUser(int id){

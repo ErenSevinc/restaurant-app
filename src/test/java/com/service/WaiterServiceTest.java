@@ -7,6 +7,7 @@ import com.builder.DTOBuilder.WaiterDTOBuilder;
 import com.builder.WaiterBuilder;
 import com.converter.WaiterConverter;
 import com.entity.Waiter;
+import com.mapper.WaiterMapper;
 import com.repository.WaiterRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +69,7 @@ public class WaiterServiceTest {
     @Test
     public void shouldAllWaiter(){
         Mockito.when(waiterRepository.findAll()).thenReturn(waiterList);
-        List<WaiterDTO> dtoList=WaiterConverter.getAllWaiter(waiterList);
+        List<WaiterDTO> dtoList= WaiterMapper.INSTANCE.toDTOList(waiterList); //WaiterConverter.getAllWaiter(waiterList);
         List<WaiterDTO> res =waiterService.getAllWaiter();
         assertEquals(res.get(0).getId(),dtoList.get(0).getId());
 
@@ -80,12 +81,17 @@ public class WaiterServiceTest {
     public void shouldGetWaiterById(){
         int id=1;
 
-        Mockito.when(waiterRepository.findAll()).thenReturn(waiterList);
-        WaiterDTO res = waiterService.getWaiterById(id);
-        WaiterDTO dto = WaiterConverter.getWaiterById(waiter);
-
-        assertEquals(res.getId(),dto.getId());
+//        Mockito.when(WaiterMapper.INSTANCE.toDTO(waiterRepository.findById(id).get())).thenReturn(waiterDTO);
+//        WaiterDTO res = waiterService.getWaiterById(id);
+//        WaiterDTO dto = WaiterMapper.INSTANCE.toDTO(waiter);//WaiterConverter.getWaiterById(waiter);
+//
+//        assertEquals(res.getId(),dto.getId());
+        Mockito.when(waiterRepository.findById(id)).thenReturn(Optional.of(WaiterMapper.INSTANCE.toEntity(waiterDTO)));
+        WaiterDTO res= waiterService.getWaiterById(id);
+        assertNotNull(res);
+        assertEquals(res.getId(),waiterDTO.getId());
     }
+
 
     @Test
     public void shouldAddWaiter(){
@@ -99,11 +105,11 @@ public class WaiterServiceTest {
 
     @Test
     public void shouldUpdateWaiter(){
-        Mockito.when(waiterRepository.saveAndFlush(waiter)).thenReturn(waiter);
+        Mockito.when(waiterRepository.saveAndFlush(any())).thenReturn(waiter);
 
         WaiterDTO res =waiterService.updateWaiter(waiterDTO);
 
-        assertEquals(res,waiterDTO);
+        assertEquals(res.getId(),waiterDTO.getId());
     }
 
     @Test
