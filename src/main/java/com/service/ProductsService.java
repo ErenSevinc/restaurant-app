@@ -6,6 +6,8 @@ import com.DTO.ProductsWrapperList;
 import com.converter.ProductsDTOConverter;
 import com.entity.Categories;
 import com.entity.Products;
+import com.exception.SystemException;
+import com.helper.EntityHelper;
 import com.mapper.CategoriesMapper;
 import com.mapper.ProductsMapper;
 import com.repository.CategoriesRepository;
@@ -45,9 +47,12 @@ public class ProductsService {
 //        Products products = productsRepository.findById(id).get();
 //        return ProductsDTOConverter.productsConvertToProductsDTO(products);
 
-        return productsMapper.toDTO(productsRepository.findById(id).get());
+        return productsMapper.toDTO(productsRepository.findById(id).orElseThrow(()->new SystemException("Product not found")));
     }
     public ProductsWrapperList listProductsMore(Pageable pageable){
+        if(pageable.equals(null)){
+            throw new SystemException("pageable is null");
+        }
         Page<Products> productsPage= productsRepository.findAll(pageable);
         List<Products> productsList=productsPage.getContent();
         List<ProductsDTO> productsDTOList=productsMapper.toDTOList(productsList);
@@ -63,6 +68,10 @@ public class ProductsService {
     }
     public ProductsSliceWrapperDTO loadMoreProducts(int id,int page,int size){
         Pageable pageable= PageRequest.of(page,size);
+        if(pageable.equals(null)){
+            throw new SystemException("pageable is null");
+        }
+
         Slice<Products> productsSlice=productsRepository.findProductsByCategoriesId(id,pageable);
         List<Products> productsList=productsSlice.toList();
         List<ProductsDTO> productsDTOList=productsMapper.toDTOList(productsList);
@@ -89,6 +98,8 @@ public class ProductsService {
 
     public ProductsDTO updateProducts(ProductsDTO productsDTO){
         Products products=productsRepository.findById(productsDTO.getId()).get();
+
+//        EntityHelper.updateProductsHelper(products,productsDTO);
         List<Categories> categoriesList=products.getCategories();
         for (int i=0;i<categoriesList.size();i++){
             categoriesList.get(i).getProducts().remove(products);
@@ -103,9 +114,12 @@ public class ProductsService {
         for(int i=0;i<categoriesList1.size();i++){
             categoriesList1.get(i).getProducts().add(products);
         }
+
         productsRepository.saveAndFlush(products);
         return productsMapper.toDTO(products);
 
+
+//-----------------------------------------
 //        productsRepository.saveAndFlush(ProductsDTOConverter.updateProducts(productsDTO,categoriesList1));
 //        return ProductsDTOConverter.productsConvertToProductsDTO(products);
 //        Products products=productsMapper.toEntity(productsDTO);
@@ -132,7 +146,7 @@ public class ProductsService {
     }
 
     public String deleteProducts(int id){
-        Products products=productsRepository.findById(id).get();
+        Products products=productsRepository.findById(id).orElseThrow(()->new SystemException("Product not found"));
         for (int i=0;i<products.getCategories().size();i++){
             Optional<Categories> categories=categoriesRepository.findById(products.getCategories().get(i).getId());
             categories.get().getProducts().remove(products);
@@ -143,7 +157,7 @@ public class ProductsService {
     }
 
     public List<ProductsDTO> getProductsByCategories(int id){
-        Categories categories = categoriesRepository.findById(id).get();
+        Categories categories = categoriesRepository.findById(id).orElseThrow(()->new SystemException("ID not found"));
         return ProductsDTOConverter.getProductsByCategories(categories);
     }
 

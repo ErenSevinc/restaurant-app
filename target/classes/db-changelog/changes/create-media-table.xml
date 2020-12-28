@@ -25,6 +25,18 @@
             <column name="name" value="dish"/>
             <column name="file_content" valueBlobFile="dish.png"/>
         </insert>
+        <insert tableName="media">
+            <column name="name" value="customer"/>
+            <column name="file_content" valueBlobFile="customer.png"/>
+        </insert>
+        <insert tableName="media">
+            <column name="name" value="masa-salon"/>
+            <column name="file_content" valueBlobFile="masa-salon.png"/>
+        </insert>
+        <insert tableName="media">
+            <column name="name" value="masa-balkon"/>
+            <column name="file_content" valueBlobFile="masa-balkon.png"/>
+        </insert>
 
     </changeSet>
 </databaseChangeLog>

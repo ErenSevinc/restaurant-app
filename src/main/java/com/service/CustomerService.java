@@ -3,14 +3,23 @@ package com.service;
 import com.DTO.CustomerDTO;
 import com.DTO.CustomerWrapperList;
 import com.entity.Customer;
+import com.entity.Media;
+import com.exception.BusinessRuleException;
+import com.exception.CustomerExceptionHandler;
+import com.exception.SystemException;
+import com.helper.EntityHelper;
 import com.mapper.CustomerMapper;
+import com.mapper.MediaMapper;
 import com.repository.CustomerRepository;
+import com.repository.MediaRepository;
+import liquibase.pro.packaged.S;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CustomerService {
@@ -18,43 +27,39 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
+    private MediaRepository mediaRepository;
+    @Autowired
     private CustomerMapper customerMapper;
 
     public CustomerDTO getSelectedCustomer(int id){
-        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst().get();
-        if (customer == null){
-            return null;
-        }
+        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst().
+                orElseThrow(()-> new SystemException("ID bulunamadı"));
 
         return customerMapper.toDTO(customer);
     }
     public CustomerDTO addCustomer(CustomerDTO customerDTO){
-        if(customerDTO.equals(null)){
-            return null;
+//        if(customerDTO==null){
+//            throw new BusinessRuleException("Customer objesi bulunamadı");
+//        }
+//
+//        return customerMapper.toDTO(customerRepository.save(customerMapper.toEntity(customerDTO)));
+        try {
+            if (customerDTO.getMediaDTO()==null){
+                Media media= mediaRepository.findById(3).get();
+                customerDTO.setMediaDTO(MediaMapper.INSTANCE.toDTO(media));
+            }
+            return customerMapper.toDTO(customerRepository.save(customerMapper.toEntity(customerDTO)));
         }
-
-        return customerMapper.toDTO(customerRepository.save(customerMapper.toEntity(customerDTO)));
+        catch (SystemException e){
+            throw new SystemException("Customer eklenemedi");
+        }
     }
 
     public CustomerDTO updateCustomer(CustomerDTO customerDTO,int id){
-        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst().get();
-        if(customer.equals(null)){
-            return null;
-        }
+        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst()
+                .orElseThrow(()->new SystemException("Customer not found"));
 
-        //helper a al
-        if (!customerDTO.getFirstName().equals(customer.getFirstName())){
-            customer.setFirstName(customerDTO.getFirstName());
-        }
-        if(!customerDTO.getLastName().equals(customer.getLastName())){
-            customer.setLastName(customerDTO.getLastName());
-        }
-        if (!customerDTO.getPhoneNumber().equals(customer.getPhoneNumber())){
-            customer.setPhoneNumber(customerDTO.getPhoneNumber());
-        }
-        if (!customerDTO.getAddress().equals(customer.getAddress())){
-            customer.setAddress(customerDTO.getAddress());
-        }
+        EntityHelper.updateCustomerHelper(customer,customerDTO);
 
         customerRepository.saveAndFlush(customer);
 
@@ -62,20 +67,19 @@ public class CustomerService {
     }
 
     public String deleteCustomer(int id){
-        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst().get();
-        if(customer.equals(null)){
-            return null;
-        }
 
-        customerRepository.deleteById(id);
+        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst()
+                .orElseThrow(()->new SystemException("Customer not found"));
 
-        return "Customer Deleted";
+        customerRepository.deleteById(customer.getId());
+
+        return "ID: "+id+" has deleted";
     }
 
     public CustomerWrapperList getCustomersMore(Pageable pageable){
         Page<Customer> customerPage = customerRepository.findAll(pageable);
         if(customerPage.equals(null)){
-            return null;
+            throw new SystemException("pageable is null");
         }
 
         List<Customer> customerList = customerPage.getContent();
@@ -89,6 +93,5 @@ public class CustomerService {
         return customerWrapperList;
 
     }
-
 
 }

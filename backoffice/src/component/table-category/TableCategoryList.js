@@ -54,6 +54,7 @@ class TableCategoryList extends Component {
                             <th>Table Category ID</th>
                             <th>Table Category Name</th>
                             <th>Table Amount</th>
+                            <th>Table Image</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -65,6 +66,7 @@ class TableCategoryList extends Component {
                                         <td>{tableCategory.id}</td>
                                         <td>{tableCategory.name}</td>
                                         <td>{tableCategory.amount}</td>
+                                        <td><img src={'data:image/png;base64,' + tableCategory.mediaDTO.fileContent}  width="100" style={{margin: 10}}></img></td>
                                         <td>
                                             <button onClick={()=>this.updatedTableCategory(tableCategory.id)}
                                                     className="btn btn-info" style={{margin:"5px"}}>Update</button>

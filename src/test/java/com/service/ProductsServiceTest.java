@@ -12,20 +12,24 @@ import com.builder.ProductsBuilder;
 import com.entity.Categories;
 import com.entity.Media;
 import com.entity.Products;
+import com.mapper.ProductsMapper;
 import com.repository.CategoriesRepository;
 import com.repository.MediaRepository;
 import com.repository.ProductsRepository;
 import com.service.ProductsService;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,7 +45,8 @@ public class ProductsServiceTest {
 
     @Mock
     private ProductsRepository productsRepository;
-
+    @Mock
+    private ProductsMapper productsMapper;
 
     @Mock
     private CategoriesRepository categoriesRepository;
@@ -93,20 +98,20 @@ public class ProductsServiceTest {
         products= (Products) productsBuilder.id(1).name("corba").brand("sıcak").media(media).categoriesList(categoriesList).build();
         productsDTO= (ProductsDTO) productsDTOBuilder.id(1).name("corba").brand("sıcak").mediaDTO(mediaDTO).categoriesDTOList(categoriesDTOList).build();
     }
-//
-//    @Test
-//    public void shouldGetProducts(){
-//        Mockito.when(productsRepository.findAll()).thenReturn(productsList);
-//
-//        List<ProductsDTO> productsDTOList=productsService.listProducts();
-//
-//        assertNotNull(productsDTOList);
-//    }
-//
+
+    @Test
+    public void shouldGetProducts(){
+        Mockito.when(productsRepository.findAll()).thenReturn(productsList);
+
+        List<ProductsDTO> productsDTOList=productsService.listProducts();
+
+        assertNotNull(productsDTOList);
+    }
+
 //    @Test
 //    public void shouldGetProductsById(){
 //        int id=1;
-//        Mockito.when(productsRepository.findById(any())).thenReturn(Optional.of(ProductsDTOConverter.productsDTOConvertToProducts(productsDTO)));
+//        Mockito.when(productsRepository.findById(any())).thenReturn(Optional.of(productsMapper.toEntity()));
 //
 //        ProductsDTO res=productsService.listProductsById(id);
 //

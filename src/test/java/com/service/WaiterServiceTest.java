@@ -86,7 +86,7 @@ public class WaiterServiceTest {
 //        WaiterDTO dto = WaiterMapper.INSTANCE.toDTO(waiter);//WaiterConverter.getWaiterById(waiter);
 //
 //        assertEquals(res.getId(),dto.getId());
-        Mockito.when(waiterRepository.findById(id)).thenReturn(Optional.of(WaiterMapper.INSTANCE.toEntity(waiterDTO)));
+        Mockito.when(waiterRepository.findAll().stream().filter(t -> t.getId() == id).findFirst()).thenReturn(Optional.of(WaiterMapper.INSTANCE.toEntity(waiterDTO)));
         WaiterDTO res= waiterService.getWaiterById(id);
         assertNotNull(res);
         assertEquals(res.getId(),waiterDTO.getId());

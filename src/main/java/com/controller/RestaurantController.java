@@ -17,48 +17,6 @@ public class RestaurantController {
     @Autowired
     private BackOfficeService service;
 
-//    //product list
-//    @GetMapping("/list")
-//    public List<ProductDTO> getProduct(){
-//        return service.getAllProduct();
-//    }
-//
-//    //product list id
-//    @GetMapping("/list/{id}")
-//    public ProductDTO getSelectedProduct(@PathVariable int id){
-//        return service.getSelectedProduct(id);
-//    }
-//
-//    //product add
-//    @PostMapping("/add")
-//    private Product addProduct(@RequestBody Product product){
-//        return service.addProduct(product);
-//    }
-//
-//    //product update
-//    @PutMapping("/update/{id}")
-//    public List<ProductDTO> updateProduct(@PathVariable int id,@RequestBody ProductDTO product){
-//        return service.updateProduct(id, product);
-//    }
-//
-//    //product delete
-//    @DeleteMapping("/delete/{id}")
-//    public void deleteProduct(@PathVariable int id){
-//        service.deleteProduct(id);
-//    }
-
-    //product category name
-//    @GetMapping("/category")
-//    private List<String> getCategory(){
-//        return service.getProductCategory();
-//    }
-//
-//    //product list by category-string
-//    @GetMapping("/list/category")
-//    private List<Product> getProductByCategory(@RequestParam String category){
-//        return service.getProductByCategory(category);
-//    }
-
     //basket complete
     @PostMapping("/basket")
     public String addSales(@RequestBody List<OrderDTO> list){

@@ -108,8 +108,6 @@ class TableList extends Component {
         sessionStorage.setItem("tbl", this.state.tableCategory + ' Masa '+no + '!');
     }
 
-
-
     render() {
 
         return (
@@ -146,7 +144,12 @@ class TableList extends Component {
                                        this.state.table_category_list.map(
                                            catList =>
                                                <button className="btn btn-info btn-block"
-                                                       onClick={() => this.getAllTables(catList)}> {catList.name}</button>
+                                                       onClick={() => this.getAllTables(catList)}> {catList.name}
+                                                       <br/>
+                                                   <img src={'data:image/png;base64,' + catList.mediaDTO.fileContent}
+                                                        width="50" style={{margin: 10}}/>
+                                               </button>
+
                                        )
                                    }
                                </div>

@@ -9,7 +9,7 @@
                 <constraints nullable="false" foreignKeyName="user_id_fk" references="users(id)" primaryKey="true"/>
             </column>
             <column name="role_id" type="int(10)">
-                <constraints nullable="false" foreignKeyName="role_id_fk" references="roles(id)" primaryKey="true"/>
+                <constraints nullable="false" foreignKeyName="role_id_fk" references="tb_role(id)" primaryKey="true"/>
             </column>
         </createTable>
         <rollback>

@@ -1,8 +1,11 @@
 package com.service;
 
 import com.DTO.CategoriesDTO;
+import com.configuration.LocaleConfig;
 import com.converter.CategoriesDTOConverter;
 import com.entity.Categories;
+import com.exception.SystemException;
+import com.helper.EntityHelper;
 import com.mapper.CategoriesMapper;
 import com.mapper.ProductsMapper;
 import com.repository.CategoriesRepository;
@@ -14,6 +17,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class CategoriesService {
@@ -32,29 +36,39 @@ public class CategoriesService {
 //        return CategoriesDTOConverter.listCategories(categoriesList);
         return categoriesMapper.toDTOList(categoriesRepository.findAll());
     }
-    @Cacheable(value = "CategoriesCache", key = "'CATEGORIES_CACHE_BY_ID'.concat(#id)",condition = "#id>=2")
+    @Cacheable(value = "CategoriesCache", key = "'CATEGORIES_CACHE_BY_ID'.concat(#id)")
     public CategoriesDTO listCategoriesById(int id){
 //        Categories categories=categoriesRepository.findById(id).get();
 //        return CategoriesDTOConverter.categoriesConvertToCategoriesDTO(categories);
-        return categoriesMapper.toDTO(categoriesRepository.findById(id).get());
+        return categoriesMapper.toDTO(categoriesRepository.findById(id).stream().filter(cat->cat.getId()==id).findAny()
+                .orElseThrow(()->new SystemException("ID Bulunamadı")));
     }
-    @CachePut(cacheNames = "CategoriesCache")
+    @CacheEvict(cacheNames = "CategoriesCache",allEntries = true)
     public CategoriesDTO addCategories(CategoriesDTO categoriesDTO){
 //        Categories categories=categoriesRepository.save(CategoriesDTOConverter.addCategories(categoriesDTO));
 //        return CategoriesDTOConverter.categoriesConvertToCategoriesDTO(categories);
         return categoriesMapper.toDTO(categoriesRepository.save(categoriesMapper.toEntity(categoriesDTO)));
     }
-    @CachePut(cacheNames = "CategoriesCache")
+    @CacheEvict(cacheNames = "CategoriesCache",allEntries = true)
     public CategoriesDTO updateCategories(CategoriesDTO categoriesDTO){
 //        Categories categories=categoriesRepository.findById(categoriesDTO.getId()).get();
 //        categories.setProducts(null);
 //        categoriesRepository.saveAndFlush(CategoriesDTOConverter.updateCategories(categoriesDTO));
 //        return CategoriesDTOConverter.categoriesConvertToCategoriesDTO(categories);
-        return categoriesMapper.toDTO(categoriesRepository.saveAndFlush(categoriesMapper.toEntity(categoriesDTO)));
+//        return categoriesMapper.toDTO(categoriesRepository.saveAndFlush(categoriesMapper.toEntity(categoriesDTO)));
+        Categories categories=categoriesRepository.findById(categoriesDTO.getId())
+                .orElseThrow(()->new SystemException("Category not found"));
+
+        EntityHelper.updateCategoriesHelper(categories,categoriesDTO);
+
+        categoriesRepository.saveAndFlush(categories);
+
+        return categoriesMapper.toDTO(categories);
     }
-    @CacheEvict(cacheNames = "CategoriesCache")
-    public String deleteCategories(int id){
-        Categories categories=categoriesRepository.findById(id).get();
+    @CacheEvict(cacheNames = "CategoriesCache",allEntries = true)
+    public String deleteCategories(int id,String locale){
+        Categories categories=categoriesRepository.findById(id).orElseThrow(()->
+                new SystemException(LocaleConfig.messageSource().getMessage("system.exception.txt",null,new Locale(locale))));
         categories.setProducts(null);
         categoriesRepository.deleteById(categories.getId());
         return "Categories Deleted";

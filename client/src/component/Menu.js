@@ -120,7 +120,9 @@ class Menu extends Component {
                             this.state.customerList.map(
                                 customer =>
                                     <button className="btn btn-secondary btn-block"
-                                            onClick={() => this.saveLocalStorageCustomer(customer)}>{customer.firstName} {customer.lastName}</button>
+                                            onClick={() => this.saveLocalStorageCustomer(customer)}>{customer.firstName} {customer.lastName}
+                                        <img style={{marginLeft:"10px"}} src={'data:image/png;base64,' + customer.mediaDTO.fileContent} width="35" height="35"></img>
+                                    </button>
                             )
                         }
                         </Modal.Body>

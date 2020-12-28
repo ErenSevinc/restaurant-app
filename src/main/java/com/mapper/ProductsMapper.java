@@ -13,6 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProductsMapper {
     ProductsMapper INSTANCE= null;  // Mappers.getMapper(CategoriesMapper.class);
+    ProductsMapper mINSTANCE= Mappers.getMapper(ProductsMapper.class);
 
     @Mappings({
             @Mapping(source = "categories",target = "categoriesDTOList"),

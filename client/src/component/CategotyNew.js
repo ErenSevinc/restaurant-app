@@ -50,9 +50,9 @@ class CategotyNew extends Component {
         // ClientService.getProducts().then((res) => {
         //     this.setState({products: res.data})
         // });
-        ClientService.getCatProd(this.state.categoriesId,0).then((res) => {
-            this.setState({products: res.data.productsDTOList,hasNext:res.data.hasNext})
-        });
+        // ClientService.getCatProd(this.state.categoriesId,0).then((res) => {
+        //     this.setState({products: res.data.productsDTOList,hasNext:res.data.hasNext})
+        // });
         this.setState({orders: CategotyNew.getOrderFromStorage()})
         let orders = CategotyNew.getOrderFromStorage();
         if (orders.length > 0) {
@@ -74,14 +74,14 @@ class CategotyNew extends Component {
             scrollTop:scrollTop
         });
         console.log(scrollTop);
-            if (scrollTop > 1370 * this.state.counter) {
+            if (scrollTop > 1369*this.state.counter) {
                 console.log(this.state.hasNext);
                 if (this.state.hasNext) {
                     this.state.pageNumber += 1;
                     this.myRef.current.scrollTop = this.state.scrollTop;
                     this.state.counter += 1;
                     this.state.hasNext = !this.state.hasNext;
-                    ClientService.getCatProd(this.state.categoriesId, this.state.pageNumber).then((res) => {
+                    ClientService.getCatProd(this.state.categoriesId, this.state.pageNumber,10).then((res) => {
                         this.setState({hasNext: res.data.hasNext})
                         for (let i = 0; i < res.data.productsDTOList.length; i++) {
                             this.state.products.push(res.data.productsDTOList[i]);
@@ -101,11 +101,12 @@ class CategotyNew extends Component {
     //     this.render();
     // }
     getCatProduct(id) {
-        ClientService.getCatProd(id,0).then((res) => {
+        this.setState({categoriesId:id,scrollTop:0,counter:1});
+        ClientService.getCatProd(id,0,10).then((res) => {
                     this.setState({products: res.data.productsDTOList})
                 });
-        this.setState({categoriesId:id});
-        this.render();
+
+        // this.render();
     }
 
     getProductList = (p) => {

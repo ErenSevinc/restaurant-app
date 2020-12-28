@@ -4,6 +4,7 @@ import com.DTO.CategoriesDTO;
 import com.DTO.ProductsDTO;
 import com.DTO.ProductsSliceWrapperDTO;
 import com.DTO.ProductsWrapperList;
+import com.configuration.LocaleConfig;
 import com.service.CategoriesService;
 import com.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -37,21 +39,21 @@ public class CategoryProductController {
     }
 
     @PostMapping("/add-categories")
-    public String addCategories(@RequestBody CategoriesDTO categoriesDTO){
+    public String addCategories(@RequestBody CategoriesDTO categoriesDTO,@RequestHeader("Accept-Language")String locale){
         categoriesService.addCategories(categoriesDTO);
-        return "Categories Added";
+        return LocaleConfig.messageSource().getMessage("categories.add.txt",null,new Locale(locale));
     }
 
     @PutMapping("/update-categories")
-    public String updateCategories(@RequestBody CategoriesDTO categoriesDTO){
+    public String updateCategories(@RequestBody CategoriesDTO categoriesDTO,@RequestHeader("Accept-Language")String locale){
         categoriesService.updateCategories(categoriesDTO);
-        return "Categories Updated";
+        return LocaleConfig.messageSource().getMessage("categories.update.txt",null,new Locale(locale));
     }
 
     @DeleteMapping("/delete-categories/{id}")
-    public String deleteCategories(@PathVariable int id){
-        categoriesService.deleteCategories(id);
-        return "Categories Deleted";
+    public String deleteCategories(@PathVariable int id,@RequestHeader("Accept-Language")String locale){
+        categoriesService.deleteCategories(id,locale);
+        return LocaleConfig.messageSource().getMessage("categories.delete.txt",null,new Locale(locale));
     }
 
     @GetMapping("/list-products")
@@ -91,9 +93,9 @@ public class CategoryProductController {
 
 
     @DeleteMapping("/delete-products/{id}")
-    public String deleteProducts(@PathVariable int id){
+    public String deleteProducts(@PathVariable int id,@RequestHeader("Accept-Language")String locale){
         productsService.deleteProducts(id);
-        return "Products Deleted";
+        return LocaleConfig.messageSource().getMessage("products.delete.txt",null,new Locale(locale));
     }
 
 

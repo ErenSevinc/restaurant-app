@@ -9,9 +9,11 @@ import com.builder.DTOBuilder.MediaDTOBuilder;
 import com.builder.DTOBuilder.ProductsDTOBuilder;
 import com.builder.MediaBuilder;
 import com.builder.ProductsBuilder;
+import com.configuration.LocaleConfig;
 import com.entity.Categories;
 import com.entity.Media;
 import com.entity.Products;
+import com.mapper.CategoriesMapper;
 import com.repository.MediaRepository;
 import com.service.CategoriesService;
 import com.service.ProductsService;
@@ -27,6 +29,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,6 +40,8 @@ public class CategoryProductControllerTest {
     @InjectMocks
     private CategoryProductController categoryProductController;
 
+    @Mock
+    private CategoriesMapper categoriesMapper;
     @Mock
     private ProductsService productsService;
     private Products products = new Products();
@@ -105,28 +110,32 @@ public class CategoryProductControllerTest {
     }
     @Test
     public void shouldAddCategories(){
+        String locale="categories.add.txt";
         Mockito.when(categoriesService.addCategories(any())).thenReturn(categoriesDTO);
 
-        String res= categoryProductController.addCategories(categoriesDTO);
+        String res= categoryProductController.addCategories(categoriesDTO,locale);
 
         assertNotNull(res);
-        assertEquals(res,"Categories Added");
+        assertEquals(res,"Kategori Eklendi");
     }
     @Test
     public void shouldDeleteCategories(){
         int id=1;
+        String locale="system.exception.txt";
 
-        String res=categoryProductController.deleteCategories(id);
+        String res=categoryProductController.deleteCategories(id,locale);
 
-        assertEquals(res,"Categories Deleted");
+        assertEquals(res,"Kategori Silindi");
     }
     @Test
     public void shouldUpdateCategories(){
+        String locale="categories.update.txt";
+
         Mockito.when(categoriesService.updateCategories(categoriesDTO)).thenReturn(categoriesDTO);
-        String res=categoryProductController.updateCategories(categoriesDTO);
+        String res=categoryProductController.updateCategories(categoriesDTO,locale);
 
         assertNotNull(res);
-        assertEquals(res,"Categories Updated");
+        assertEquals(res,"Kategori Güncellendi");
     }
     @Test
     public void shouldListProducts(){
@@ -151,21 +160,22 @@ public class CategoryProductControllerTest {
         assertNotNull(res);
         assertEquals(res,productsDTO);
     }
-//    @Test
-//    public void shouldUpdateProducts(){
-//        Mockito.when(productsService.updateProducts(any())).thenReturn(productsDTO);
-//        ProductsDTO res= categoryProductController.updateProducts(productsDTO);
-//
-//        assertNotNull(res);
-//        assertEquals(res,productsDTO);
-//    }
+    @Test
+    public void shouldUpdateProducts(){
+        Mockito.when(productsService.updateProducts(any())).thenReturn(productsDTO);
+        ProductsDTO res= categoryProductController.updateProducts(productsDTO);
+
+        assertNotNull(res);
+        assertEquals(res,productsDTO);
+    }
     @Test
     public void shouldDeleteProducts(){
         int id=1;
+        String locale="products.delete.txt";
 
-        String res=categoryProductController.deleteProducts(id);
+        String res=categoryProductController.deleteProducts(id,locale);
 
-        assertEquals(res,"Products Deleted");
+        assertEquals(res, LocaleConfig.messageSource().getMessage("products.delete.txt",null,new Locale(locale)));
     }
     @Test
     public void shouldListProductsByCategories(){

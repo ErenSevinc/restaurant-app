@@ -24,7 +24,7 @@ public class Waiter extends BaseEntity {
     private String urlToImage;
     private double salary;
 
-    @OneToOne(cascade =CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "media_id")
     private Media media;
 

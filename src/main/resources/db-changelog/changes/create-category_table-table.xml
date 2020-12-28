@@ -8,6 +8,7 @@
         </column>
         <column name="name" type="VARCHAR(255)"/>
         <column name="amount" type="int(10)"/>
+        <column name="media_id" type="int(10)"/>
     </createTable>
     <rollback>
         <dropTable tableName="category_table"/>
@@ -19,11 +20,13 @@
         <column name="id" valueNumeric="1"/>
         <column name="name" value="SALON"/>
         <column name="amount" valueNumeric="10"/>
+        <column name="media_id" value="4"/>
     </insert>
     <insert tableName="category_table">
         <column name="id" valueNumeric="2"/>
         <column name="name" value="BALKON"/>
         <column name="amount" valueNumeric="5"/>
+        <column name="media_id" value="5"/>
     </insert>
 
 </changeSet>

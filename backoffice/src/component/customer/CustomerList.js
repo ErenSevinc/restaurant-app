@@ -104,7 +104,8 @@ class CustomerList extends Component {
                         <tr>
                             <th>Customer Name </th>
                             <th>Customer PhoneNumber</th>
-                            <th>Product Address</th>
+                            <th>Customer Address</th>
+                            <th>Customer Image</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -116,6 +117,7 @@ class CustomerList extends Component {
                                         <td>{customer.firstName} {customer.lastName}</td>
                                         <td>{customer.phoneNumber}</td>
                                         <td>{customer.address}</td>
+                                        <td><img src={'data:image/png;base64,' + customer.mediaDTO.fileContent} width="150" height="150"/></td>
                                         <td>
                                             <button onClick={() => this.updatedCustomer(customer.id)}
                                                     className="btn btn-info" style={{margin: "5px"}}>Update

@@ -1,11 +1,13 @@
 package com.builder;
 
 import com.entity.CategoryTable;
+import com.entity.Media;
 
 public class CategoryTableBuilder extends Builder {
     private int id;
     private String name;
     private int amount;
+    private Media media;
 
     public CategoryTableBuilder id(int id){
         this.id=id;
@@ -19,6 +21,10 @@ public class CategoryTableBuilder extends Builder {
         this.amount=amount;
         return this;
     }
+    public CategoryTableBuilder media(Media media){
+        this.media=media;
+        return this;
+    }
 
     @Override
     public CategoryTable build() {
@@ -26,6 +32,7 @@ public class CategoryTableBuilder extends Builder {
         categoryTable.setId(this.id);
         categoryTable.setName(this.name);
         categoryTable.setAmount(this.amount);
+        categoryTable.setMedia(this.media);
         return categoryTable;
     }
 }

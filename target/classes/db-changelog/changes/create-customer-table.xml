@@ -10,6 +10,7 @@
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="phone_number" type="VARCHAR(255)"/>
             <column name="address" type="VARCHAR(255)"/>
+            <column name="media_id" type="int(10)"/>
         </createTable>
         <rollback>
             <dropTable tableName="customer"/>

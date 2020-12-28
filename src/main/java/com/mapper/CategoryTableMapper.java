@@ -14,8 +14,10 @@ public interface CategoryTableMapper {
 
     List<CategoryTableDTO> toDTOList (List<CategoryTable> categoryTableList);
 
+    @Mapping(source = "media",target = "mediaDTO")
     CategoryTableDTO toDTO (CategoryTable categoryTable);
 
+    @Mapping(source = "mediaDTO",target = "media")
     CategoryTable toEntity(CategoryTableDTO categoryTableDTO);
 
 }

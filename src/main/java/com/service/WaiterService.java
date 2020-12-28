@@ -3,6 +3,8 @@ package com.service;
 import com.DTO.WaiterDTO;
 import com.converter.WaiterConverter;
 import com.entity.Waiter;
+import com.exception.SystemException;
+import com.helper.EntityHelper;
 import com.mapper.WaiterMapper;
 import com.repository.MediaRepository;
 import com.repository.WaiterRepository;
@@ -25,9 +27,10 @@ public class WaiterService {
         return WaiterMapper.INSTANCE.toDTOList(waiterRepository.findAll());
     }
     public WaiterDTO getWaiterById(int id){
-//        Waiter waiter=waiterRepository.findAll().stream().filter(t -> t.getId() == id).findFirst().get();
+        Waiter waiter=waiterRepository.findAll().stream().filter(t -> t.getId() == id).findFirst()
+                .orElseThrow(()->new SystemException("ID Bulunamadı"));
 //        return WaiterConverter.getWaiterById(waiter);
-        return WaiterMapper.INSTANCE.toDTO(waiterRepository.findById(id).get());
+        return WaiterMapper.INSTANCE.toDTO(waiter);
     }
     public String addWaiter(WaiterDTO waiterDTO){
 //        waiterRepository.save(WaiterConverter.addWaiter(waiterDTO));
@@ -35,11 +38,19 @@ public class WaiterService {
         return "Waiter Added";
     }
     public WaiterDTO updateWaiter(WaiterDTO waiterDTO){
-       return WaiterMapper.INSTANCE.toDTO(waiterRepository.saveAndFlush(WaiterMapper.INSTANCE.toEntity(waiterDTO)));
-//        return waiterDTO;
+        Waiter waiter=waiterRepository.findById(waiterDTO.getId()).orElseThrow(()->new SystemException("Waiter not found"));
+
+        EntityHelper.updateWaiterHelper(waiter,waiterDTO);
+
+        waiterRepository.saveAndFlush(waiter);
+
+       return WaiterMapper.INSTANCE.toDTO(waiter);
     }
     public List<WaiterDTO> deleteWaiter(int id){
-        waiterRepository.deleteById(id);
+        Waiter waiter=waiterRepository.findAll().stream().filter(t -> t.getId() == id).findFirst()
+                .orElseThrow(()->new SystemException("ID Bulunamadı"));
+
+        waiterRepository.deleteById(waiter.getId());
         return getAllWaiter();
     }
 }

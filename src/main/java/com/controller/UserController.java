@@ -2,16 +2,19 @@ package com.controller;
 
 import com.DTO.RoleDTO;
 import com.DTO.UsersDTO;
+import com.configuration.LocaleConfig;
 import com.entity.Role;
 import com.repository.RoleRepository;
 import com.repository.UserRepository;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/users")
@@ -20,15 +23,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-
-
 //    @GetMapping("/add")
 //    Role role = roleRepository.findById(1).get();
 
     @GetMapping("/login")
-    public void loginAdmin(){
-
+    public String loginAdmin(@RequestHeader("Accept-Language")String locale){
+        return LocaleConfig.messageSource().getMessage("hello.txt",null,new Locale(locale));
     }
 
     @GetMapping("/list")
@@ -40,10 +40,11 @@ public class UserController {
     public UsersDTO listUsersById(@PathVariable int id){
         return userService.getSelectedUser(id);
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
-    public String addUser(@RequestBody UsersDTO usersDTO){
-        userService.addUser(usersDTO);
-        return "User Added";
+    public UsersDTO addUser(@RequestBody UsersDTO usersDTO){
+        return userService.addUser(usersDTO);
     }
     @PutMapping("/update")
     public String updateUser(@RequestBody UsersDTO usersDTO){

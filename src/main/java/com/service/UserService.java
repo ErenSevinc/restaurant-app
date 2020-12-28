@@ -6,6 +6,7 @@ import com.converter.RoleDTOConverter;
 import com.converter.UserDTOConverter;
 import com.entity.Role;
 import com.entity.User;
+import com.exception.SystemException;
 import com.mapper.RoleMapper;
 import com.mapper.UsersMapper;
 import com.repository.RoleRepository;
@@ -31,36 +32,22 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-
     public List<UsersDTO> listUsers(List<UsersDTO> usersDTOList){
-//        List<User> usrList=userRepository.findAll();
 //        userRepository.findAll().iterator().forEachRemaining(usersDTOList::add);
-//        return UserDTOConverter.listUsers(usrList);
         return usersMapper.toDTOList(userRepository.findAll());
     }
     public UsersDTO getSelectedUser(int id){
 //        User user=userRepository.findById(id).get();
 //        return UserDTOConverter.addUserDTORoleIDToRole(user);
-        return usersMapper.toDTO(userRepository.findById(id).get());
+        return usersMapper.toDTO(userRepository.findById(id).orElseThrow(()->new SystemException("User not found")));
     }
 
     public UsersDTO addUser(UsersDTO usersDTO){
-//        User user=userRepository.save(UserDTOConverter.addUserRoleIDToDTO(usersDTO));
-//        return UserDTOConverter.addUserDTORoleIDToRole(user);
+        usersDTO.setPassword(encoder.encode(usersDTO.getPassword()));
 
-//        User user = UserDTOConverter.addUserRoleIDToDTO(usersDTO);
-//        for(int i=0;i<usersDTO.getRolesDTO().size();i++){
-//            Role role=roleRepository.findById(usersDTO.getRolesDTO().get(i).getId()).get();
-//            user.getRoles().add(role);
-//        }
-//        userRepository.save(user);
-//        return UserDTOConverter.addUserDTORoleIDToRole(user);
         User user = usersMapper.toEntity(usersDTO);
-        for (int i=0;i<usersDTO.getRolesDTO().size();i++){
-            Role role = roleRepository.findById(usersDTO.getRolesDTO().get(i).getId()).get();
-            user.getRoles().add(role);
-        }
-        return usersMapper.toDTO(userRepository.save(user));
+        userRepository.save(user);
+        return usersMapper.toDTO(user);
     }
     public UsersDTO updateUser(UsersDTO usersDTO){
         Role role=new Role();
@@ -79,7 +66,7 @@ public class UserService {
     }
 
     public String deleteUser(int id){
-        User user= userRepository.findById(id).get();
+        User user= userRepository.findById(id).orElseThrow(()->new SystemException("User not found"));
         user.setRoles(null);
         userRepository.delete(user);
 

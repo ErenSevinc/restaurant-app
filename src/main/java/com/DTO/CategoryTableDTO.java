@@ -11,5 +11,6 @@ public class CategoryTableDTO {
     private int id;
     private String name;
     private int amount;
+    private MediaDTO mediaDTO;
 
 }

@@ -2,6 +2,7 @@ package com.controller;
 
 import com.DTO.CustomerDTO;
 import com.DTO.CustomerWrapperList;
+import com.exception.BusinessRuleException;
 import com.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -23,11 +24,17 @@ public class CustomerController {
 
     @PostMapping()
     public CustomerDTO addCustomer(@RequestBody CustomerDTO customerDTO){
+        if (customerDTO.getLastName() == null){
+            throw new BusinessRuleException("Customer soyadı null olamaz veya hatalı geldi...");
+        }
         return customerService.addCustomer(customerDTO);
     }
 
     @PutMapping("/{id}")
     public CustomerDTO updateCustomer(@RequestBody CustomerDTO customerDTO,@PathVariable int id){
+        if(customerDTO == null){
+            throw new BusinessRuleException("ID veya Customer null olamaz");
+        }
         return customerService.updateCustomer(customerDTO,id);
     }
 

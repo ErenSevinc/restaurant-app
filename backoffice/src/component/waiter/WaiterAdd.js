@@ -32,7 +32,6 @@ class WaiterAdd extends Component {
         MediaService.getImage().then(res=>{
             this.setState({image_List:res.data})
         });
-
     }
     saveWaiter =(e)=>{
         e.preventDefault();

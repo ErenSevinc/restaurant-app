@@ -3,6 +3,8 @@ package com.service;
 import com.DTO.CategoryTableDTO;
 import com.converter.CategoryTableConverter;
 import com.entity.CategoryTable;
+import com.exception.SystemException;
+import com.helper.EntityHelper;
 import com.mapper.CategoriesMapper;
 import com.mapper.CategoryTableMapper;
 import com.mapper.WaiterMapper;
@@ -25,7 +27,8 @@ public class CategoryTableService {
     }
 
     public List<CategoryTableDTO> deleteCategory(int id) {
-        repository.deleteById(id);
+        CategoryTable table=repository.findById(id).orElseThrow(()->new SystemException("Table not found"));
+        repository.delete(table);
         return getAllCategory();
     }
 
@@ -33,19 +36,20 @@ public class CategoryTableService {
         repository.save(CategoryTableMapper.INSTANCE.toEntity(categoryDTO));
         return "Added";
     }
-    public List<CategoryTableDTO> updateCategory (CategoryTableDTO categoryTableDTO,int id){
-//        CategoryTable cat=repository.findById(id).get();
-//        repository.save(cat);
-        //CategoryTableDTO dto=CategoryTableMapper.INSTANCE.toDTO(repository.findById(categoryTableDTO.getId()).get());
-        CategoryTableMapper.INSTANCE.toDTO(repository.saveAndFlush(CategoryTableMapper.INSTANCE.toEntity(categoryTableDTO)));
-        //repository.saveAndFlush(CategoryTableConverter.updateCategory(cat,categoryTableDTO));
+    public CategoryTableDTO updateCategory (CategoryTableDTO categoryTableDTO, int id){
+        CategoryTable categoryTable=repository.findById(id).orElseThrow(()->new SystemException("Table not found"));
 
-        return getAllCategory();
+        EntityHelper.updateCategoryTableHelper(categoryTable,categoryTableDTO);
+
+        repository.saveAndFlush(categoryTable);
+
+        return CategoryTableMapper.INSTANCE.toDTO(categoryTable);
     }
     public CategoryTableDTO getCategoryById(int id) {
 //        CategoryTable catTbl = repository.findAll().stream().filter(t -> t.getId() == id).findFirst().get();
 //        return CategoryTableConverter.getCategoryById(catTbl);
-        return CategoryTableMapper.INSTANCE.toDTO(repository.findById(id).get());
+        return CategoryTableMapper.INSTANCE.toDTO(repository.findById(id)
+                .orElseThrow(()->new SystemException("Table not found")));
     }
 
 }

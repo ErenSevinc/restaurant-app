@@ -104,7 +104,8 @@ public class CategoriesServiceTest {
     @Test
     public void shouldGetSelectedCategories(){
         int id=1;
-        Mockito.when(categoriesRepository.findById(any())).thenReturn(Optional.of(CategoriesDTOConverter.categoriesDTOConvertToCategories(categoriesDTO)));
+        String locale="system.exception.txt";
+        Mockito.when(categoriesRepository.findById(any())).thenReturn(Optional.of(CategoriesMapper.mINSTANCE.toEntity(categoriesDTO)));
 
         CategoriesDTO res=categoriesService.listCategoriesById(id);
 
@@ -124,9 +125,10 @@ public class CategoriesServiceTest {
     @Test
     public void shouldDeleteCategories(){
         int id=1;
+        String locale="system.exception.txt";
         Mockito.when(categoriesRepository.findById(any())).thenReturn(Optional.of(CategoriesDTOConverter.categoriesDTOConvertToCategories(categoriesDTO)));
 
-        String res=categoriesService.deleteCategories(id);
+        String res=categoriesService.deleteCategories(id,locale);
 
         assertEquals(res,"Categories Deleted");
 

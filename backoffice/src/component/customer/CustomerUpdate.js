@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Loader from "../../Loader";
 import CustomerService from "../../service/CustomerService";
-import ProductService from "../../service/ProductService";
+import MediaService from "../../service/MediaService";
 
 class CustomerUpdate extends Component {
     constructor(props) {
@@ -12,6 +12,8 @@ class CustomerUpdate extends Component {
             lastName:'',
             phoneNumber:'',
             address:'',
+            image_List:[],
+            media:null,
 
             loaded:false,
         }
@@ -42,10 +44,14 @@ class CustomerUpdate extends Component {
                 lastName: customer.lastName,
                 phoneNumber: customer.phoneNumber,
                 address:customer.address,
+                media:customer.mediaDTO
             });
             if (res.status == '200') {
                 this.setState({loaded: !this.state.loaded});
             }
+        });
+        MediaService.getImage(token).then(res=>{
+            this.setState({image_List:res.data})
         });
     }
     updateCustomer =(e)=>{
@@ -57,12 +63,22 @@ class CustomerUpdate extends Component {
             lastName: this.state.lastName,
             phoneNumber: this.state.phoneNumber,
             address:this.state.address,
+            mediaDTO:this.state.media,
         };
         CustomerService.updateCustomer(token,customer,this.state.id).then(res =>{
             this.props.history.push('/customer');
             if(res.status == '200'){
                 this.setState({loaded:!this.state.loaded});
             }
+        });
+    }
+    selectImage=(e)=>{
+        this.setState({media:e})
+        console.log(e);
+    }
+    onClickCategory=(e)=> {
+        this.setState({
+            media: e
         });
     }
     cancel(){
@@ -95,6 +111,25 @@ class CustomerUpdate extends Component {
                                     <label> Customer Address: </label>
                                     <input placeholder="Customer Address" name="address" className="form-control"
                                            value={this.state.address} onChange={this.changeAddressHandler}/>
+                                </div>
+                                <div className="dropdown show">
+                                    <a className="btn btn-secondary btn-block dropdown-toggle" href="#" role="button"
+                                       id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                       aria-expanded="false">
+                                    </a>
+                                    <div className="dropdown-menu btn-block clm" aria-labelledby="dropdownMenuLink">
+                                        {
+                                            this.state.image_List.map(
+                                                image=>
+                                                    <a className="dropdown-item" onClick={this.onClickCategory.bind(this,image)}>{image.name}
+                                                        <br/>
+                                                        <img src={'data:image/png;base64,' + image.fileContent} width="45" height="45"></img>
+                                                    </a>
+
+                                            )
+                                        }
+
+                                    </div>
                                 </div>
                                 <br/>
                                 <button className="btn btn-success" onClick={this.updateCustomer}>Update</button>

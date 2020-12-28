@@ -1,15 +1,18 @@
 package com.mapper;
 
 import com.DTO.CustomerDTO;
+import com.DTO.MediaDTO;
 import com.entity.Customer;
+import com.entity.Media;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-12-25T02:02:33+0300",
+    date = "2020-12-27T21:43:36+0300",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 11.0.8 (Oracle Corporation)"
 )
 @Component
@@ -51,6 +54,7 @@ public class CustomerMapperImpl implements CustomerMapper {
 
         CustomerDTO customerDTO = new CustomerDTO();
 
+        customerDTO.setMediaDTO( mediaToMediaDTO( customer.getMedia() ) );
         customerDTO.setId( customer.getId() );
         customerDTO.setFirstName( customer.getFirstName() );
         customerDTO.setLastName( customer.getLastName() );
@@ -68,6 +72,7 @@ public class CustomerMapperImpl implements CustomerMapper {
 
         Customer customer = new Customer();
 
+        customer.setMedia( mediaDTOToMedia( customerDTO.getMediaDTO() ) );
         customer.setId( customerDTO.getId() );
         customer.setFirstName( customerDTO.getFirstName() );
         customer.setLastName( customerDTO.getLastName() );
@@ -75,5 +80,39 @@ public class CustomerMapperImpl implements CustomerMapper {
         customer.setAddress( customerDTO.getAddress() );
 
         return customer;
+    }
+
+    protected MediaDTO mediaToMediaDTO(Media media) {
+        if ( media == null ) {
+            return null;
+        }
+
+        MediaDTO mediaDTO = new MediaDTO();
+
+        mediaDTO.setId( media.getId() );
+        mediaDTO.setName( media.getName() );
+        byte[] fileContent = media.getFileContent();
+        if ( fileContent != null ) {
+            mediaDTO.setFileContent( Arrays.copyOf( fileContent, fileContent.length ) );
+        }
+
+        return mediaDTO;
+    }
+
+    protected Media mediaDTOToMedia(MediaDTO mediaDTO) {
+        if ( mediaDTO == null ) {
+            return null;
+        }
+
+        Media media = new Media();
+
+        media.setId( mediaDTO.getId() );
+        media.setName( mediaDTO.getName() );
+        byte[] fileContent = mediaDTO.getFileContent();
+        if ( fileContent != null ) {
+            media.setFileContent( Arrays.copyOf( fileContent, fileContent.length ) );
+        }
+
+        return media;
     }
 }

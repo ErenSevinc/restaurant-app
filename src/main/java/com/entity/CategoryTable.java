@@ -19,10 +19,10 @@ public class CategoryTable extends BaseEntity {
 
     private String name;
     private int amount;
-//    @OneToMany(
-//            cascade = CascadeType.ALL
-//    )
-//    @JoinColumn(name = "category_id")
-//    private Set<RestaurantTable> tables;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "media_id")
+    private Media media;
+
 
 }

@@ -4,7 +4,7 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     <changeSet author="eren.sevinc" id="1">
-        <createTable tableName="roles">
+        <createTable tableName="tb_role">
             <column name="id" type="int(10)">
                 <constraints primaryKey="true"/>
             </column>
@@ -12,17 +12,17 @@
 
         </createTable>
         <rollback>
-            <dropTable tableName="roles"/>
+            <dropTable tableName="tb_role"/>
         </rollback>
-        <addColumn tableName="roles">
+        <addColumn tableName="tb_role">
             <column name="deleted" type="boolean" defaultValue="false"/>
         </addColumn>
 
-        <insert tableName="roles">
+        <insert tableName="tb_role">
             <column name="id" value="1"/>
             <column name="name" value="ROLE_ADMIN"/>
         </insert>
-        <insert tableName="roles">
+        <insert tableName="tb_role">
             <column name="id" value="2"/>
             <column name="name" value="ROLE_USER"/>
         </insert>

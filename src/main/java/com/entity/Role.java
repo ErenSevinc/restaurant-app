@@ -7,7 +7,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "tb_role")
 @Getter
 @Setter
 @AllArgsConstructor

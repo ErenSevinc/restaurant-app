@@ -31,7 +31,7 @@ public class CategoryTableController {
         return repository.getCategoryById(id);
     }
     @PutMapping("/update/{id}")
-    public List<CategoryTableDTO> updateCategory(@RequestBody CategoryTableDTO categoryTableDTO, @PathVariable int id){
+    public CategoryTableDTO updateCategory(@RequestBody CategoryTableDTO categoryTableDTO, @PathVariable int id){
         return repository.updateCategory(categoryTableDTO,id);
     }
 //    @GetMapping("/table/id/{id}")
