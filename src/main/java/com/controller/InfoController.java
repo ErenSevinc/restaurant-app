@@ -1,12 +1,15 @@
 package com.controller;
 
 import com.DTO.Info;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -116,6 +119,20 @@ public class InfoController {
 
         return infoList;
     }
+    @Autowired
+    private ApplicationContext context;
 
+    @GetMapping("/beans")
+    public List<String> listBean(){
+        List<String> beanList=new ArrayList<>();
+        String [] allBeanNames = context.getBeanDefinitionNames();
+        for (String bean:allBeanNames){
+            System.out.println(bean+" ");
+        }
+        System.out.println(allBeanNames.length+" ");
+        beanList= Arrays.asList(allBeanNames);
+
+        return beanList;
+    }
 
 }

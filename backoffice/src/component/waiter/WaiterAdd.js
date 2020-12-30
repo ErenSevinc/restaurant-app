@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import ProductService from "../../service/ProductService";
 import WaiterService from "../../service/WaiterService";
 import UserContext from "../../UserContext";
 import MediaService from "../../service/MediaService";
 import '../../App.css';
+// import {Formik,Field,Form,ErrorMessage} from "formik";
+// import * as Yup from 'yup';
 
 class WaiterAdd extends Component {
     static contextType=UserContext;
@@ -82,6 +83,64 @@ class WaiterAdd extends Component {
         });
         console.log(e);
     }
+    showForm(){
+        return(
+        <form>
+            <div className = "form-group">
+                <label> Waiter Name: </label>
+                <input placeholder="Waiter Name" name="name" className="form-control"
+                       value={this.state.name} onChange={this.changeNameHandler}/>
+            </div>
+            <div className = "form-group">
+                <label> Waiter Phone: </label>
+                <input placeholder="Waiter Phone" name="phoneNumber" className="form-control"
+                       value={this.state.phoneNumber} onChange={this.changePhoneHandler}/>
+            </div>
+            <div className = "form-group">
+                <label> Waiter E-Mail: </label>
+                <input type="email" placeholder="Waiter E-Mail" name="mail" className="form-control"
+                       value={this.state.mail} onChange={this.changeMailHandler}/>
+            </div>
+            <div className = "form-group">
+                <label> Waiter Address: </label>
+                <input placeholder="Waiter Address" name="address" className="form-control"
+                       value={this.state.address} onChange={this.changeAddressHandler}/>
+            </div>
+            <div className = "form-group">
+                <label> Waiter Image: </label>
+                <input placeholder="Waiter Image" name="urlToImage" className="form-control"
+                       value={this.state.urlToImage} onChange={this.changeImageHandler}/>
+            </div>
+            <div className = "form-group">
+                <label> Waiter Salary: </label>
+                <input placeholder="Waiter Salary" name="salary" className="form-control"
+                       value={this.state.salary} onChange={this.changeSalaryHandler}/>
+            </div>
+
+            <div className="dropdown show">
+                <a className="btn btn-secondary btn-block dropdown-toggle" href="#" role="button"
+                   id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                </a>
+                <div className="dropdown-menu btn-block clm" aria-labelledby="dropdownMenuLink">
+                    {
+                        this.state.image_List.map(
+                            image=>
+                                <a className="dropdown-item" onClick={this.onClickCategory.bind(this,image)}>{image.name}
+                                    <br/>
+                                    <img src={'data:image/png;base64,' + image.fileContent} width="45" height="45"></img>
+                                </a>
+                        )
+                    }
+                </div>
+            </div>
+            <br/>
+            <button className="btn btn-success" onClick={this.saveWaiter}>Save</button>
+            <button className="btn btn-danger" style={{marginLeft: "10px"}} onClick={this.cancel.bind(this)}>Cancel</button>
+        </form>
+        )
+    }
+
     render() {
         return (
             <div>
@@ -90,75 +149,7 @@ class WaiterAdd extends Component {
                         <div className = "card col-md-6 offset-md-3 offset-md-3">
                             <h3 className="text-center">ADD WAITER</h3>
                             <div className = "card-body">
-                                <form>
-                                    <div className = "form-group">
-                                        <label> Waiter Name: </label>
-                                        <input placeholder="Waiter Name" name="name" className="form-control"
-                                               value={this.state.name} onChange={this.changeNameHandler}/>
-                                    </div>
-                                    <div className = "form-group">
-                                        <label> Waiter Phone: </label>
-                                        <input placeholder="Waiter Phone" name="phoneNumber" className="form-control"
-                                               value={this.state.phoneNumber} onChange={this.changePhoneHandler}/>
-                                    </div>
-                                    <div className = "form-group">
-                                        <label> Waiter E-Mail: </label>
-                                        <input type="email" placeholder="Waiter E-Mail" name="mail" className="form-control"
-                                               value={this.state.mail} onChange={this.changeMailHandler}/>
-                                    </div>
-                                    <div className = "form-group">
-                                        <label> Waiter Address: </label>
-                                        <input placeholder="Waiter Address" name="address" className="form-control"
-                                               value={this.state.address} onChange={this.changeAddressHandler}/>
-                                    </div>
-                                    <div className = "form-group">
-                                        <label> Waiter Image: </label>
-                                        <input placeholder="Waiter Image" name="urlToImage" className="form-control"
-                                               value={this.state.urlToImage} onChange={this.changeImageHandler}/>
-                                    </div>
-                                    <div className = "form-group">
-                                        <label> Waiter Salary: </label>
-                                        <input placeholder="Waiter Salary" name="salary" className="form-control"
-                                               value={this.state.salary} onChange={this.changeSalaryHandler}/>
-                                    </div>
-                                    {/*<div>*/}
-                                    {/*    {*/}
-                                    {/*        this.state.image_List.map(*/}
-                                    {/*            value=>*/}
-                                    {/*                <div className="form-check">*/}
-                                    {/*                    <input className="form-check-input" type="radio"*/}
-                                    {/*                           name="image" id="image"*/}
-                                    {/*                           onClick={()=>this.selectImage(value)}/>*/}
-                                    {/*                    <label>{value.name}</label>*/}
-                                    {/*                </div>*/}
-
-
-                                    {/*        )*/}
-                                    {/*    }*/}
-                                    {/*</div>*/}
-                                    <div className="dropdown show">
-                                        <a className="btn btn-secondary btn-block dropdown-toggle" href="#" role="button"
-                                           id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                           aria-expanded="false">
-                                        </a>
-                                        <div className="dropdown-menu btn-block clm" aria-labelledby="dropdownMenuLink">
-                                            {
-                                                this.state.image_List.map(
-                                                    image=>
-                                                        <a className="dropdown-item" onClick={this.onClickCategory.bind(this,image)}>{image.name}
-                                                        <br/>
-                                                            <img src={'data:image/png;base64,' + image.fileContent} width="45" height="45"></img>
-                                                        </a>
-
-                                                )
-                                            }
-
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <button className="btn btn-success" onClick={this.saveWaiter}>Save</button>
-                                    <button className="btn btn-danger" style={{marginLeft: "10px"}} onClick={this.cancel.bind(this)}>Cancel</button>
-                                </form>
+                                {this.showForm()}
                             </div>
                         </div>
                     </div>
