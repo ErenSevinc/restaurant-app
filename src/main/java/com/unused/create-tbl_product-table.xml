@@ -1,45 +1,45 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <changeSet author="eren.sevinc" id="1">
-        <createTable tableName="tbl_product">
-            <column autoIncrement="true" name="id" type="int(10)">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="brand" type="VARCHAR(255)"/>
-            <column name="price" type="double"/>
-            <column name="product_Category" type="VARCHAR(255)"/>
-            <column name="url_To_Image" type="VARCHAR(255)"/>
-        </createTable>
-        <rollback>
-            <dropTable tableName="tbl_product"/>
-        </rollback>
+<!--<?xml version="1.0" encoding="utf-8" ?>-->
+<!--<databaseChangeLog-->
+<!--        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">-->
+<!--    <changeSet author="eren.sevinc" id="1">-->
+<!--        <createTable tableName="tbl_product">-->
+<!--            <column autoIncrement="true" name="id" type="int(10)">-->
+<!--                <constraints primaryKey="true"/>-->
+<!--            </column>-->
+<!--            <column name="name" type="VARCHAR(255)"/>-->
+<!--            <column name="brand" type="VARCHAR(255)"/>-->
+<!--            <column name="price" type="double"/>-->
+<!--            <column name="product_Category" type="VARCHAR(255)"/>-->
+<!--            <column name="url_To_Image" type="VARCHAR(255)"/>-->
+<!--        </createTable>-->
+<!--        <rollback>-->
+<!--            <dropTable tableName="tbl_product"/>-->
+<!--        </rollback>-->
 
-        <insert tableName="tbl_product">
-            <column name="id" valueNumeric="1"/>
-            <column name="name" value="Mercimek Çorbası"/>
-            <column name="brand" value="iç ısıtıcı"/>
-            <column name="price" value="10.0"/>
-            <column name="product_Category" value="Başlangıç"/>
-            <column name="url_To_Image" value=""/>
-        </insert>
-        <insert tableName="tbl_product">
-            <column name="id" valueNumeric="2"/>
-            <column name="name" value="İşkembe Çorbası"/>
-            <column name="brand" value="iç ısıtıcı"/>
-            <column name="price" value="15.0"/>
-            <column name="product_Category" value="Başlangıç"/>
-            <column name="url_To_Image" value=""/>
-        </insert>
-        <insert tableName="tbl_product">
-            <column name="id" valueNumeric="3"/>
-            <column name="name" value="KarnıYarık"/>
-            <column name="brand" value="muhteşem lezzet"/>
-            <column name="price" value="15.0"/>
-            <column name="product_Category" value="Ana Yemek"/>
-            <column name="url_To_Image" value=""/>
-        </insert>
+<!--        <insert tableName="tbl_product">-->
+<!--            <column name="id" valueNumeric="1"/>-->
+<!--            <column name="name" value="Mercimek Çorbası"/>-->
+<!--            <column name="brand" value="iç ısıtıcı"/>-->
+<!--            <column name="price" value="10.0"/>-->
+<!--            <column name="product_Category" value="Başlangıç"/>-->
+<!--            <column name="url_To_Image" value=""/>-->
+<!--        </insert>-->
+<!--        <insert tableName="tbl_product">-->
+<!--            <column name="id" valueNumeric="2"/>-->
+<!--            <column name="name" value="İşkembe Çorbası"/>-->
+<!--            <column name="brand" value="iç ısıtıcı"/>-->
+<!--            <column name="price" value="15.0"/>-->
+<!--            <column name="product_Category" value="Başlangıç"/>-->
+<!--            <column name="url_To_Image" value=""/>-->
+<!--        </insert>-->
+<!--        <insert tableName="tbl_product">-->
+<!--            <column name="id" valueNumeric="3"/>-->
+<!--            <column name="name" value="KarnıYarık"/>-->
+<!--            <column name="brand" value="muhteşem lezzet"/>-->
+<!--            <column name="price" value="15.0"/>-->
+<!--            <column name="product_Category" value="Ana Yemek"/>-->
+<!--            <column name="url_To_Image" value=""/>-->
+<!--        </insert>-->
 
-    </changeSet>
-</databaseChangeLog>
+<!--    </changeSet>-->
+<!--</databaseChangeLog>-->

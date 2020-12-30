@@ -2,11 +2,16 @@ package com.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.DTO.MediaDTO;
 import com.DTO.WaiterDTO;
+import com.builder.DTOBuilder.MediaDTOBuilder;
 import com.builder.DTOBuilder.WaiterDTOBuilder;
+import com.builder.MediaBuilder;
 import com.builder.WaiterBuilder;
 import com.converter.WaiterConverter;
+import com.entity.Media;
 import com.entity.Waiter;
+import com.exception.BusinessRuleException;
 import com.mapper.WaiterMapper;
 import com.repository.WaiterRepository;
 import org.junit.Before;
@@ -16,7 +21,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,28 +48,28 @@ public class WaiterServiceTest {
     private List<Waiter> waiterList = new ArrayList<>();
     private List<WaiterDTO> waiterDTOList =new ArrayList<>();
 
+    private Media media=new Media();
+    private MediaDTO mediaDTO=new MediaDTO();
+
+    private MediaBuilder mediaBuilder=new MediaBuilder();
+    private MediaDTOBuilder mediaDTOBuilder=new MediaDTOBuilder();
+    byte [] b ={ (byte)0xe0, 0x4f, (byte)0xd0,
+            0x20, (byte)0xea, 0x3a, 0x69, 0x10, (byte)0xa2, (byte)0xd8, 0x08, 0x00, 0x2b,
+            0x30, 0x30, (byte)0x9d };
+
+    private List<Media> list =new ArrayList<>();
+    byte[] json = "{\"name\":\"yeeeah\"}".getBytes(StandardCharsets.UTF_8);
+    MockMultipartFile file = new MockMultipartFile
+            ("json", "json", "application/json", json);
+
     @Before
     public void setUp(){
-//        waiter.setId(1);
-//        waiter.setName("eren");
-//        waiter.setPhoneNumber("51111111");
-//        waiter.setMail("asd@asd.com");
-//        waiter.setAddress("ev");
-//        waiter.setUrlToImage("");
-//        waiter.setSalary(2500);
-//        waiterList.add(waiter);
-//
-        waiter=waiterBuilder.id(1).name("eren").phoneNumber("51111111").mail("asd@asd.com").address("ev").urlToImage("").salary(2500).build();
+        media=mediaBuilder.id(1).name("resim").fileContext(b).build();
+        mediaDTO=mediaDTOBuilder.id(1).name("resim").fileContent(b).build();
+        waiter=waiterBuilder.id(1).name("eren").phoneNumber("51111111").mail("asd@asd.com").address("ev").urlToImage("").salary(2500).media(media).build();
         waiterList.add(waiterBuilder.build());
 
-//        waiterDTO.setId(1);
-//        waiterDTO.setName("erenDTO");
-//        waiterDTO.setPhoneNumber("51111111");
-//        waiterDTO.setMail("asd@asd.com");
-//        waiterDTO.setAddress("ev");
-//        waiterDTO.setUrlToImage("");
-//        waiterDTO.setSalary(2500);
-        waiterDTO=waiterDTOBuilder.id(1).name("erenDTO").phoneNumber("51111111").mail("asd@asd.com").address("ev").urlToImage("").salary(2500).build();
+        waiterDTO=waiterDTOBuilder.id(1).name("erenDTO").phoneNumber("51111111").mail("asd@asd.com").address("ev").urlToImage("").salary(2500).media(mediaDTO).build();
         waiterDTOList.add(waiterDTOBuilder.build());
     }
 
@@ -81,12 +88,7 @@ public class WaiterServiceTest {
     public void shouldGetWaiterById(){
         int id=1;
 
-//        Mockito.when(WaiterMapper.INSTANCE.toDTO(waiterRepository.findById(id).get())).thenReturn(waiterDTO);
-//        WaiterDTO res = waiterService.getWaiterById(id);
-//        WaiterDTO dto = WaiterMapper.INSTANCE.toDTO(waiter);//WaiterConverter.getWaiterById(waiter);
-//
-//        assertEquals(res.getId(),dto.getId());
-        Mockito.when(waiterRepository.findAll().stream().filter(t -> t.getId() == id).findFirst()).thenReturn(Optional.of(WaiterMapper.INSTANCE.toEntity(waiterDTO)));
+        Mockito.when(waiterRepository.findById(id)).thenReturn(Optional.of(WaiterMapper.INSTANCE.toEntity(waiterDTO)));
         WaiterDTO res= waiterService.getWaiterById(id);
         assertNotNull(res);
         assertEquals(res.getId(),waiterDTO.getId());
@@ -105,7 +107,7 @@ public class WaiterServiceTest {
 
     @Test
     public void shouldUpdateWaiter(){
-        Mockito.when(waiterRepository.saveAndFlush(any())).thenReturn(waiter);
+        Mockito.when(waiterRepository.findById(waiterDTO.getId())).thenReturn(Optional.of(WaiterMapper.INSTANCE.toEntity(waiterDTO)));
 
         WaiterDTO res =waiterService.updateWaiter(waiterDTO);
 

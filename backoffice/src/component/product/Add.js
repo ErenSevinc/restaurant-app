@@ -32,7 +32,6 @@ class Add extends Component {
         this.changeNameHandler=this.changeNameHandler.bind(this);
         this.changeBrandHandler=this.changeBrandHandler.bind(this);
         this.changePriceHandler=this.changePriceHandler.bind(this);
-        // this.changeCategoryHandler=this.changeCategoryHandler.bind(this);
         this.selectMulti=this.selectMulti.bind(this);
 
     }
@@ -161,7 +160,6 @@ class Add extends Component {
                                                             <br/>
                                                             <img src={'data:image/png;base64,' + image.fileContent} width="45" height="45"></img>
                                                         </a>
-
                                                 )
                                             }
 

@@ -6,6 +6,7 @@ import com.service.CategoryTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -14,10 +15,13 @@ import java.util.List;
 public class CategoryTableController {
     @Autowired
     CategoryTableService repository;
+
     @PostMapping("/add")
-    public void addCategory(@RequestBody CategoryTableDTO categoryDTO) {
+    public String addCategory(@Valid @RequestBody CategoryTableDTO categoryDTO) {
           repository.addCategory(categoryDTO);
+          return "Table Added";
     }
+
     @GetMapping("/list")
     public List<CategoryTableDTO> getAllCategory() {
         return repository.getAllCategory();
@@ -30,14 +34,11 @@ public class CategoryTableController {
     public CategoryTableDTO getCategoryById(@PathVariable int id){
         return repository.getCategoryById(id);
     }
+
     @PutMapping("/update/{id}")
-    public CategoryTableDTO updateCategory(@RequestBody CategoryTableDTO categoryTableDTO, @PathVariable int id){
+    public CategoryTableDTO updateCategory(@Valid @RequestBody CategoryTableDTO categoryTableDTO, @PathVariable int id){
         return repository.updateCategory(categoryTableDTO,id);
     }
-//    @GetMapping("/table/id/{id}")
-//    public Set<RestaurantTable> getProductByCategort(@PathVariable int id){
-//        return repository.getProductCategory(id);
-//    }
 
 
 }

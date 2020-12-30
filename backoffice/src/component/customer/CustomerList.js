@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Loader from "../../Loader";
 import UserContext from "../../UserContext";
 import CustomerService from "../../service/CustomerService";
-import ProductService from "../../service/ProductService";
+import ReactToExcel from 'react-html-table-to-excel';
 
 class CustomerList extends Component {
     static contextType=UserContext;
@@ -99,14 +99,24 @@ class CustomerList extends Component {
                 </div>
                 <div>
 
-                    <table className="table table-striped table-bordered">
+                    <table className="table table-striped table-bordered" id="table-to-xls">
                         <thead>
                         <tr>
+                            <th>Customer ID</th>
                             <th>Customer Name </th>
                             <th>Customer PhoneNumber</th>
                             <th>Customer Address</th>
                             <th>Customer Image</th>
-                            <th></th>
+                            <th>
+                                <ReactToExcel
+                                className="btn btn-warning"
+                                table="table-to-xls"
+                                filename="excelFile"
+                                sheet="sheet 1"
+                                buttonText="Report Customer"
+
+                                />
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -114,6 +124,7 @@ class CustomerList extends Component {
                             this.state.customerList.map(
                                 customer =>
                                     <tr key={customer.id}>
+                                        <td>{customer.id}</td>
                                         <td>{customer.firstName} {customer.lastName}</td>
                                         <td>{customer.phoneNumber}</td>
                                         <td>{customer.address}</td>

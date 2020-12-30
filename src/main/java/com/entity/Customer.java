@@ -7,6 +7,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "tb_customer")
 @Getter
 @Setter
 @NoArgsConstructor

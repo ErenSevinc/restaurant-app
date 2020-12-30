@@ -182,7 +182,6 @@ public class CategoryProductControllerTest {
         int id=1;
         List<ProductsDTO> productsDTOList=productsService.getProductsByCategories(id);
         assertNotNull(productsDTOList);
-
     }
 
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class MediaController {
     }
 
     @PostMapping("/add")
-    public String addFile(@RequestParam("file")MultipartFile file, @RequestParam String imageName) throws IOException{
+    public String addFile(@RequestParam("file")MultipartFile file,@Valid @RequestParam String imageName) throws IOException{
         return mediaService.addFile(file,imageName);
     }
 

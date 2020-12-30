@@ -15,7 +15,7 @@
             <dropTable tableName="tb_products"/>
         </rollback>
         <addColumn tableName="tb_products">
-            <column name="deleted" type="boolean" defaultValue="false"></column>
+            <column name="deleted" type="boolean" defaultValueBoolean="false"></column>
         </addColumn>
 
 

@@ -36,7 +36,7 @@ public class UserDTOConverter {
         user.setUsername(usersDTO.getUsername());
         user.setPassword(encoder.encode(usersDTO.getPassword()));
         user.setEnabled(usersDTO.isEnabled());
-        //user.setRoles(RoleDTOConverter.roleDTOListConvertToroleList(usersDTO.getRolesDTO()));
+        user.setRoles(RoleDTOConverter.roleDTOListConvertToroleList(usersDTO.getRolesDTO()));
 
         return user;
     }

@@ -6,18 +6,19 @@ import UserContext from "../../UserContext";
 import Loader from "../../Loader";
 
 class List extends Component {
-    static contextType=UserContext;
+    static contextType = UserContext;
+
     constructor(props) {
         super(props);
 
         this.state = {
             products: [],
             productCategory: [],
-            buttonAmount:0,
-            elementCount:0,
-            item:[],
+            buttonAmount: 0,
+            elementCount: 0,
+            item: [],
 
-            loaded:false,
+            loaded: false,
         }
         this.add = this.add.bind(this)
         this.updatedProduct = this.updatedProduct.bind(this);
@@ -37,12 +38,12 @@ class List extends Component {
     }
 
     deletedProduct(id) {
-        const{token}=this.context;
-        this.setState({loaded:!this.state.loaded});
-        ProductService.deleteProduct(id,token).then(res => {
+        const {token} = this.context;
+        this.setState({loaded: !this.state.loaded});
+        ProductService.deleteProduct(id, token).then(res => {
             this.props.history.push('/add');
-            if (res.status == '200'){
-                this.setState({loaded:!this.state.loaded});
+            if (res.status == '200') {
+                this.setState({loaded: !this.state.loaded});
             }
         });
     }
@@ -52,29 +53,30 @@ class List extends Component {
     }
 
     componentDidMount() {
-        const{token}=this.context;
-        this.setState({loaded:!this.state.loaded});
+        const {token} = this.context;
+        this.setState({loaded: !this.state.loaded});
 
-        ProductService.getProducts(token,0).then((res) => {
+        ProductService.getProducts(token, 0).then((res) => {
             this.setState({
                 products: res.data.productsDTOList,
                 elementsCount: res.data.totalElements,
             });
-            if(res.status == '200'){
-                this.setState({loaded:!this.state.loaded});
+            if (res.status == '200') {
+                this.setState({loaded: !this.state.loaded});
             }
         });
         CategoryService.getAllCategory(token).then((res) => {
-            this.setState({loaded:!this.state.loaded});
+            this.setState({loaded: !this.state.loaded});
             this.setState({productCategory: res.data});
-            if(res.status == '200'){
-                this.setState({loaded:!this.state.loaded});
+            if (res.status == '200') {
+                this.setState({loaded: !this.state.loaded});
             }
         });
     }
-    buttonImpl=(e)=>{
-        const{token}=this.context;
-        ProductService.getProducts(token, e).then((res)=>{
+
+    buttonImpl = (e) => {
+        const {token} = this.context;
+        ProductService.getProducts(token, e).then((res) => {
             this.setState({
                 products: res.data.productsDTOList,
                 elementsCount: res.data.totalElements,
@@ -82,29 +84,73 @@ class List extends Component {
         });
     }
 
-    filterList(category){
+    filterList(category) {
         console.log(category);
-        this.setState({products:this.state.products.filter(
-            productByFilter=>productByFilter.categoriesDTOList.name==category.name
+        this.setState({
+            products: this.state.products.filter(
+                productByFilter => productByFilter.categoriesDTOList.name == category.name
             )
 
         })
     }
 
+    showTableItem() {
+        if (this.state.products == null) {
+            return (
+                <div>
+                    PRODUCTS NOT FOUND
+                </div>)
+        }
+        return (
+            this.state.products.map(
+                product =>
+                    <tr key={product.id}>
+                        <td>{product.name}</td>
+                        <td>{product.brand}</td>
+                        <td>{product.price}</td>
+                        <td>{
+                            product.categoriesDTOList.map(
+                                name =>
+                                    <button className="btn btn-link btn-block">
+                                        {name.name}
+                                    </button>
+                            )
+
+                        }</td>
+                        <td><img src={'data:image/png;base64,' + product.mediaDTO.fileContent} width="150"
+                                 height="150"/></td>
+                        <td>
+                            <button onClick={() => this.updatedProduct(product.id)}
+                                    className="btn btn-info" style={{margin: "5px"}}>Update
+                            </button>
+                            <button onClick={() => this.deletedProduct(product.id)}
+                                    className="btn btn-danger">Delete
+                            </button>
+                            <button onClick={() => this.detailProduct(product.id)}
+                                    className="btn btn-warning" style={{margin: "5px"}}>Detail
+                            </button>
+                        </td>
+                    </tr>
+            )
+        )
+    }
+
     render() {
-            const btn=[];
-            for (let i=0;i<Math.ceil(this.state.elementsCount/20);i++){
-                btn.push(
-                    <button className="btn btn-outline-success" onClick={()=>this.buttonImpl(i)}>{i+1}</button>
-                )
-            }
+        const btn = [];
+        for (let i = 0; i < Math.ceil(this.state.elementsCount / 20); i++) {
+            btn.push(
+                <button className="btn btn-outline-success" onClick={() => this.buttonImpl(i)}>{i + 1}</button>
+            )
+        }
         return (
             <div>
                 <h2 className="text-center">Product List</h2>
 
                 <div>
-                    <button className="btn btn-success" onClick={this.add} style={{marginRight:"50px"}}>Add Product</button>
-                    <label style={{marginRight:"25px"}}>Toplam ürün sayısı:<p style={{fontSize:"20px",fontStyle:"bold"}}>{this.state.elementsCount}</p></label>
+                    <button className="btn btn-success" onClick={this.add} style={{marginRight: "50px"}}>Add Product
+                    </button>
+                    <label style={{marginRight: "25px"}}>Toplam ürün sayısı:<p
+                        style={{fontSize: "20px", fontStyle: "bold"}}>{this.state.elementsCount}</p></label>
                     {btn}
                 </div>
                 <div>
@@ -122,46 +168,18 @@ class List extends Component {
                         </thead>
                         <tbody>
                         {
-                            this.state.products.map(
-                                product =>
-                                    <tr key={product.id}>
-                                        <td>{product.name}</td>
-                                        <td>{product.brand}</td>
-                                        <td>{product.price}</td>
-                                        <td>{
-                                            product.categoriesDTOList.map(
-                                                name=>
-                                                <button className="btn btn-link btn-block">
-                                                    {name.name}
-                                                </button>
-                                            )
-
-                                        }</td>
-                                        <td><img src={'data:image/png;base64,' +product.mediaDTO.fileContent} width="150" height="150"/></td>
-                                        <td>
-                                            <button onClick={() => this.updatedProduct(product.id)}
-                                                    className="btn btn-info" style={{margin: "5px"}}>Update
-                                            </button>
-                                            <button onClick={() => this.deletedProduct(product.id)}
-                                                    className="btn btn-danger">Delete
-                                            </button>
-                                            <button onClick={() => this.detailProduct(product.id)}
-                                                    className="btn btn-warning" style={{margin: "5px"}}>Detail
-                                            </button>
-                                        </td>
-                                    </tr>
-                            )
+                            this.showTableItem()
                         }
                         </tbody>
                     </table>
-                    <div style={{marginLeft:"450px"}}>
+                    <div style={{marginLeft: "450px"}}>
                         {btn}
                     </div>
                 </div>
                 {
-                    this.state.loaded ?(
+                    this.state.loaded ? (
                         <Loader/>
-                    ):null
+                    ) : null
                 }
             </div>
         );

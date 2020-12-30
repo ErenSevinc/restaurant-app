@@ -1,6 +1,7 @@
 package com.mapper;
 
 import com.DTO.RoleDTO;
+import com.DTO.UsersDTO;
 import com.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -14,6 +15,8 @@ public interface RoleMapper {
     RoleMapper INSTANCE =null;
 
     List<RoleDTO> toDTOList(List<Role> roleList);
+
+    List<Role> toEntityList(List<RoleDTO> roleDTOList);
 
     RoleDTO toDTO(Role role);
 

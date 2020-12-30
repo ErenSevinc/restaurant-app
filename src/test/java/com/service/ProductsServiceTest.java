@@ -108,15 +108,15 @@ public class ProductsServiceTest {
         assertNotNull(productsDTOList);
     }
 
-//    @Test
-//    public void shouldGetProductsById(){
-//        int id=1;
-//        Mockito.when(productsRepository.findById(any())).thenReturn(Optional.of(productsMapper.toEntity()));
-//
-//        ProductsDTO res=productsService.listProductsById(id);
-//
-//        assertEquals(res.getId(),productsDTO.getId());
-//    }
+    @Test
+    public void shouldGetProductsById(){
+        int id=1;
+        Mockito.when(productsRepository.findById(id)).thenReturn(Optional.of(productsMapper.toEntity(productsDTO)));
+
+        ProductsDTO res=productsService.listProductsById(id);
+
+        assertEquals(res.getId(),productsDTO.getId());
+    }
 //    @Test
 //    public void shouldGetProductsByCategories(){
 //        int id=1;

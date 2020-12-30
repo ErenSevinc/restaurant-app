@@ -1,10 +1,6 @@
 package com.service;
 
-//import com.builder.DTOBuilder.CategoryDTOBuilder;
-//import com.builder.DTOBuilder.OrderDTOBuilder;
-//import com.builder.DTOBuilder.ProductDTOBuilder;
-//import com.builder.OrderBuilder;
-//import com.builder.ProductBuilder;
+
 import com.DTO.OrderDTO;
 import com.builder.DTOBuilder.OrderDTOBuilder;
 import com.builder.OrderBuilder;
@@ -41,20 +37,6 @@ public class BackOfficeServiceTest {
     private List<OrderDTO> orderDTOList=new ArrayList<>();
     private OrderBuilder orderBuilder = new OrderBuilder();
     private OrderDTOBuilder orderDTOBuilder = new OrderDTOBuilder();
-//    @Mock
-//    private ProductRepository productRepository;
-//    private Set<ProductDTO> productDTOSet=new HashSet<>();
-//    private  List<Product> listProduct=new ArrayList<>();
-//    private Product product=new Product();
-//    private ProductDTO productDTO = new ProductDTO();
-//
-//    private ProductBuilder productBuilder=new ProductBuilder();
-//    private ProductDTOBuilder productDTOBuilder=new ProductDTOBuilder();
-//
-//    private Category category=new Category();
-//    private CategoryDTO categoryDTO=new CategoryDTO();
-//
-//    private CategoryDTOBuilder categoryDTOBuilder=new CategoryDTOBuilder();
 
 
     @Before
@@ -65,12 +47,6 @@ public class BackOfficeServiceTest {
 
         orderList.add(order);
         orderDTOList.add(orderDTO);
-
-//        categoryDTO=categoryDTOBuilder.id(1).name("kategori").description("kategori açıklama").urlToImage("").build();
-//
-//        product=productBuilder.id(1).name("ürün").brand("ürün güzel").price(10).productCategory("category name").urlToImage("").build();
-//
-//        productDTO=productDTOBuilder.id(1).name("ürün").brand("ürün güzel").price(10).productCategory("category name").urlToImage("").build();
 
     }
 
@@ -90,41 +66,6 @@ public class BackOfficeServiceTest {
         List<OrderDTO> ordListDTO = service.listSales();
         assertNotNull(ordListDTO);
     }
-//
-//    @Test
-//    public void shouldGetAllProduct(){
-//        List<Product> productList =productRepository.findAll();
-//        assertNotNull(productList);
-//    }
-//
-////    @Test
-////    public void shouldDeleteProduct(){
-////        int id=1;
-////
-////        List<ProductDTO> res = service.deleteProduct(1);
-////
-////        verify(productRepository,times(1)).deleteById(id);
-////    }
-//    @Test
-//    public void shouldGetSelectedProduct(){
-//        int id=1;
-//
-//        listProduct.add(product);
-//        Mockito.when(productRepository.findAll()).thenReturn(listProduct);
-//
-//        ProductDTO res =service.getSelectedProduct(id);
-//        ProductDTO dto = ProducrtConverter.getSelectedProduct(product);
-//
-//        assertEquals(res.getId(),dto.getId());
-//
-//    }
-//
-////    @Test
-////    public void shouldUpdateProduct(){
-////
-////    }
-//
-//
-//
+
 
 }

@@ -6,6 +6,7 @@ import com.DTO.ProductsWrapperList;
 import com.converter.ProductsDTOConverter;
 import com.entity.Categories;
 import com.entity.Products;
+import com.exception.BusinessRuleException;
 import com.exception.SystemException;
 import com.helper.EntityHelper;
 import com.mapper.CategoriesMapper;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +49,11 @@ public class ProductsService {
 //        Products products = productsRepository.findById(id).get();
 //        return ProductsDTOConverter.productsConvertToProductsDTO(products);
 
-        return productsMapper.toDTO(productsRepository.findById(id).orElseThrow(()->new SystemException("Product not found")));
+        return productsMapper.toDTO(productsRepository.findById(id).orElseThrow(()->new BusinessRuleException("Product not found")));
     }
     public ProductsWrapperList listProductsMore(Pageable pageable){
         if(pageable.equals(null)){
-            throw new SystemException("pageable is null");
+            throw new BusinessRuleException("pageable is null");
         }
         Page<Products> productsPage= productsRepository.findAll(pageable);
         List<Products> productsList=productsPage.getContent();
@@ -69,7 +71,7 @@ public class ProductsService {
     public ProductsSliceWrapperDTO loadMoreProducts(int id,int page,int size){
         Pageable pageable= PageRequest.of(page,size);
         if(pageable.equals(null)){
-            throw new SystemException("pageable is null");
+            throw new BusinessRuleException("pageable is null");
         }
 
         Slice<Products> productsSlice=productsRepository.findProductsByCategoriesId(id,pageable);
@@ -83,6 +85,7 @@ public class ProductsService {
 
     }
 
+    @Transactional
     public ProductsDTO addProducts(ProductsDTO productsDTO){
         Products products=productsMapper.toEntity(productsDTO);
 
@@ -95,7 +98,7 @@ public class ProductsService {
 //        Products products=productsRepository.save(ProductsDTOConverter.productsDTOConvertToProducts(productsDTO));
 //        return ProductsDTOConverter.productsConvertToProductsDTO(products);
     }
-
+    @Transactional
     public ProductsDTO updateProducts(ProductsDTO productsDTO){
         Products products=productsRepository.findById(productsDTO.getId()).get();
 
@@ -146,7 +149,7 @@ public class ProductsService {
     }
 
     public String deleteProducts(int id){
-        Products products=productsRepository.findById(id).orElseThrow(()->new SystemException("Product not found"));
+        Products products=productsRepository.findById(id).orElseThrow(()->new BusinessRuleException("Product not found"));
         for (int i=0;i<products.getCategories().size();i++){
             Optional<Categories> categories=categoriesRepository.findById(products.getCategories().get(i).getId());
             categories.get().getProducts().remove(products);
@@ -157,7 +160,7 @@ public class ProductsService {
     }
 
     public List<ProductsDTO> getProductsByCategories(int id){
-        Categories categories = categoriesRepository.findById(id).orElseThrow(()->new SystemException("ID not found"));
+        Categories categories = categoriesRepository.findById(id).orElseThrow(()->new BusinessRuleException("ID not found"));
         return ProductsDTOConverter.getProductsByCategories(categories);
     }
 

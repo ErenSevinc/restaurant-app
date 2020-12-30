@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -12,9 +13,13 @@ import java.util.Date;
 @ToString
 public class OrderDTO {
     private int id;
+    @NotNull
     private double totalPrice;
+    @NotNull
     private int piece;
+    @NotNull
     private String paymentType;
+    @NotNull
     private int productId;
     private String tableName;
     private String waiterName;

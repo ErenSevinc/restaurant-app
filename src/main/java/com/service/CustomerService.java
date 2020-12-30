@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,61 +32,58 @@ public class CustomerService {
     @Autowired
     private CustomerMapper customerMapper;
 
-    public CustomerDTO getSelectedCustomer(int id){
-        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst().
-                orElseThrow(()-> new SystemException("ID bulunamadı"));
+    public CustomerDTO getSelectedCustomer(int id) {
+        Customer customer = customerRepository.findAll().stream().filter(cstmr -> cstmr.getId() == id).findFirst().
+                orElseThrow(() -> new BusinessRuleException("ID bulunamadı"));
 
         return customerMapper.toDTO(customer);
     }
-    public CustomerDTO addCustomer(CustomerDTO customerDTO){
-//        if(customerDTO==null){
-//            throw new BusinessRuleException("Customer objesi bulunamadı");
-//        }
-//
-//        return customerMapper.toDTO(customerRepository.save(customerMapper.toEntity(customerDTO)));
-        try {
-            if (customerDTO.getMediaDTO()==null){
-                Media media= mediaRepository.findById(3).get();
-                customerDTO.setMediaDTO(MediaMapper.INSTANCE.toDTO(media));
-            }
-            return customerMapper.toDTO(customerRepository.save(customerMapper.toEntity(customerDTO)));
+
+    @Transactional
+    public CustomerDTO addCustomer(CustomerDTO customerDTO) {
+        if (customerDTO.getMediaDTO() == null) {
+            Media media = mediaRepository.findById(3).get();
+            customerDTO.setMediaDTO(MediaMapper.INSTANCE.toDTO(media));
         }
-        catch (SystemException e){
-            throw new SystemException("Customer eklenemedi");
-        }
+        return customerMapper.toDTO(customerRepository.save(customerMapper.toEntity(customerDTO)));
+
     }
 
-    public CustomerDTO updateCustomer(CustomerDTO customerDTO,int id){
-        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst()
-                .orElseThrow(()->new SystemException("Customer not found"));
+    @Transactional
+    public CustomerDTO updateCustomer(CustomerDTO customerDTO, int id) {
+        if(customerDTO.getMediaDTO()==null){
+            throw new BusinessRuleException("Resim dosyası boş olamaz");
+        }
+        Customer customer = customerRepository.findAll().stream().filter(cstmr -> cstmr.getId() == id).findFirst()
+                .orElseThrow(() -> new BusinessRuleException("Customer not found"));
 
-        EntityHelper.updateCustomerHelper(customer,customerDTO);
+        EntityHelper.updateCustomerHelper(customer, customerDTO);
 
         customerRepository.saveAndFlush(customer);
 
         return customerMapper.toDTO(customer);
     }
 
-    public String deleteCustomer(int id){
+    public String deleteCustomer(int id) {
 
-        Customer customer= customerRepository.findAll().stream().filter(cstmr ->cstmr.getId() == id).findFirst()
-                .orElseThrow(()->new SystemException("Customer not found"));
+        Customer customer = customerRepository.findAll().stream().filter(cstmr -> cstmr.getId() == id).findFirst()
+                .orElseThrow(() -> new BusinessRuleException("Customer not found"));
 
         customerRepository.deleteById(customer.getId());
 
-        return "ID: "+id+" has deleted";
+        return "ID: " + id + " has deleted";
     }
 
-    public CustomerWrapperList getCustomersMore(Pageable pageable){
+    public CustomerWrapperList getCustomersMore(Pageable pageable) {
         Page<Customer> customerPage = customerRepository.findAll(pageable);
-        if(customerPage.equals(null)){
+        if (customerPage.equals(null)) {
             throw new SystemException("pageable is null");
         }
 
         List<Customer> customerList = customerPage.getContent();
         List<CustomerDTO> customerDTOList = customerMapper.toDTOList(customerList);
 
-        CustomerWrapperList customerWrapperList=new CustomerWrapperList();
+        CustomerWrapperList customerWrapperList = new CustomerWrapperList();
         customerWrapperList.setCustomerDTOList(customerDTOList);
         customerWrapperList.setTotalElements((int) customerPage.getTotalElements());
         customerWrapperList.setSize(customerPage.getSize());

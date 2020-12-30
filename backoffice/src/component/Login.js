@@ -46,9 +46,11 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        const{setToken}=this.context;
+        const{setToken,setUsername,setPassword}=this.context;
         if(localStorage.getItem("token") !==null){
             setToken(localStorage.getItem("token"));
+            setPassword(localStorage.getItem("password"));
+            setUsername(localStorage.getItem("username"));
             this.props.history.push("/user");
         }
     }
@@ -63,6 +65,8 @@ class Login extends Component {
         setToken(token);
         if(this.state.rememberMe){
             localStorage.setItem("token",token);
+            localStorage.setItem("username",this.state.username);
+            localStorage.setItem("password",this.state.password);
         }
         UserService.getLogin(token).then((res)=>{
            if(res.status == '200'){

@@ -28,11 +28,11 @@ class UserUpdate extends Component {
         UserService.getUserById(this.state.id,token).then( (res) =>{
             let user = res.data;
             this.setState({
-                username: this.state.username,
-                email:this.state.email,
-                password: this.state.password,
-                enabled: this.state.enabled,
-                roles:this.state.roles
+                username: user.username,
+                email:user.email,
+                password: user.password,
+                enabled: user.enabled,
+                roles:user.rolesDTO
             });
             console.log(user);
         });

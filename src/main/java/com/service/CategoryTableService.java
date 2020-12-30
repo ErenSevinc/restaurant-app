@@ -3,6 +3,7 @@ package com.service;
 import com.DTO.CategoryTableDTO;
 import com.converter.CategoryTableConverter;
 import com.entity.CategoryTable;
+import com.exception.BusinessRuleException;
 import com.exception.SystemException;
 import com.helper.EntityHelper;
 import com.mapper.CategoriesMapper;
@@ -11,6 +12,7 @@ import com.mapper.WaiterMapper;
 import com.repository.CategoryTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,17 +29,18 @@ public class CategoryTableService {
     }
 
     public List<CategoryTableDTO> deleteCategory(int id) {
-        CategoryTable table=repository.findById(id).orElseThrow(()->new SystemException("Table not found"));
+        CategoryTable table=repository.findById(id).orElseThrow(()->new BusinessRuleException("Table not found"));
         repository.delete(table);
         return getAllCategory();
     }
-
+    @Transactional
     public String addCategory(CategoryTableDTO categoryDTO) {
         repository.save(CategoryTableMapper.INSTANCE.toEntity(categoryDTO));
         return "Added";
     }
+    @Transactional
     public CategoryTableDTO updateCategory (CategoryTableDTO categoryTableDTO, int id){
-        CategoryTable categoryTable=repository.findById(id).orElseThrow(()->new SystemException("Table not found"));
+        CategoryTable categoryTable=repository.findById(id).orElseThrow(()->new BusinessRuleException("Table not found"));
 
         EntityHelper.updateCategoryTableHelper(categoryTable,categoryTableDTO);
 
@@ -49,7 +52,7 @@ public class CategoryTableService {
 //        CategoryTable catTbl = repository.findAll().stream().filter(t -> t.getId() == id).findFirst().get();
 //        return CategoryTableConverter.getCategoryById(catTbl);
         return CategoryTableMapper.INSTANCE.toDTO(repository.findById(id)
-                .orElseThrow(()->new SystemException("Table not found")));
+                .orElseThrow(()->new BusinessRuleException("Table not found")));
     }
 
 }

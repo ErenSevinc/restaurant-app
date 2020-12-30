@@ -9,14 +9,21 @@
     <include file="/db-changelog/changes/create-users-table.xml"/>
     <include file="/db-changelog/changes/create-role-table.xml"/>
     <include file="/db-changelog/changes/create-user_role-table.xml"/>
+    <include file="/db-changelog/changes/create-media-table.xml"/>
     <include file="/db-changelog/changes/create-category_table-table.xml"/>
     <include file="/db-changelog/changes/create-tbl_order-table.xml"/>
     <include file="/db-changelog/changes/create-waiter-table.xml"/>
-    <include file="/db-changelog/changes/create-media-table.xml"/>
     <include file="/db-changelog/changes/create-tb_products-table.xml"/>
     <include file="/db-changelog/changes/create-categories-table.xml"/>
     <include file="/db-changelog/changes/create-tb_categories_products-table.xml"/>
-    <include file="/db-changelog/changes/auto-products.sql"/>
-    <include file="/db-changelog/changes/auto-cat-prod.sql"/>
     <include file="/db-changelog/changes/create-customer-table.xml"/>
+    <changeSet author="eren.sevinc" id="2" runOnChange="true">
+        <sqlFile path="/db-changelog/changes/auto-products.sql"
+                 stripComments="true"/>
+    </changeSet>
+    <changeSet author="eren.sevinc" id="3" runOnChange="true">
+        <sqlFile path="/db-changelog/changes/auto-cat-prod.sql"
+                 stripComments="true"/>
+    </changeSet>
+
 </databaseChangeLog>

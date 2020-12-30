@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import Header from "./component/Header";
 import UserList from "./component/user/UserList";
@@ -9,7 +9,6 @@ import UserDetail from "./component/user/UserDetail";
 import Order from "./component/order/Order";
 import Login from "./component/Login";
 import AuthList from "./component/user/AuthList";
-import AuthUpdate from "./component/user/AuthUpdate";
 import Category from "./component/category/Category";
 import CategoryAdd from "./component/category/CategoryAdd";
 import CategoryUpdate from "./component/category/CategoryUpdate";
@@ -20,14 +19,11 @@ import TableCategoryList from "./component/table-category/TableCategoryList";
 import TableCategoryAdd from "./component/table-category/TableCategoryAdd";
 import TableCategoryUptade from "./component/table-category/TableCategoryUptade";
 import TableCategoryDetail from "./component/table-category/TableCategoryDetail";
-import TableList from "./unused/table/TableList";
-import TableAdd from "./unused/table/TableAdd";
 import WaiterList from "./component/waiter/WaiterList";
 import WaiterAdd from "./component/waiter/WaiterAdd";
 import WaiterDetail from "./component/waiter/WaiterDetail";
 import WaiterUpdate from "./component/waiter/WaiterUpdate";
 import MediaComponent from "./component/media/MediaComponent";
-import UserContext, {UserContextProvider} from "./UserContext";
 import Add from "./component/product/Add";
 import Detail from "./component/product/Detail";
 import List from "./component/product/List";
@@ -36,6 +32,7 @@ import CustomerList from "./component/customer/CustomerList";
 import CustomerAdd from "./component/customer/CustomerAdd";
 import CustomerUpdate from "./component/customer/CustomerUpdate";
 import CustomerDetail from "./component/customer/CustomerDetail";
+
 //localStorage.setItem("token",("Basic"+btoa('eren:1234')))
 
 function App() {

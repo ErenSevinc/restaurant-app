@@ -5,7 +5,8 @@ import UserContext from "../../UserContext";
 
 
 class UserList extends Component {
-    static contextType=UserContext;
+    static contextType = UserContext;
+
     constructor(props) {
         super(props)
 
@@ -19,7 +20,7 @@ class UserList extends Component {
     }
 
     add() {
-       this.props.history.push('/user-add')
+        this.props.history.push('/user-add')
     }
 
     updatedUser(id) {
@@ -27,23 +28,55 @@ class UserList extends Component {
     }
 
     deletedUser(id) {
-        const {token}=this.context;
-        UserService.deleteUser(id,token).then(res => {
+        const {token} = this.context;
+        UserService.deleteUser(id, token).then(res => {
             this.props.history.push('/user-add');
         });
     }
 
     detailUser(id) {
         this.props.history.push(`/user-detail/${id}`);
-        sessionStorage.setItem("view",id);
+        sessionStorage.setItem("view", id);
 
     }
 
     componentDidMount() {
-        const {token}=this.context;
+        const {token} = this.context;
         UserService.getUser(token).then((res) => {
             this.setState({users: res.data});
         });
+    }
+
+    showTable = () => {
+        if(this.state.users==null){
+            return (
+                <div>
+                    USER NOT FOUND
+                </div>
+            )
+        }
+        return (
+            this.state.users.map(
+                user =>
+                    <tr key={user.id}>
+                        <td>{user.username}</td>
+                        <td>{user.password}</td>
+                        <td>{user.email}</td>
+                        <td>{user.enabled}</td>
+                        <td>
+                            <button onClick={() => this.updatedUser(user.id)}
+                                    className="btn btn-info" style={{margin: "5px"}}>Update
+                            </button>
+                            <button onClick={() => this.deletedUser(user.id)}
+                                    className="btn btn-danger">Delete
+                            </button>
+                            <button onClick={() => this.detailUser(user.id)}
+                                    className="btn btn-warning" style={{margin: "5px"}}>Detail
+                            </button>
+                        </td>
+                    </tr>
+            )
+        )
     }
 
     render() {
@@ -65,30 +98,7 @@ class UserList extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {
-                            this.state.users.map(
-                                user =>
-                                    <tr key={user.id}>
-                                        <td>{user.username}</td>
-                                        <td>{user.password}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.enabled}</td>
-
-                                        <td>
-
-                                            <button onClick={() => this.updatedUser(user)}
-                                                    className="btn btn-info" style={{margin: "5px"}}>Update
-                                            </button>
-                                            <button onClick={() => this.deletedUser(user.id)}
-                                                    className="btn btn-danger">Delete
-                                            </button>
-                                            <button onClick={() => this.detailUser(user.username)}
-                                                    className="btn btn-warning" style={{margin: "5px"}}>Detail
-                                            </button>
-                                        </td>
-                                    </tr>
-                            )
-                        }
+                        {this.showTable()}
                         </tbody>
                     </table>
                 </div>

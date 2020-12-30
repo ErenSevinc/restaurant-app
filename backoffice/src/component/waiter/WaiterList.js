@@ -45,7 +45,7 @@ class WaiterList extends Component {
     render() {
         return (
             <div>
-                <h2 className="text-center">Product List</h2>
+                <h2 className="text-center">Waiter List</h2>
 
                 <div>
                     <button className="btn btn-success" onClick={this.add}>Add Waiter</button>

@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,13 +39,13 @@ public class CategoryProductController {
     }
 
     @PostMapping("/add-categories")
-    public String addCategories(@RequestBody CategoriesDTO categoriesDTO,@RequestHeader("Accept-Language")String locale){
+    public String addCategories(@Valid @RequestBody CategoriesDTO categoriesDTO, @RequestHeader("Accept-Language")String locale){
         categoriesService.addCategories(categoriesDTO);
         return LocaleConfig.messageSource().getMessage("categories.add.txt",null,new Locale(locale));
     }
 
     @PutMapping("/update-categories")
-    public String updateCategories(@RequestBody CategoriesDTO categoriesDTO,@RequestHeader("Accept-Language")String locale){
+    public String updateCategories(@Valid @RequestBody CategoriesDTO categoriesDTO,@RequestHeader("Accept-Language")String locale){
         categoriesService.updateCategories(categoriesDTO);
         return LocaleConfig.messageSource().getMessage("categories.update.txt",null,new Locale(locale));
     }
@@ -82,12 +82,12 @@ public class CategoryProductController {
     }
 
     @PostMapping("/add-products")
-    public ProductsDTO addProducts(@RequestBody ProductsDTO productsDTO){
+    public ProductsDTO addProducts(@Valid @RequestBody ProductsDTO productsDTO){
         return productsService.addProducts(productsDTO);
     }
 
     @PutMapping("/update-products")
-    public ProductsDTO updateProducts(@RequestBody ProductsDTO productsDTO){
+    public ProductsDTO updateProducts(@Valid @RequestBody ProductsDTO productsDTO){
         return productsService.updateProducts(productsDTO);
     }
 

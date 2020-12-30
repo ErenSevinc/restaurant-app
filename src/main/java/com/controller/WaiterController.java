@@ -5,6 +5,7 @@ import com.service.WaiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -24,13 +25,13 @@ public class WaiterController {
         return waiterService.getWaiterById(id);
     }
     @PostMapping("/add")
-    public String addWaiter(@RequestBody WaiterDTO waiterDTO){
+    public String addWaiter(@Valid @RequestBody WaiterDTO waiterDTO){
         waiterService.addWaiter(waiterDTO);
         return "Waiter Added";
     }
 
     @PutMapping("/update")
-    public WaiterDTO updateWaiter(@RequestBody WaiterDTO waiterDTO){
+    public WaiterDTO updateWaiter(@Valid @RequestBody WaiterDTO waiterDTO){
         return waiterService.updateWaiter(waiterDTO);
     }
 

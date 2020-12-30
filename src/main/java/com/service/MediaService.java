@@ -8,6 +8,7 @@ import com.repository.MediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class MediaService {
         return MediaMapper.INSTANCE.toDTOList(mediaRepository.findAll());
     }
 
+    @Transactional
     public String addFile(MultipartFile file,String imageName) throws IOException {
         MediaConverter mediaConverter=new MediaConverter();
         Media media= mediaConverter.addFile(file,imageName);

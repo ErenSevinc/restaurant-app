@@ -1,5 +1,6 @@
 package com.builder;
 
+import com.entity.Media;
 import com.entity.Waiter;
 import liquibase.pro.packaged.W;
 
@@ -11,6 +12,7 @@ public class WaiterBuilder extends Builder {
     private String address;
     private String urlToImage;
     private double salary;
+    private Media media;
 
     public WaiterBuilder id(int id){
         this.id=id;
@@ -40,6 +42,10 @@ public class WaiterBuilder extends Builder {
         this.salary=salary;
         return this;
     }
+    public WaiterBuilder media(Media media){
+        this.media=media;
+        return this;
+    }
 
     @Override
     public Waiter build() {
@@ -51,6 +57,7 @@ public class WaiterBuilder extends Builder {
         waiter.setAddress(this.address);
         waiter.setUrlToImage(this.urlToImage);
         waiter.setSalary(this.salary);
+        waiter.setMedia(this.media);
         return waiter;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/customer")
@@ -23,18 +25,15 @@ public class CustomerController {
     }
 
     @PostMapping()
-    public CustomerDTO addCustomer(@RequestBody CustomerDTO customerDTO){
-        if (customerDTO.getLastName() == null){
-            throw new BusinessRuleException("Customer soyadı null olamaz veya hatalı geldi...");
-        }
+    public CustomerDTO addCustomer(@Valid @RequestBody CustomerDTO customerDTO){
+//        if (customerDTO.getLastName() == null){
+//            throw new BusinessRuleException("Customer soyadı null olamaz veya hatalı geldi...");
+//        }
         return customerService.addCustomer(customerDTO);
     }
 
     @PutMapping("/{id}")
-    public CustomerDTO updateCustomer(@RequestBody CustomerDTO customerDTO,@PathVariable int id){
-        if(customerDTO == null){
-            throw new BusinessRuleException("ID veya Customer null olamaz");
-        }
+    public CustomerDTO updateCustomer(@Valid @RequestBody CustomerDTO customerDTO, @PathVariable int id){
         return customerService.updateCustomer(customerDTO,id);
     }
 

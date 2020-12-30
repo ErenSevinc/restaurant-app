@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,16 +42,16 @@ public class UserController {
         return userService.getSelectedUser(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
-    public UsersDTO addUser(@RequestBody UsersDTO usersDTO){
+    public UsersDTO addUser(@Valid @RequestBody UsersDTO usersDTO){
         return userService.addUser(usersDTO);
     }
-    @PutMapping("/update")
-    public String updateUser(@RequestBody UsersDTO usersDTO){
+    @PutMapping("/update/{id}")
+    public String updateUser(@Valid @RequestBody UsersDTO usersDTO){
         userService.updateUser(usersDTO);
         return "User Updated";
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("list-roles")
     public List<RoleDTO> listRoles(){
         List<RoleDTO> rolesDTO=new ArrayList<>();

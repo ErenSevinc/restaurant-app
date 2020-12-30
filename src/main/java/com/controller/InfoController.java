@@ -98,12 +98,16 @@ public class InfoController {
         Info loggingLevel=new Info("logging.level.org.hibernate.type",loggingLevelHibernate);
         Info profile=new Info("spring.profiles.active",activeProfile);
 
+        addList(infoList,profile,port,message,showSql,sourceUrl,driverName,username,pass,formatsql,loggingLevel);
+        return infoList;
+    }
+
+    public List<Info> addList(List<Info> infoList,Info profile,Info port,Info message,Info showSql,Info sourceUrl,Info driverName,Info username,Info pass,Info formatsql,Info loggingLevel){
         infoList.add(profile);
         infoList.add(port);
         infoList.add(message);
         infoList.add(showSql);
         infoList.add(sourceUrl);
-//        infoList.add(hibernateDdl);
         infoList.add(driverName);
         infoList.add(username);
         infoList.add(pass);
